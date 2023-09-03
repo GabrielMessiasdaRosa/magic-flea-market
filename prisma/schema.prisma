@@ -11,6 +11,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+  output   = "../ERD.png"
+}
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -59,9 +64,9 @@ model User {
   // Campos de controle
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  Chat      Chat?     @relation(fields: [chatId], references: [id])
+  chat      Chat?     @relation(fields: [chatId], references: [id])
   chatId    String?
-  Message   Message[]
+  messages  Message[]
 
   @@map("users")
 }
@@ -109,7 +114,7 @@ model Announcement {
   user   User   @relation(fields: [userId], references: [id])
   cardId String // Referência à carta associada ao anúncio (opcional)
   card   Card   @relation(fields: [cardId], references: [id])
-  Chat   Chat[]
+  chat   Chat[]
 
   @@map("announcements")
 }
@@ -177,18 +182,18 @@ model Chat {
 
 // Modelo para mensagens em uma conversa de chat
 model Message {
-  id        String   @id @unique @default(cuid())
-  text      String
+  id   String @id @unique @default(cuid())
+  text String
 
   // Campos de controle
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // Relacionamentos
-  chat      Chat     @relation(fields: [chatId], references: [id])
-  chatId    String
-  sender    User     @relation(fields: [senderId], references: [id])
-  senderId  String
+  chat     Chat   @relation(fields: [chatId], references: [id])
+  chatId   String
+  sender   User   @relation(fields: [senderId], references: [id])
+  senderId String
 }
 
 enum PlanType {
