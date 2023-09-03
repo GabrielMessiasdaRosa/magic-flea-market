@@ -1,0 +1,205 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL") // Only needed when using a cloud provider that doesn't support the creation of new databases, like Heroku. Learn more: https://pris.ly/d/migrate-shadow
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String  @unique
+  providerAccountId String  @unique
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model User {
+  id            String    @id @unique @default(cuid())
+  name          String?
+  emailVerified DateTime?
+  image         String?
+  email         String    @unique
+  username      String    @unique
+
+  // Relacionamentos
+  planId        String?
+  plan          Plan?          @relation(fields: [planId], references: [id])
+  accounts      Account[]
+  sessions      Session[]
+  profile       Profile?
+  announcements Announcement[]
+
+  // Campos de controle
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Chat      Chat?     @relation(fields: [chatId], references: [id])
+  chatId    String?
+  Message   Message[]
+
+  @@map("users")
+}
+
+// Modelo para perfil de usuário
+model Profile {
+  id               String  @id @unique @default(cuid())
+  profileImage     String?
+  nickname         String  @unique
+  reputationPoints Int     @default(0)
+
+  // Relacionamentos
+  userId    String    @unique
+  user      User      @relation(fields: [userId], references: [id])
+  wantList  WantList?
+  // Campos de controle
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("profiles")
+}
+
+model VerificationToken {
+  identifier String   @unique
+  token      String   @unique
+  expires    DateTime
+
+  @@map("verificationTokens")
+}
+
+// Modelo para anúncios (Announcements)
+model Announcement {
+  id               String           @id @unique @default(cuid())
+  announcementType AnnouncementType
+  title            String
+  description      String
+  price            Float
+
+  // Campos de controle
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relacionamentos
+  userId String // Referência ao usuário que criou o anúncio
+  user   User   @relation(fields: [userId], references: [id])
+  cardId String // Referência à carta associada ao anúncio (opcional)
+  card   Card   @relation(fields: [cardId], references: [id])
+  Chat   Chat[]
+
+  @@map("announcements")
+}
+
+// Modelo para cartas mágicas
+model Card {
+  id    String @id @unique @default(cuid())
+  name  String
+  color String
+
+  // Campos de controle
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relacionamentos
+  wantLists     WantList[]
+  announcements Announcement[]
+
+  @@map("cards")
+}
+
+// Modelo para a lista de desejos do usuário
+model WantList {
+  id String @id @unique @default(cuid())
+
+  // Relacionamentos
+  profileId String  @unique
+  profile   Profile @relation(fields: [profileId], references: [id])
+  cards     Card[]
+
+  @@map("wantLists")
+}
+
+model Plan {
+  id                 String   @id @unique @default(cuid())
+  type               PlanType @unique
+  price              Float
+  announcementsLimit Int
+
+  // Campos de controle
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relacionamentos
+  user User[]
+
+  @@map("plans")
+}
+
+// Modelo para conversas de chat
+model Chat {
+  id String @id @unique @default(cuid())
+
+  // Campos de controle
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  // Relacionamentos
+  announcement   Announcement @relation(fields: [announcementId], references: [id])
+  announcementId String
+  messages       Message[] // Uma conversa pode ter várias mensagens
+  participants   User[] // Participantes da conversa (usuários)
+
+  @@map("chats")
+}
+
+// Modelo para mensagens em uma conversa de chat
+model Message {
+  id        String   @id @unique @default(cuid())
+  text      String
+
+  // Campos de controle
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relacionamentos
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  chatId    String
+  sender    User     @relation(fields: [senderId], references: [id])
+  senderId  String
+}
+
+enum PlanType {
+  FREE
+  BASIC
+  PRO
+}
+
+// enum para tipos de anúncios
+enum AnnouncementType {
+  SELL
+  BUY
+  TRADE
+}
