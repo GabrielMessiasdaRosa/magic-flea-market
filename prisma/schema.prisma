@@ -121,17 +121,80 @@ model Announcement {
 
 // Modelo para cartas mágicas
 model Card {
-  id    String @id @unique @default(cuid())
-  name  String
-  color String
+  id String @id @unique @default(cuid())
 
-  // Campos de controle
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relacionamentos
-  wantLists     WantList[]
-  announcements Announcement[]
+  arena_id          Int?
+  name              String?
+  lang              String?
+  released_at       String?
+  layout            String?
+  highres_image     Boolean?
+  image_status      String?
+  image_uris        Json?
+  mana_cost         String?
+  cmc               Float?
+  type_line         String?
+  oracle_text       String?
+  power             String?
+  toughness         String?
+  colors            String[]       @default([])
+  color_identity    String[]       @default([])
+  keywords          String[]       @default([])
+  legalities        Json?
+  games             String[]       @default([])
+  reserved          Boolean?
+  foil              Boolean?
+  nonfoil           Boolean?
+  finishes          String[]       @default([])
+  oversized         Boolean?
+  promo             Boolean?
+  reprint           Boolean?
+  variation         Boolean?
+  set_id            String?
+  set               String?
+  set_name          String?
+  set_type          String?
+  set_uri           String?
+  card_faces        Json?
+  all_parts         Json?
+  search_uri        String?
+  produced_mana     String[]       @default([])
+  scryfall_set_uri  String?
+  rulings_uri       String?
+  prints_search_uri String?
+  collector_number  String?
+  digital           Boolean?
+  rarity            String?
+  flavor_text       String?
+  card_back_id      String?
+  artist            String?
+  artist_ids        String[]       @default([])
+  illustration_id   String?
+  border_color      String?
+  frame             String?
+  full_art          Boolean?
+  textless          Boolean?
+  booster           Boolean?
+  story_spotlight   Boolean?
+  edhrec_rank       Int?
+  penny_rank        Int?
+  prices            Json?
+  watermark         String?
+  frame_effects     String[]       @default([])
+  loyalty           String?
+  printed_name      String?
+  printed_text      String?
+  attraction_lights Int[]
+  color_indicator   String[]       @default([])
+  life_modifier     String?
+  content_warning   Boolean?
+  hand_modifier     String?
+  variation_of      String?
+  printed_type_line String?
+  wantLists         WantList[]
+  announcements     Announcement[]
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
 
   @@map("cards")
 }
