@@ -3,9 +3,25 @@ import { hash } from "bcrypt";
 import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 // create new user
-function userIdentifierPatternConverter(nr: number, n: number, str?: string) {
-  return Array(n - String(nr).length + 1).join(str || "0") + nr;
+function formatUsernameWithIdentifier(
+  username: string,
+  userNumber: number,
+  totalDigits: number,
+  paddingCharacter?: string
+) {
+  const userNumberString = String(userNumber);
+  const paddingChar = paddingCharacter || "0";
+
+  const paddingLength = totalDigits - userNumberString.length;
+  if (paddingLength <= 0) {
+    return userNumberString;
+  }
+
+  const padding = paddingChar.repeat(paddingLength);
+  const formattedUserIdentifier = username + "#" + padding + userNumberString;
+  return formattedUserIdentifier;
 }
+
 export async function POST(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { email, password, username } = req.body;
@@ -41,12 +57,12 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
       );
     }
     const usersQuantity = await prisma.user.count();
-    const usernameWithIdentifier = `${username}#${userIdentifierPatternConverter(
+    const usernameWithIdentifier = formatUsernameWithIdentifier(
+      username,
       usersQuantity + 1,
       4
-    )}`;
+    );
     const hashedPassword = await hash(password, 10);
-
     const newUser = await prisma.user.create({
       data: {
         email,
