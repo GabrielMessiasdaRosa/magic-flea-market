@@ -1,7 +1,8 @@
 "use client";
+import { validateEmail } from "@/lib/validate-email";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import LoadingIcon from "./loading-icon";
 import { Button, Input, Link } from "./next-ui-exports";
@@ -16,8 +17,18 @@ export default function RegisterForm({}: RegisterFormProps) {
     handleSubmit,
     watch,
     formState: { errors },
+    setError,
+    clearErrors,
   } = useForm();
   const onSubmit = async (data: any) => {
+    const isEmailValid = validateEmail(data.email);
+    if (!isEmailValid) {
+      setError("invalidEmailFormat", {
+        type: "manual",
+        message: "O email inserido não está em um formato válido",
+      });
+      return;
+    }
     setLoading(true);
     await fetch("/api/user", {
       method: "POST",
@@ -39,20 +50,36 @@ export default function RegisterForm({}: RegisterFormProps) {
 
   const password = watch("password");
   const passwordConfirmation = watch("passwordConfirmation");
+  React.useEffect(() => {
+    const email = watch("email");
+    if (email.length > 0) {
+      const isEmailValid = validateEmail(email);
+      if (!isEmailValid) {
+        setError("invalidEmailFormat", {
+          type: "manual",
+          message: "O email inserido não está em um formato válido",
+        });
+        return;
+      } else {
+        clearErrors("invalidEmailFormat");
+      }
+    }
+  }, [watch("email")]);
   return (
-    <form className="text-gray-800 flex flex-col gap-4 space-y-10 items-center justify-center w-full h-full">
-      <div className="flex flex-col text-center items-center justify-center lg:w-1/2">
-        <h1 className="text-4xl font-bold">Registre-se</h1>
-        <sub className="mt-2 text-lg">
+    <form className="xl:text-gray-800 flex flex-col gap-4 space-y-10 items-center justify-center  w-3/4 h-full">
+      <div className="flex flex-col text-center items-center justify-center ">
+        <h1 className="text-2xl md:text-4xl font-bold">Registre-se</h1>
+        <p className="mt-2 text-sm md:text-lg">
           É de graça e voce tem acesso a uma lista de ofertas exclusivas!
-        </sub>
+        </p>
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col w-full gap-3">
         <Input
           disabled={loading}
+          autoFocus
           {...register("username", { required: true })}
           validationState={errors.username ? "invalid" : "valid"}
-          errorMessage={errors.username && "Senha é obrigatória"}
+          errorMessage={errors.username && "Nome de usuário é obrigatório"}
           endContent={
             <svg
               style={{
@@ -81,13 +108,21 @@ export default function RegisterForm({}: RegisterFormProps) {
         <Input
           disabled={loading}
           {...register("email", { required: true })}
-          validationState={errors.email ? "invalid" : "valid"}
-          errorMessage={errors.email && "Insira um email válido"}
+          validationState={
+            errors.email || errors.invalidEmailFormat ? "invalid" : "valid"
+          }
+          errorMessage={
+            errors.email
+              ? "Insira um email válido"
+              : errors.invalidEmailFormat &&
+                (errors.invalidEmailFormat.message as string)
+          }
           autoFocus
           endContent={
             <svg
               style={{
-                color: errors.email ? "red" : "gray",
+                color:
+                  errors.email || errors.invalidEmailFormat ? "red" : "gray",
               }}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -185,7 +220,8 @@ export default function RegisterForm({}: RegisterFormProps) {
           <Button
             color="primary"
             disabled={loading}
-            onClick={() => {
+            onClick={(e) => {
+              clearErrors();
               handleSubmit(onSubmit)();
             }}
             className="w-full"
@@ -193,7 +229,7 @@ export default function RegisterForm({}: RegisterFormProps) {
             {loading ? <LoadingIcon /> : "Cadastre-se"}
           </Button>
         </div>
-        <div className="flex py-2 px-1 justify-between">
+        <div className="flex py-2 px-1 justify-end gap-2">
           <span className="text-sm">Já tem uma conta ?</span>
           <Link color="primary" href="/login" size="sm">
             Faça o login aqui

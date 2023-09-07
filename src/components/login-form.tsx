@@ -1,4 +1,5 @@
 "use client";
+import { validateEmail } from "@/lib/validate-email";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -20,6 +21,14 @@ export default function LoginForm({}: LoginFormProps) {
     clearErrors,
   } = useForm();
   const onSubmit = async (data: any) => {
+    const isEmailValid = validateEmail(data.email);
+    if (!isEmailValid) {
+      setError("invalidEmailFormat", {
+        type: "manual",
+        message: "O email inserido não está em um formato válido",
+      });
+      return;
+    }
     setLoading(true);
     const loginResponse = await signIn("credentials", {
       redirect: false,
@@ -31,7 +40,6 @@ export default function LoginForm({}: LoginFormProps) {
     if (loginResponse?.error === "CredentialsSignin") {
       setError("invalidCredentials", {
         type: "manual",
-        message: "Email ou senha incorretos",
       });
     }
     if (loginResponse?.error === null) {
@@ -39,31 +47,39 @@ export default function LoginForm({}: LoginFormProps) {
     }
   };
   return (
-    <form className="text-gray-800 flex flex-col gap-4 space-y-10 items-center justify-center w-full h-full">
-      <div className="flex flex-col text-center items-center justify-center lg:w-1/2">
-        <h1 className="text-4xl font-bold">Magic flea market</h1>
-        <sub className="mt-2 text-lg">
+    <form className="xl:text-gray-800 flex flex-col gap-4 space-y-10 items-center justify-center  w-3/4 h-full">
+      <div className="flex flex-col text-center items-center justify-center ">
+        <h1 className="text-2xl md:text-4xl font-bold">Magic flea market</h1>
+        <p className="mt-2 text-sm md:text-lg">
           O lugar ideal para vender, comprar ou trocar cartas de Magic: The
           Gathering
-        </sub>
+        </p>
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col w-full gap-3">
         <Input
           disabled={loading}
           {...register("email", { required: true })}
           validationState={
-            errors.email || errors.invalidCredentials ? "invalid" : "valid"
+            errors.email ||
+            errors.invalidCredentials ||
+            errors.invalidEmailFormat
+              ? "invalid"
+              : "valid"
           }
           errorMessage={
             errors.email
               ? "Insira um email válido"
-              : errors.invalidCredentials && "Email ou senha incorretos"
+              : errors.invalidCredentials
+              ? "Email ou senha incorretos"
+              : errors.invalidEmailFormat &&
+                "O email inserido não está em um formato válido"
           }
           autoFocus
           endContent={
             <svg
               style={{
-                color: errors.email ? "red" : "gray",
+                color:
+                  errors.email || errors.invalidEmailFormat ? "red" : "gray",
               }}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -125,7 +141,9 @@ export default function LoginForm({}: LoginFormProps) {
           <Button
             color="primary"
             disabled={loading}
-            onClick={() => {
+            type="submit"
+            onClick={(e) => {
+              e.preventDefault();
               clearErrors();
               handleSubmit(onSubmit)();
             }}
@@ -134,7 +152,7 @@ export default function LoginForm({}: LoginFormProps) {
             {loading ? <LoadingIcon /> : "Entrar"}
           </Button>
         </div>
-        <div className="flex py-2 px-1 justify-between">
+        <div className="flex py-2 px-1 justify-end gap-2">
           {/* <Checkbox
             classNames={{
               label: "text-small",

@@ -15,11 +15,11 @@ export default async function RegisterPage({}: RegisterPageProps) {
     take: 25,
   });
   return (
-    <main className=" flex w-full items-center justify-center h-screen overflow-hidden">
-      <div className="px-8 lg:px-16 flex flex-col w-full flex-1 max-w-3xl h-screen justify-center ">
+    <main className="text-white flex w-screen items-center relative xl:flex justify-center h-screen  overflow-hidden">
+      <div className=" flex flex-col lg:px-16 w-full xl:w-2/5  h-screen justify-center bg-black/90 xl:bg-white items-center">
         <RegisterForm />
       </div>
-      <div className="hidden relative lg:flex flex-col items-center overflow-hidden justify-center  shadow-xl  bg-black flex-1 h-screen">
+      <div className="flex flex-col absolute xl:static  items-center overflow-hidden justify-center w-full xl:w-3/5 shadow-xl bg-black h-screen flex-1 -z-10">
         <AuthCardsShowoff cards={cards} />
       </div>
     </main>
