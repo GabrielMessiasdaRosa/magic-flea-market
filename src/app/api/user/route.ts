@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import { hash } from "bcrypt";
 import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
-import { useApiRequestQueryMounter } from "../(lib)/use-api-request-queries-handler";
+import { apiRequestQueryMounter } from "../(lib)/use-api-request-queries-handler";
 
 const FREE_PLAN_CODE = "clm84s36c0001wif04xa09huu";
 const BASIC_PLAN_CODE = "clm84s2eo0000wif0av6cnumu";
@@ -105,7 +105,7 @@ export async function POST(req: Request, res: Response) {
 
 export async function GET(req: NextApiRequest) {
   try {
-    const { limit, page } = await useApiRequestQueryMounter(req);
+    const { limit, page } = await apiRequestQueryMounter(req);
     const users = await prisma.user.findMany({
       take: Number(limit || 10),
       skip: Number(page || 1) - 1,
