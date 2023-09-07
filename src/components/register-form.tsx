@@ -40,14 +40,14 @@ export default function RegisterForm({}: RegisterFormProps) {
   const password = watch("password");
   const passwordConfirmation = watch("passwordConfirmation");
   return (
-    <form className="text-gray-800 flex flex-col gap-4 space-y-10 items-center justify-center w-full h-full">
-      <div className="flex flex-col text-center items-center justify-center lg:w-1/2">
-        <h1 className="text-4xl font-bold">Registre-se</h1>
-        <sub className="mt-2 text-lg">
+    <form className="xl:text-gray-800 flex flex-col gap-4 space-y-10 items-center justify-center  w-3/4 h-full">
+      <div className="flex flex-col text-center items-center justify-center ">
+        <h1 className="text-2xl md:text-4xl font-bold">Registre-se</h1>
+        <p className="mt-2 text-sm md:text-lg">
           É de graça e voce tem acesso a uma lista de ofertas exclusivas!
-        </sub>
+        </p>
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col w-full gap-3">
         <Input
           disabled={loading}
           {...register("username", { required: true })}
@@ -193,7 +193,7 @@ export default function RegisterForm({}: RegisterFormProps) {
             {loading ? <LoadingIcon /> : "Cadastre-se"}
           </Button>
         </div>
-        <div className="flex py-2 px-1 justify-between">
+        <div className="flex py-2 px-1 justify-end gap-2">
           <span className="text-sm">Já tem uma conta ?</span>
           <Link color="primary" href="/login" size="sm">
             Faça o login aqui

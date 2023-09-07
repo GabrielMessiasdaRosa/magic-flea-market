@@ -88,8 +88,7 @@ export default function Navbar({}: NavbarProps) {
                   isBordered
                   as="button"
                   className="transition-transform"
-                  color="secondary"
-                  name="Jason Hughes"
+                  color="primary"
                   size="sm"
                   src={user?.image}
                 />
@@ -136,16 +135,6 @@ export default function Navbar({}: NavbarProps) {
             <NavbarItem>
               <Button as={Link} color="primary" href="/login" variant="ghost">
                 Login
-              </Button>
-            </NavbarItem>
-            <NavbarItem>
-              <Button
-                as={Link}
-                color="secondary"
-                href="/register"
-                variant="flat"
-              >
-                Cadastre-se
               </Button>
             </NavbarItem>
           </NavbarContent>

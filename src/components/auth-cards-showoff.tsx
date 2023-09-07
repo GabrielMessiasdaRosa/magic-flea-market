@@ -12,7 +12,7 @@ export default function AuthCardsShowoff({ cards }: LoginCardsShowoffProps) {
   const cards2 = cards.slice(8, 16);
   const cards3 = cards.slice(16, 24);
   return (
-    <div className="rotate-12 absolute">
+    <div className="rotate-12 absolute ">
       <div className="grid grid-cols-8 w-[2250px] grid-rows-3 gap-2">
         {cards1.map((card: any, index) => (
           <motion.div
