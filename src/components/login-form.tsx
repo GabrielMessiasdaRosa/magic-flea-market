@@ -1,4 +1,5 @@
 "use client";
+import { validateEmail } from "@/lib/validate-email";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -20,6 +21,14 @@ export default function LoginForm({}: LoginFormProps) {
     clearErrors,
   } = useForm();
   const onSubmit = async (data: any) => {
+    const isEmailValid = validateEmail(data.email);
+    if (!isEmailValid) {
+      setError("invalidEmailFormat", {
+        type: "manual",
+        message: "O email inserido não está em um formato válido",
+      });
+      return;
+    }
     setLoading(true);
     const loginResponse = await signIn("credentials", {
       redirect: false,
@@ -31,7 +40,6 @@ export default function LoginForm({}: LoginFormProps) {
     if (loginResponse?.error === "CredentialsSignin") {
       setError("invalidCredentials", {
         type: "manual",
-        message: "Email ou senha incorretos",
       });
     }
     if (loginResponse?.error === null) {
@@ -52,18 +60,26 @@ export default function LoginForm({}: LoginFormProps) {
           disabled={loading}
           {...register("email", { required: true })}
           validationState={
-            errors.email || errors.invalidCredentials ? "invalid" : "valid"
+            errors.email ||
+            errors.invalidCredentials ||
+            errors.invalidEmailFormat
+              ? "invalid"
+              : "valid"
           }
           errorMessage={
             errors.email
               ? "Insira um email válido"
-              : errors.invalidCredentials && "Email ou senha incorretos"
+              : errors.invalidCredentials
+              ? "Email ou senha incorretos"
+              : errors.invalidEmailFormat &&
+                "O email inserido não está em um formato válido"
           }
           autoFocus
           endContent={
             <svg
               style={{
-                color: errors.email ? "red" : "gray",
+                color:
+                  errors.email || errors.invalidEmailFormat ? "red" : "gray",
               }}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -127,6 +143,7 @@ export default function LoginForm({}: LoginFormProps) {
             disabled={loading}
             type="submit"
             onClick={(e) => {
+              e.preventDefault();
               clearErrors();
               handleSubmit(onSubmit)();
             }}
