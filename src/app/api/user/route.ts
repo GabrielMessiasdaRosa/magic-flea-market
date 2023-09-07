@@ -1,6 +1,5 @@
 import prisma from "@/lib/prisma";
 import { hash } from "bcrypt";
-import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
 import { apiRequestQueryMounter } from "../(lib)/use-api-request-queries-handler";
 
@@ -103,7 +102,7 @@ export async function POST(req: Request, res: Response) {
   }
 }
 
-export async function GET(req: NextApiRequest) {
+export async function GET(req: Request) {
   try {
     const { limit, page } = await apiRequestQueryMounter(req);
     const users = await prisma.user.findMany({
