@@ -1,7 +1,13 @@
 import prisma from "@/lib/prisma";
 import { hash } from "bcrypt";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
+import { useApiRequestQueryMounter } from "../(lib)/use-api-request-queries-handler";
+
+const FREE_PLAN_CODE = "clm84s36c0001wif04xa09huu";
+const BASIC_PLAN_CODE = "clm84s2eo0000wif0av6cnumu";
+const PRO_PLAN_CODE = "clm84s3ax0002wif00d1uin4q";
+
 // create new user
 function formatUsernameWithIdentifier(
   username: string,
@@ -22,9 +28,9 @@ function formatUsernameWithIdentifier(
   return formattedUserIdentifier;
 }
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req: Request, res: Response) {
   try {
-    const { email, password, username } = req.body;
+    const { email, username, password } = await req.json();
     const userByEmail = await prisma.user.findUnique({
       where: {
         email,
@@ -32,28 +38,18 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
     });
     if (userByEmail) {
       return NextResponse.json(
-        {
-          error: "User already exists",
-        },
-        {
-          status: 409,
-        }
+        { error: "User already exists" },
+        { status: 409 }
       );
     }
     const userByUsername = await prisma.user.findUnique({
-      where: {
-        username,
-      },
+      where: { username },
     });
 
     if (userByUsername) {
       return NextResponse.json(
-        {
-          error: "User already exists",
-        },
-        {
-          status: 409,
-        }
+        { error: "User already exists" },
+        { status: 409 }
       );
     }
     const usersQuantity = await prisma.user.count();
@@ -62,12 +58,27 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
       usersQuantity + 1,
       4
     );
+
     const hashedPassword = await hash(password, 10);
     const newUser = await prisma.user.create({
       data: {
+        name: username,
+        image: "https://i.imgur.com/6VBx3io.png",
         email,
         password: hashedPassword,
-        username: usernameWithIdentifier,
+        username,
+        plan: {
+          connect: {
+            id: FREE_PLAN_CODE,
+          },
+        },
+        profile: {
+          create: { nickname: usernameWithIdentifier },
+        },
+      },
+      include: {
+        profile: true,
+        plan: true,
       },
     });
 
@@ -79,9 +90,7 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
           email: newUser.email,
         },
       },
-      {
-        status: 201,
-      }
+      { status: 201 }
     );
   } catch (error: any) {
     return NextResponse.json(
@@ -89,9 +98,36 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
         error: error.message,
         errorDetails: { ...error },
       },
+      { status: error.status || 500 }
+    );
+  }
+}
+
+export async function GET(req: NextApiRequest) {
+  try {
+    const { limit, page } = await useApiRequestQueryMounter(req);
+    const users = await prisma.user.findMany({
+      take: Number(limit || 10),
+      skip: Number(page || 1) - 1,
+      include: {
+        profile: true,
+        plan: true,
+        announcements: true,
+      },
+    });
+    const usersDto = users.map(({ password, ...rest }) => {
+      return {
+        ...rest,
+      };
+    });
+    return NextResponse.json({ data: usersDto }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json(
       {
-        status: error.status || 500,
-      }
+        error: error.message,
+        errorDetails: { ...error },
+      },
+      { status: error.status || 500 }
     );
   }
 }

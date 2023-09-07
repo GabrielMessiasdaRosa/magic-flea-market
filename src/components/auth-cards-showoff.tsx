@@ -6,7 +6,7 @@ export interface LoginCardsShowoffProps {
   cards: any[];
 }
 
-export default function LoginCardsShowoff({ cards }: LoginCardsShowoffProps) {
+export default function AuthCardsShowoff({ cards }: LoginCardsShowoffProps) {
   // split the cards array into 3 arrays
   const cards1 = cards.slice(0, 8);
   const cards2 = cards.slice(8, 16);
@@ -16,6 +16,7 @@ export default function LoginCardsShowoff({ cards }: LoginCardsShowoffProps) {
       <div className="grid grid-cols-8 w-[2250px] grid-rows-3 gap-2">
         {cards1.map((card: any, index) => (
           <motion.div
+            key={card.id}
             animate={{ translateX: [0, 300, 0] }}
             transition={{
               duration: 50,
@@ -37,6 +38,7 @@ export default function LoginCardsShowoff({ cards }: LoginCardsShowoffProps) {
         ))}
         {cards2.map((card: any, index) => (
           <motion.div
+            key={card.id}
             animate={{ translateX: [0, -300, 0] }}
             transition={{
               duration: 50,
@@ -58,6 +60,7 @@ export default function LoginCardsShowoff({ cards }: LoginCardsShowoffProps) {
         ))}
         {cards3.map((card: any, index) => (
           <motion.div
+            key={card.id}
             animate={{ translateX: [0, 300, 0] }}
             transition={{
               duration: 50,
