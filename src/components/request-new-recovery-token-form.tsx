@@ -1,6 +1,5 @@
 "use client";
 import { validPassword } from "@/lib/validate-password";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Toaster, toast } from "react-hot-toast";
@@ -13,11 +12,10 @@ export interface SetNewPasswordRecoveryFormProps {
   email: string;
 }
 
-export default function SetNewPasswordRecoveryForm({
+export default function RequestNewRecoveryTokenForm({
   token,
   email,
 }: SetNewPasswordRecoveryFormProps) {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const [isPasswordSent, setIsPasswordSent] = useState(false);
@@ -150,7 +148,7 @@ export default function SetNewPasswordRecoveryForm({
                 color="primary"
                 className="text-white"
               >
-                Voltar para o login
+                {`< Voltar para o login`}
               </Button>
             </div>
           </div>

@@ -27,11 +27,11 @@ export default async function LoginPage({}: LoginPageProps) {
     },
   });
   return (
-    <main className="text-white flex flex-1 items-center relative xl:flex justify-center h-screen  overflow-hidden">
-      <div className=" flex flex-col lg:px-16 w-full xl:w-2/5  h-screen justify-center bg-black/90 xl:bg-white items-center">
+    <main className="text-white flex flex-1 items-center relative xl:flex justify-start min-h-screen  overflow-hidden">
+      <div className="flex flex-col lg:px-16 w-full xl:w-2/5  min-h-screen justify-center bg-black/90 xl:bg-white items-center py-8">
         <LoginForm />
       </div>
-      <div className="flex flex-col absolute xl:static  items-center overflow-hidden justify-center w-full xl:w-3/5 shadow-xl bg-black h-screen flex-1 -z-10">
+      <div className="flex flex-col absolute right-0 items-center overflow-hidden justify-center w-screen xl:w-3/5 shadow-xl bg-black h-[400dvh] -z-10">
         <Suspense fallback={<></>}>
           <AuthCardsShowoff cards={cards} />
         </Suspense>

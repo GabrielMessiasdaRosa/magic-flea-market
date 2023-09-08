@@ -1,6 +1,6 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import AuthCardsShowoff from "@/components/auth-cards-showoff";
-import SetNewPasswordRecoveryForm from "@/components/set-new-password-recovery-form";
+import RequestNewRecoveryTokenForm from "@/components/request-new-recovery-token-form";
 import prisma from "@/lib/prisma";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
@@ -28,14 +28,16 @@ export default async function PasswordRecoveryPage({
   const email = searchParams.email as string;
   const token = searchParams.token as string;
   return (
-    <main className="text-white flex flex-1  items-center relative xl:flex justify-center h-screen  overflow-hidden">
-      <div className=" flex flex-col lg:px-16 w-full xl:w-2/5  h-screen justify-center bg-black/90 xl:bg-white items-center ">
+    <main className="text-white flex flex-1 items-center relative xl:flex justify-start min-h-screen  overflow-hidden">
+      <div className="flex flex-col lg:px-16 w-full xl:w-2/5  min-h-screen justify-center bg-black/90 xl:bg-white items-center py-8">
         <Suspense fallback={<div>Carregando credenciais ...</div>}>
-          <SetNewPasswordRecoveryForm email={email} token={token} />
+          <RequestNewRecoveryTokenForm email={email} token={token} />
         </Suspense>
       </div>
-      <div className="flex flex-col absolute xl:static  items-center overflow-hidden justify-center w-full xl:w-3/5 shadow-xl bg-black h-screen flex-1 -z-10">
-        <AuthCardsShowoff cards={cards} />
+      <div className="flex flex-col absolute right-0 items-center overflow-hidden justify-center w-screen xl:w-3/5 shadow-xl bg-black h-[400dvh] -z-10">
+        <Suspense fallback={<></>}>
+          <AuthCardsShowoff cards={cards} />
+        </Suspense>
       </div>
     </main>
   );

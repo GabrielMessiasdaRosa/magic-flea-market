@@ -147,9 +147,9 @@ export default function RegisterForm({}: RegisterFormProps) {
   return (
     <form className="xl:text-gray-800 flex flex-col gap-4 space-y-10 items-center justify-center  w-3/4 h-full">
       <div className="flex flex-col text-center items-center justify-center ">
-        <h1 className="text-2xl md:text-4xl font-bold">Registre-se</h1>
+        <h1 className="text-2xl md:text-4xl font-bold">Crie sua conta</h1>
         <p className="mt-2 text-sm md:text-lg">
-          É de graça e voce tem acesso a uma lista de ofertas exclusivas!
+          É de graça e você tem acesso a uma lista de ofertas exclusívas!
         </p>
       </div>
       <div className="flex flex-col w-full gap-3">
@@ -349,7 +349,7 @@ export default function RegisterForm({}: RegisterFormProps) {
             }}
             className="w-full"
           >
-            {loading ? <LoadingIcon /> : "Cadastre-se"}
+            {loading ? <LoadingIcon /> : "Criar conta"}
           </Button>
         </div>
         <div className="flex py-2 px-1 justify-end gap-2 font-medium">

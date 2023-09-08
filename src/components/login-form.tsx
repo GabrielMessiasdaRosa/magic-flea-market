@@ -165,9 +165,9 @@ export default function LoginForm({}: LoginFormProps) {
             Esqueci a senha
           </Link>
           <div className="flex gap-2">
-            <span className="text-sm">Não tem uma conta?</span>
+            <span className="text-sm">Primeira vez aqui?</span>
             <Link color="primary" href="/register" size="sm">
-              Registre-se
+              Criar conta
             </Link>
           </div>
         </div>
