@@ -3,6 +3,23 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { compare } from "bcrypt";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+
+const clearRecoveryAttempts = async (user: any) => {
+  await prisma.recoveryRequest.deleteMany({
+    where: {
+      email: user.email,
+    },
+  });
+  await prisma.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      recoveryAttempts: 0,
+    },
+  });
+};
+
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   pages: {
@@ -74,6 +91,7 @@ export const authOptions: NextAuthOptions = {
             plan: existingUser.plan,
             nickname: existingUser.profile?.nickname,
           };
+          await clearRecoveryAttempts(existingUser);
           return user;
         } else {
           return null;
