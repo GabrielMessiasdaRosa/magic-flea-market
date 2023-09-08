@@ -5,3 +5,24 @@
 .debug {
   @apply border-2 border-red-500;
 }
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #ffffff rgb(243 244 246);
+  scroll-behavior: smooth;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgb(243 244 246);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #6366f1;
+  border-radius: 0px;
+}

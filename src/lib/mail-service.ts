@@ -45,7 +45,7 @@ export async function sendMail(
             }
 
             h1 {
-                color: #3f51b5;
+                color: #6366f1;
             }
 
             p {
@@ -53,17 +53,18 @@ export async function sendMail(
             }
 
             .button {
+                transition: all 0.2s ease-in-out;
                 display: inline-block;
-                background-color: #3f51b5;
+                background-color: #6366f1;
                 color: #fff;
                 padding: 10px 20px;
                 margin-top: 20px;
                 text-decoration: none;
-                border-radius: 5px;
+                border-radius: 12px;
             }
 
             .button:hover {
-                background-color: #303f9f;
+                background-color: #4338ca;
             }
 
             footer {

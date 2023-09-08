@@ -114,7 +114,7 @@ export default function SetNewPasswordRecoveryForm({
   return (
     <>
       {isPasswordSent ? (
-        <div className="md:text-gray-800">
+        <div className="xl:text-gray-800">
           <div className="flex flex-col text-center items-center justify-center ">
             <h1 className="text-2xl md:text-4xl font-bold">
               Senha alterada com <span className="text-green-500">sucesso</span>

@@ -95,7 +95,7 @@ export default function RequestPasswordForm({}: RequestPasswordFormProps) {
   return (
     <>
       {isEmailSent ? (
-        <div className="md:text-gray-800">
+        <div className="xl:text-gray-800 ">
           <div className="flex flex-col text-center items-center justify-center ">
             <h1 className="text-2xl md:text-4xl font-bold">
               Email de recuperação{" "}
@@ -141,7 +141,7 @@ export default function RequestPasswordForm({}: RequestPasswordFormProps) {
           <div className="flex flex-col text-center items-center justify-center ">
             <h1 className="text-2xl md:text-4xl font-bold">Recuperar conta</h1>
             <p className="mt-2 text-sm md:text-lg">
-              Digite o email da sua conta para recuperar a senha
+              Digite o email da sua conta para redefinir a senha
             </p>
           </div>
           <div className="flex flex-col w-full gap-3">
@@ -181,7 +181,7 @@ export default function RequestPasswordForm({}: RequestPasswordFormProps) {
               label="Email"
               type="email"
               color="primary"
-              placeholder="magic-flea-market@email?.com"
+              placeholder="magic-flea-market@email.com"
               variant="bordered"
             />
             <div className="flex-1">
@@ -199,7 +199,7 @@ export default function RequestPasswordForm({}: RequestPasswordFormProps) {
                 {loading ? <LoadingIcon /> : "Enviar email de recuperação"}
               </Button>
             </div>
-            <div className="flex py-2 px-1 justify-end gap-2">
+            <div className="flex py-2 px-1 justify-end gap-2 font-medium">
               <Link color="primary" href="/login" size="sm">
                 Voltar para o login
               </Link>
