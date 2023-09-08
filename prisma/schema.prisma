@@ -18,13 +18,15 @@ generator client {
 
 // contexto de usuario 
 model User {
-  id            String         @id @unique @default(cuid())
-  name          String?
-  emailVerified DateTime?
-  image         String?
-  email         String         @unique
-  username      String         @unique
-  password      String
+  id               String    @id @unique @default(cuid())
+  name             String?
+  emailVerified    DateTime?
+  image            String?
+  email            String    @unique
+  username         String    @unique
+  password         String
+  recoveryAttempts Int       @default(0)
+
   // Relacionamentos
   planId        String?
   plan          Plan?          @relation(fields: [planId], references: [id])
@@ -78,6 +80,13 @@ model VerificationToken {
   expires    DateTime
 
   @@map("verificationTokens")
+}
+
+model RecoveryRequest {
+  id             String   @id @default(cuid())
+  email          String
+  token          String
+  expirationDate DateTime
 }
 
 model Profile {

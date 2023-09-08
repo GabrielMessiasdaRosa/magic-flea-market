@@ -114,11 +114,11 @@ export default function LoginForm({}: LoginFormProps) {
           }
           endContent={
             <svg
-            className={`w-6 h-6 ${
-              errors.password || errors.invalidCredentials 
-                ? "text-rose-500"
-                : "text-gray-500"
-            }`}
+              className={`w-6 h-6 ${
+                errors.password || errors.invalidCredentials
+                  ? "text-rose-500"
+                  : "text-gray-500"
+              }`}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -153,7 +153,7 @@ export default function LoginForm({}: LoginFormProps) {
             {loading ? <LoadingIcon /> : "Entrar"}
           </Button>
         </div>
-        <div className="flex py-2 px-1 justify-end gap-2">
+        <div className="flex py-2 px-1 justify-between font-medium">
           {/* <Checkbox
             classNames={{
               label: "text-small",
@@ -161,13 +161,15 @@ export default function LoginForm({}: LoginFormProps) {
           >
             Remember me
           </Checkbox> */}
-          {/*  <Link color="primary" href="#" size="sm">
+          <Link color="primary" href="/recovery/request-new-password" size="sm" >
             Esqueci a senha
-          </Link> */}
-          <span className="text-sm">Não tem uma conta ?</span>
-          <Link color="primary" href="/register" size="sm">
-            Registre-se
           </Link>
+          <div className="flex gap-2">
+            <span className="text-sm">Não tem uma conta?</span>
+            <Link color="primary" href="/register" size="sm">
+              Registre-se
+            </Link>
+          </div>
         </div>
       </div>
     </form>

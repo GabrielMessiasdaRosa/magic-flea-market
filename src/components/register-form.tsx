@@ -33,13 +33,14 @@ export default function RegisterForm({}: RegisterFormProps) {
         "Content-Type": "application/json",
       },
     });
+    const errorMessage =
+      {
+        [201]: "Usuário criado! Redirecionando para a home page",
+        [409]: "Email já cadastrado",
+        [500]: "Erro interno",
+      }[res.status] || "Erro desconhecido";
     if (!res.ok) {
       setLoading(false);
-      const errorMessage =
-        {
-          [409]: "Email já cadastrado",
-          [500]: "Erro interno",
-        }[res.status] || "Erro desconhecido";
       switch (res.status) {
         case 409: {
           toast.error(errorMessage);
@@ -178,7 +179,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           }
           label="Nome de usuário"
           color="primary"
-          placeholder="motivado"
+          placeholder="_jo2uke-higashikata_"
           type="username"
           variant="bordered"
         />
@@ -351,8 +352,8 @@ export default function RegisterForm({}: RegisterFormProps) {
             {loading ? <LoadingIcon /> : "Cadastre-se"}
           </Button>
         </div>
-        <div className="flex py-2 px-1 justify-end gap-2">
-          <span className="text-sm">Já tem uma conta ?</span>
+        <div className="flex py-2 px-1 justify-end gap-2 font-medium">
+          <span className="text-sm">Já tem uma conta?</span>
           <Link color="primary" href="/login" size="sm">
             Faça o login aqui
           </Link>

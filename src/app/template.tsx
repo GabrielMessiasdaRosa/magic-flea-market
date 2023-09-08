@@ -8,6 +8,14 @@ export default function Template({
   children: React.ReactNode | React.ReactNode[];
 }) {
   const pathname = usePathname();
+  const isLoginContext =
+    pathname.includes("/recovery/request-new-password") ||
+    pathname.includes("/recovery/set-new-password") ||
+    pathname.includes("/login") ||
+    pathname.includes("/register");
+  if (isLoginContext) {
+    return <div>{children}</div>;
+  }
   if (pathname === "/") {
     return (
       <div>
@@ -15,11 +23,5 @@ export default function Template({
         {children}
       </div>
     );
-  }
-  if (pathname === "/login") {
-    return <div>{children}</div>;
-  }
-  if (pathname === "/register") {
-    return <div>{children}</div>;
   }
 }

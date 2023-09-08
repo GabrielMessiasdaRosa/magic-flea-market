@@ -1,9 +1,13 @@
-export interface LoadingIconProps {}
+export interface LoadingIconProps {
+  className?: string;
+}
 
-export default function LoadingIcon({}: LoadingIconProps) {
+export default function LoadingIcon({
+  className = "w-7 h-7",
+}: LoadingIconProps) {
   return (
     <svg
-      className="w-7 h-7"
+      className={className}
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       width="100"
