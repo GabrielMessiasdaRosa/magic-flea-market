@@ -4,7 +4,12 @@ const nextConfig = {
     serverActions: true,
   },
   images: {
-    domains: ["localhost", "res.cloudinary.com", "cards.scryfall.io"],
+    domains: [
+      "localhost",
+      "res.cloudinary.com",
+      "cards.scryfall.io",
+      "**magic-flea-market**",
+    ],
   },
 };
 
