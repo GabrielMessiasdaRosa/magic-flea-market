@@ -16,6 +16,33 @@ generator client {
 //   output   = "../ERD.png"
 // }
 
+// contexto de usuario 
+model User {
+  id            String         @id @unique @default(cuid())
+  name          String?
+  emailVerified DateTime?
+  image         String?
+  email         String         @unique
+  username      String         @unique
+  password      String
+  // Relacionamentos
+  planId        String?
+  plan          Plan?          @relation(fields: [planId], references: [id])
+  accounts      Account[]
+  sessions      Session[]
+  profile       Profile?
+  announcements Announcement[]
+
+  // Campos de controle
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  chat      Chat?     @relation(fields: [chatId], references: [id])
+  chatId    String?
+  messages  Message[]
+
+  @@map("users")
+}
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -45,33 +72,14 @@ model Session {
   @@map("sessions")
 }
 
-model User {
-  id            String         @id @unique @default(cuid())
-  name          String?
-  emailVerified DateTime?
-  image         String?
-  email         String         @unique
-  username      String         @unique
-  password      String
-  // Relacionamentos
-  planId        String?
-  plan          Plan?          @relation(fields: [planId], references: [id])
-  accounts      Account[]
-  sessions      Session[]
-  profile       Profile?
-  announcements Announcement[]
+model VerificationToken {
+  identifier String   @unique
+  token      String   @unique
+  expires    DateTime
 
-  // Campos de controle
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  chat      Chat?     @relation(fields: [chatId], references: [id])
-  chatId    String?
-  messages  Message[]
-
-  @@map("users")
+  @@map("verificationTokens")
 }
 
-// Modelo para perfil de usuário
 model Profile {
   id               String  @id @unique @default(cuid())
   profileImage     String?
@@ -89,14 +97,18 @@ model Profile {
   @@map("profiles")
 }
 
-model VerificationToken {
-  identifier String   @unique
-  token      String   @unique
-  expires    DateTime
+model WantList {
+  id String @id @unique @default(cuid())
 
-  @@map("verificationTokens")
+  // Relacionamentos
+  profileId String  @unique
+  profile   Profile @relation(fields: [profileId], references: [id])
+  cards     Card[]
+
+  @@map("wantLists")
 }
 
+// Contexto de anúncios
 // Modelo para anúncios (Announcements)
 model Announcement {
   id               String           @id @unique @default(cuid())
@@ -119,7 +131,7 @@ model Announcement {
   @@map("announcements")
 }
 
-// Modelo para cartas mágicas
+// Contexto de cartas
 model Card {
   id String @id @unique @default(cuid())
 
@@ -200,16 +212,6 @@ model Card {
 }
 
 // Modelo para a lista de desejos do usuário
-model WantList {
-  id String @id @unique @default(cuid())
-
-  // Relacionamentos
-  profileId String  @unique
-  profile   Profile @relation(fields: [profileId], references: [id])
-  cards     Card[]
-
-  @@map("wantLists")
-}
 
 model Plan {
   id                 String   @id @unique @default(cuid())

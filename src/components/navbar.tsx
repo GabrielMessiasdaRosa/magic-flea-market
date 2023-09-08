@@ -44,20 +44,76 @@ export default function Navbar({}: NavbarProps) {
   };
   return (
     <NUINavbar>
+      <NavbarMenuToggle
+        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+        className="sm:hidden"
+      />
+      <NavbarMenu className="flex flex-col">
+        {Boolean(user) ? (
+          menuItems.map((item, index) => (
+            <NavbarMenuItem key={`${item}-${index}`}>
+              <Link
+                color={
+                  index === 2
+                    ? "primary"
+                    : index === menuItems.length - 1
+                    ? "danger"
+                    : "foreground"
+                }
+                className="w-full"
+                href="#"
+                size="lg"
+              >
+                {item}
+              </Link>
+            </NavbarMenuItem>
+          ))
+        ) : (
+          <div className="mt-10 gap-4 flex flex-col">
+            <NavbarMenuItem>
+              <Button
+                as={Link}
+                color="primary"
+                className="w-full"
+                href="/login"
+                variant="flat"
+              >
+                Login
+              </Button>
+            </NavbarMenuItem>
+            <span className="text-center text-default-500 dark:text-default-500/50">
+              ou
+            </span>
+            <NavbarMenuItem>
+              <Button
+                className="w-full"
+                as={Link}
+                color="secondary"
+                href="/register"
+                variant="flat"
+              >
+                Cadastre-se
+              </Button>
+            </NavbarMenuItem>
+          </div>
+        )}
+      </NavbarMenu>
       <NavbarBrand>
         <span className="text-primary-500">MFM</span>
         <p className="font-bold text-inherit">ACME</p>
       </NavbarBrand>
       <NavbarContent justify="center" className="w-96 ">
         <Input
+          color="primary"
+          radius="full"
+          variant="faded"
           classNames={{
             base: "flex-1 h-10",
             mainWrapper: "h-full",
             input: "text-small",
-            inputWrapper:
-              "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20 w-full",
+            inputWrapper: "h-full font-normal text-default-500  w-full",
           }}
-          placeholder="Type to search..."
+          placeholder="Pesquise por uma carta ou usuário"
           size="sm"
           type="search"
         />
@@ -79,7 +135,7 @@ export default function Navbar({}: NavbarProps) {
           </Link>
         </NavbarItem>
       </NavbarContent> */}
-      <NavbarContent className="hidden sm:flex" justify="end">
+      <NavbarContent className="" justify="end">
         {Boolean(user) ? (
           <NavbarContent as="div" className="max-w-fit " justify="end">
             <Dropdown placement="bottom-end">
@@ -140,60 +196,6 @@ export default function Navbar({}: NavbarProps) {
           </NavbarContent>
         )}
       </NavbarContent>
-      <NavbarMenuToggle
-        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-        className="sm:hidden"
-      />
-      <NavbarMenu className="flex flex-col">
-        {Boolean(user) ? (
-          menuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
-              <Link
-                color={
-                  index === 2
-                    ? "primary"
-                    : index === menuItems.length - 1
-                    ? "danger"
-                    : "foreground"
-                }
-                className="w-full"
-                href="#"
-                size="lg"
-              >
-                {item}
-              </Link>
-            </NavbarMenuItem>
-          ))
-        ) : (
-          <div className="mt-10 gap-4 flex flex-col">
-            <NavbarMenuItem>
-              <Button
-                as={Link}
-                color="primary"
-                className="w-full"
-                href="/login"
-                variant="flat"
-              >
-                Login
-              </Button>
-            </NavbarMenuItem>
-            <span className="text-center text-default-500 dark:text-default-500/50">
-              ou
-            </span>
-            <NavbarMenuItem>
-              <Button
-                className="w-full"
-                as={Link}
-                color="secondary"
-                href="/register"
-                variant="flat"
-              >
-                Cadastre-se
-              </Button>
-            </NavbarMenuItem>
-          </div>
-        )}
-      </NavbarMenu>{" "}
       <Toaster />
     </NUINavbar>
   );

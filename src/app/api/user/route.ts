@@ -37,60 +37,52 @@ export async function POST(req: Request, res: Response) {
     });
     if (userByEmail) {
       return NextResponse.json(
-        { error: "User already exists" },
+        {
+          error: "Email already in use",
+        },
         { status: 409 }
       );
-    }
-    const userByUsername = await prisma.user.findUnique({
-      where: { username },
-    });
-
-    if (userByUsername) {
-      return NextResponse.json(
-        { error: "User already exists" },
-        { status: 409 }
-      );
-    }
-    const usersQuantity = await prisma.user.count();
-    const usernameWithIdentifier = formatUsernameWithIdentifier(
-      username,
-      usersQuantity + 1,
-      4
-    );
-
-    const hashedPassword = await hash(password, 10);
-    const newUser = await prisma.user.create({
-      data: {
-        name: username,
-        image: "https://i.imgur.com/6VBx3io.png",
-        email,
-        password: hashedPassword,
+    } else {
+      const usersQuantity = await prisma.user.count();
+      const usernameWithIdentifier = formatUsernameWithIdentifier(
         username,
-        plan: {
-          connect: {
-            id: FREE_PLAN_CODE,
+        usersQuantity + 1,
+        4
+      );
+      const hashedPassword = await hash(password, 10);
+      const newUser = await prisma.user.create({
+        data: {
+          name: username,
+          image: "https://i.imgur.com/6VBx3io.png",
+          email,
+          password: hashedPassword,
+          username,
+          plan: {
+            connect: {
+              id: FREE_PLAN_CODE,
+            },
+          },
+          profile: {
+            create: { nickname: usernameWithIdentifier },
           },
         },
-        profile: {
-          create: { nickname: usernameWithIdentifier },
+        include: {
+          profile: true,
+          plan: true,
         },
-      },
-      include: {
-        profile: true,
-        plan: true,
-      },
-    });
+      });
 
-    return NextResponse.json(
-      {
-        message: "User created",
-        user: {
-          id: newUser.id,
-          email: newUser.email,
+      return NextResponse.json(
+        {
+          message: "User created",
+          user: {
+            id: newUser.id,
+            email: newUser.email,
+          },
         },
-      },
-      { status: 201 }
-    );
+        { status: 201 }
+      );
+    }
   } catch (error: any) {
     return NextResponse.json(
       {

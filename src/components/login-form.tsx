@@ -77,16 +77,16 @@ export default function LoginForm({}: LoginFormProps) {
           autoFocus
           endContent={
             <svg
-              style={{
-                color:
-                  errors.email || errors.invalidEmailFormat ? "red" : "gray",
-              }}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6"
+              className={`w-6 h-6 ${
+                errors.email || errors.invalidEmailFormat
+                  ? "text-rose-500"
+                  : "text-gray-500"
+              }`}
             >
               <path
                 strokeLinecap="round"
@@ -114,15 +114,16 @@ export default function LoginForm({}: LoginFormProps) {
           }
           endContent={
             <svg
-              style={{
-                color: errors.password ? "red" : "gray",
-              }}
+            className={`w-6 h-6 ${
+              errors.password || errors.invalidCredentials 
+                ? "text-rose-500"
+                : "text-gray-500"
+            }`}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6"
             >
               <path
                 strokeLinecap="round"
