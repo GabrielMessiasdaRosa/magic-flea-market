@@ -7,18 +7,18 @@ export interface LoginCardsShowoffProps {
 }
 
 export default function AuthCardsShowoff({ cards }: LoginCardsShowoffProps) {
+  const origin = window.location.origin;
   const newCards = cards.map((card, index) => {
     return {
       ...card,
       image_uris: {
-        normal: `${process.env
-          .NEXT_PUBLIC_BASE_URL!}/images/login-cards-images/${
-          index + 1
-        }-showoff.jpg`,
+        normal: new URL(
+          `${origin}/images/login-cards-images/${index + 1}-showoff.jpg`
+        ).href satisfies string,
       },
     };
   });
-
+  console.log(newCards);
   // split the cards array into 3 arrays
   const cards1 = newCards.slice(0, 8);
   const cards2 = newCards.slice(8, 16);
