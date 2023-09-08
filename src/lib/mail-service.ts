@@ -12,7 +12,7 @@ export async function sendMail(
     },
   });
 
-  const resetPasswordLink = `http://localhost:3000/recovery/set-new-password?email=${destination}&token=${token}`;
+  const resetPasswordLink = `${process.env.NEXT_PUBLIC_BASE_URL}/recovery/set-new-password?email=${destination}&token=${token}`;
 
   const html = `
     <!DOCTYPE html>
