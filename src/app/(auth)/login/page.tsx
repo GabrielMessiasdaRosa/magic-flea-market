@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 export interface LoginPageProps {}
 
 export const metadata: Metadata = {
@@ -31,7 +32,9 @@ export default async function LoginPage({}: LoginPageProps) {
         <LoginForm />
       </div>
       <div className="flex flex-col absolute xl:static  items-center overflow-hidden justify-center w-full xl:w-3/5 shadow-xl bg-black h-screen flex-1 -z-10">
-        <AuthCardsShowoff cards={cards} />
+        <Suspense fallback={<></>}>
+          <AuthCardsShowoff cards={cards} />
+        </Suspense>
       </div>
     </main>
   );
