@@ -197,7 +197,7 @@ export default function SetNewPasswordRecoveryForm({
               color="primary"
               placeholder="*********"
               type="password"
-              variant="bordered"
+              variant="flat"
             />{" "}
             <Input
               disabled={loading}
@@ -232,7 +232,7 @@ export default function SetNewPasswordRecoveryForm({
               color="primary"
               placeholder="*********"
               type="password"
-              variant="bordered"
+              variant="flat"
             />
             <PasswordChecker key={password} password={password} />
             <div className="flex-1 mt-4 flex flex-col gap-4">

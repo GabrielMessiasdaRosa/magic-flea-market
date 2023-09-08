@@ -7,10 +7,22 @@ export interface LoginCardsShowoffProps {
 }
 
 export default function AuthCardsShowoff({ cards }: LoginCardsShowoffProps) {
+  const newCards = cards.map((card, index) => {
+    return {
+      ...card,
+      image_uris: {
+        normal: `${process.env
+          .NEXT_PUBLIC_BASE_URL!}/images/login-cards-images/${
+          index + 1
+        }-showoff.jpg`,
+      },
+    };
+  });
+
   // split the cards array into 3 arrays
-  const cards1 = cards.slice(0, 8);
-  const cards2 = cards.slice(8, 16);
-  const cards3 = cards.slice(16, 24);
+  const cards1 = newCards.slice(0, 8);
+  const cards2 = newCards.slice(8, 16);
+  const cards3 = newCards.slice(16, 24);
   return (
     <div className="rotate-12 absolute ">
       <div className="grid grid-cols-8 w-[2250px] grid-rows-3 gap-2">
@@ -21,16 +33,15 @@ export default function AuthCardsShowoff({ cards }: LoginCardsShowoffProps) {
             transition={{
               duration: 50,
               repeat: Infinity,
-              ease: "linear",
+              ease: "easeInOut",
             }}
           >
             <Image
               width={270}
               height={380}
               src={card?.image_uris?.normal}
-              className="rounded-3xl max-h-[380px] rotate-12 min-w-[270px] shadow-2xl"
+              className="rounded-3xl object-cover max-h-[380px] rotate-12 min-w-[270px] shadow-2xl"
               alt={card.name}
-              objectFit="cover"
               quality={90}
               key={index + card.name}
             />
@@ -43,16 +54,15 @@ export default function AuthCardsShowoff({ cards }: LoginCardsShowoffProps) {
             transition={{
               duration: 50,
               repeat: Infinity,
-              ease: "linear",
+              ease: "easeInOut",
             }}
           >
             <Image
               width={270}
               height={380}
               src={card?.image_uris?.normal}
-              className="rounded-3xl max-h-[380px] rotate-12 min-w-[270px]"
+              className="rounded-3xl  object-cover max-h-[380px] rotate-12 min-w-[270px]"
               alt={card.name}
-              objectFit="cover"
               quality={90}
               key={index + card.name}
             />
@@ -65,16 +75,15 @@ export default function AuthCardsShowoff({ cards }: LoginCardsShowoffProps) {
             transition={{
               duration: 50,
               repeat: Infinity,
-              ease: "linear",
+              ease: "easeInOut",
             }}
           >
             <Image
               width={270}
               height={380}
               src={card?.image_uris?.normal}
-              className="rounded-3xl max-h-[380px] rotate-12 min-w-[270px]"
+              className="rounded-3xl object-cover max-h-[380px] rotate-12 min-w-[270px]"
               alt={card.name}
-              objectFit="cover"
               quality={90}
               key={index + card.name}
             />
