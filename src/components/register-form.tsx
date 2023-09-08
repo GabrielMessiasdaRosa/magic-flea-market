@@ -1,11 +1,13 @@
 "use client";
-import { validateEmail } from "@/lib/validate-email";
+import { validPassword } from "@/lib/validate-password";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Toaster, toast } from "react-hot-toast";
 import LoadingIcon from "./loading-icon";
 import { Button, Input, Link } from "./next-ui-exports";
+import PasswordChecker from "./password-checker";
 
 export interface RegisterFormProps {}
 
@@ -20,23 +22,44 @@ export default function RegisterForm({}: RegisterFormProps) {
     setError,
     clearErrors,
   } = useForm();
+  const password = watch("password");
+
   const onSubmit = async (data: any) => {
-    const isEmailValid = validateEmail(data.email);
-    if (!isEmailValid) {
-      setError("invalidEmailFormat", {
-        type: "manual",
-        message: "O email inserido não está em um formato válido",
-      });
-      return;
-    }
     setLoading(true);
-    await fetch("/api/user", {
+    const res = await fetch("/api/user", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
       },
     });
+    const errorMessage =
+      {
+        [201]: "Usuário criado! Redirecionando para a home page",
+        [409]: "Email já cadastrado",
+        [500]: "Erro interno",
+      }[res.status] || "Erro desconhecido";
+    if (!res.ok) {
+      setLoading(false);
+      switch (res.status) {
+        case 409: {
+          toast.error(errorMessage);
+          setError("email", {
+            message: errorMessage,
+          });
+          break;
+        }
+        case 500: {
+          toast.error(errorMessage);
+          break;
+        }
+        default: {
+          toast.error(errorMessage);
+          break;
+        }
+      }
+      return;
+    }
     const loginResponse = await signIn("credentials", {
       redirect: false,
       email: data.email,
@@ -44,27 +67,83 @@ export default function RegisterForm({}: RegisterFormProps) {
     });
     setLoading(false);
     if (loginResponse?.error === null) {
-      router.push("/");
+      return router.push("/");
     }
   };
 
-  const password = watch("password");
-  const passwordConfirmation = watch("passwordConfirmation");
   React.useEffect(() => {
-    const email = watch("email");
-    if (email.length > 0) {
-      const isEmailValid = validateEmail(email);
-      if (!isEmailValid) {
-        setError("invalidEmailFormat", {
+    clearErrors("username");
+    const usernameBannedCharacters = /[^a-zA-Z0-9_-]/g;
+    const username = watch("username");
+    // username validation
+
+    if (username.length > 0 && username.length < 3) {
+      setError("username", {
+        type: "minLength",
+        message: "Nome de usuário deve ter no mínimo 3 caracteres",
+      });
+      return;
+    }
+    if (username.length > 20) {
+      setError("username", {
+        type: "maxLength",
+        message: "Nome de usuário deve ter no máximo 20 caracteres",
+      });
+      return;
+    }
+    if (username.match(usernameBannedCharacters)) {
+      setError("username", {
+        type: "pattern",
+        message:
+          "Nome de usuário deve conter apenas letras, números, hífens e underscores",
+      });
+      return;
+    }
+  }, [watch("username")]);
+
+  React.useEffect(() => {
+    clearErrors("email");
+  }, [watch("email")]);
+
+  React.useEffect(() => {
+    clearErrors("password");
+    clearErrors("invalidEmailFormat");
+    const password = watch("password");
+    const passwordConfirmation = watch("passwordConfirmation");
+
+    if (passwordConfirmation.length > 0 && password.length > 0) {
+      if (passwordConfirmation !== password) {
+        setError("passwordConfirmation", {
           type: "manual",
-          message: "O email inserido não está em um formato válido",
+          message: "As senhas não coincidem",
         });
-        return;
-      } else {
-        clearErrors("invalidEmailFormat");
+      }
+      if (!validPassword(password)) {
+        setError("password", {
+          type: "pattern",
+        });
+        setError("invalidEmailFormat", {
+          type: "pattern",
+        });
       }
     }
-  }, [watch("email")]);
+  }, [watch("password")]);
+
+  React.useEffect(() => {
+    clearErrors("passwordConfirmation");
+    const password = watch("password");
+    const passwordConfirmation = watch("passwordConfirmation");
+
+    if (passwordConfirmation.length > 0 && password.length > 0) {
+      if (passwordConfirmation !== password) {
+        setError("passwordConfirmation", {
+          type: "manual",
+          message: "As senhas não coincidem",
+        });
+      }
+    }
+  }, [watch("passwordConfirmation")]);
+
   return (
     <form className="xl:text-gray-800 flex flex-col gap-4 space-y-10 items-center justify-center  w-3/4 h-full">
       <div className="flex flex-col text-center items-center justify-center ">
@@ -79,18 +158,17 @@ export default function RegisterForm({}: RegisterFormProps) {
           autoFocus
           {...register("username", { required: true })}
           validationState={errors.username ? "invalid" : "valid"}
-          errorMessage={errors.username && "Nome de usuário é obrigatório"}
+          errorMessage={(errors.username?.message as string) || undefined}
           endContent={
             <svg
-              style={{
-                color: errors.username ? "red" : "gray",
-              }}
+              className={`w-6 h-6 ${
+                errors.username ? "text-rose-500" : "text-gray-500"
+              }`}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6"
             >
               <path
                 strokeLinecap="round"
@@ -101,7 +179,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           }
           label="Nome de usuário"
           color="primary"
-          placeholder="motivado"
+          placeholder="_jo2uke-higashikata_"
           type="username"
           variant="bordered"
         />
@@ -113,23 +191,23 @@ export default function RegisterForm({}: RegisterFormProps) {
           }
           errorMessage={
             errors.email
-              ? "Insira um email válido"
+              ? (errors.email.message as string)
               : errors.invalidEmailFormat &&
                 (errors.invalidEmailFormat.message as string)
           }
           autoFocus
           endContent={
             <svg
-              style={{
-                color:
-                  errors.email || errors.invalidEmailFormat ? "red" : "gray",
-              }}
+              className={`w-6 h-6 ${
+                errors.email || errors.invalidEmailFormat
+                  ? "text-rose-500"
+                  : "text-gray-500"
+              }`}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6"
             >
               <path
                 strokeLinecap="round"
@@ -147,19 +225,22 @@ export default function RegisterForm({}: RegisterFormProps) {
         <Input
           disabled={loading}
           {...register("password", { required: true })}
-          validationState={errors.password ? "invalid" : "valid"}
-          errorMessage={errors.password && "Senha é obrigatória"}
+          validationState={
+            errors.password || errors.passwordConfirmation ? "invalid" : "valid"
+          }
+          errorMessage={(errors.password?.message as string) || undefined}
           endContent={
             <svg
-              style={{
-                color: errors.password ? "red" : "gray",
-              }}
+              className={`w-6 h-6 ${
+                errors.password || errors.passwordConfirmation
+                  ? "text-rose-500"
+                  : "text-gray-500"
+              }`}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6"
             >
               <path
                 strokeLinecap="round"
@@ -178,30 +259,23 @@ export default function RegisterForm({}: RegisterFormProps) {
           disabled={loading}
           {...register("passwordConfirmation", { required: true })}
           validationState={
-            Boolean(errors.passwordConfirmation) ||
-            password != passwordConfirmation
-              ? "invalid"
-              : "valid"
+            Boolean(errors.passwordConfirmation) ? "invalid" : "valid"
           }
           errorMessage={
-            Boolean(errors.passwordConfirmation) ||
-            (password != passwordConfirmation && "Senhas não coincidem")
+            (errors.passwordConfirmation?.message as string) || undefined
           }
           endContent={
             <svg
-              style={{
-                color:
-                  Boolean(errors.passwordConfirmation) ||
-                  password != passwordConfirmation
-                    ? "red"
-                    : "gray",
-              }}
+              className={`w-6 h-6 ${
+                Boolean(errors.passwordConfirmation)
+                  ? "text-rose-500"
+                  : "text-gray-500"
+              }`}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6"
             >
               <path
                 strokeLinecap="round"
@@ -216,26 +290,76 @@ export default function RegisterForm({}: RegisterFormProps) {
           type="password"
           variant="bordered"
         />
-        <div className="flex-1">
+        <PasswordChecker key={password} password={password} />
+        <div className="flex-1 mt-4">
           <Button
             color="primary"
             disabled={loading}
             onClick={(e) => {
-              clearErrors();
-              handleSubmit(onSubmit)();
+              e.preventDefault();
+              let username = e.currentTarget.form?.username.value;
+              let email = e.currentTarget.form?.email.value;
+              let password = e.currentTarget.form?.password.value;
+              let passwordConfirmation =
+                e.currentTarget.form?.passwordConfirmation.value;
+
+              // username validation
+              if (username.length === 0) {
+                setError("username", {
+                  type: "required",
+                  message: "Nome de usuário é obrigatório",
+                });
+              }
+              // email validation
+              if (email.length === 0) {
+                setError("email", {
+                  type: "required",
+                  message: "Email é obrigatório",
+                });
+              }
+              // password validation
+              if (password.length === 0) {
+                setError("password", {
+                  type: "required",
+                  message: "Senha é obrigatória",
+                });
+              }
+              // password confirmation validation
+              if (passwordConfirmation.length === 0) {
+                setError("passwordConfirmation", {
+                  type: "required",
+                  message: "Confirmação de senha é obrigatória",
+                });
+              } else if (passwordConfirmation !== password) {
+                setError("passwordConfirmation", {
+                  type: "manual",
+                  message: "As senhas não coincidem",
+                });
+              }
+
+              if (
+                !Boolean(errors.username) &&
+                !Boolean(errors.email) &&
+                !Boolean(errors.password) &&
+                !Boolean(errors.passwordConfirmation)
+              ) {
+                clearErrors();
+                handleSubmit(onSubmit)();
+              }
             }}
             className="w-full"
           >
             {loading ? <LoadingIcon /> : "Cadastre-se"}
           </Button>
         </div>
-        <div className="flex py-2 px-1 justify-end gap-2">
-          <span className="text-sm">Já tem uma conta ?</span>
+        <div className="flex py-2 px-1 justify-end gap-2 font-medium">
+          <span className="text-sm">Já tem uma conta?</span>
           <Link color="primary" href="/login" size="sm">
             Faça o login aqui
           </Link>
         </div>
       </div>
+      <Toaster />
     </form>
   );
 }
