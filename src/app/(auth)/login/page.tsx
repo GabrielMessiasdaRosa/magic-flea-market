@@ -20,6 +20,10 @@ export default async function LoginPage({}: LoginPageProps) {
   }
   const cards = await prisma.card.findMany({
     take: 25,
+    select: {
+      id: true,
+      name: true,
+    },
   });
   return (
     <main className="text-white flex flex-1 items-center relative xl:flex justify-center h-screen  overflow-hidden">

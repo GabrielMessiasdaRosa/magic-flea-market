@@ -99,7 +99,7 @@ export default function LoginForm({}: LoginFormProps) {
           type="email"
           color="primary"
           placeholder="magic-flea-market@email.com"
-          variant="bordered"
+          variant="flat"
         />
         <Input
           disabled={loading}
@@ -136,7 +136,7 @@ export default function LoginForm({}: LoginFormProps) {
           color="primary"
           placeholder="*********"
           type="password"
-          variant="bordered"
+          variant="flat"
         />{" "}
         <div className="flex-1">
           <Button

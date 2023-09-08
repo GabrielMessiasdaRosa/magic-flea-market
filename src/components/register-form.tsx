@@ -181,7 +181,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           color="primary"
           placeholder="_jo2uke-higashikata_"
           type="username"
-          variant="bordered"
+          variant="flat"
         />
         <Input
           disabled={loading}
@@ -220,7 +220,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           type="email"
           color="primary"
           placeholder="magic-flea-market@email.com"
-          variant="bordered"
+          variant="flat"
         />
         <Input
           disabled={loading}
@@ -253,7 +253,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           color="primary"
           placeholder="*********"
           type="password"
-          variant="bordered"
+          variant="flat"
         />{" "}
         <Input
           disabled={loading}
@@ -288,7 +288,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           color="primary"
           placeholder="*********"
           type="password"
-          variant="bordered"
+          variant="flat"
         />
         <PasswordChecker key={password} password={password} />
         <div className="flex-1 mt-4">
