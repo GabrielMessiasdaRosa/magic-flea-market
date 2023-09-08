@@ -153,7 +153,7 @@ export default function LoginForm({}: LoginFormProps) {
             {loading ? <LoadingIcon /> : "Entrar"}
           </Button>
         </div>
-        <div className="flex py-2 px-1 justify-between font-medium">
+        <div className="flex py-2 px-1 flex-col 2xl:flex-row justify-between font-medium">
           {/* <Checkbox
             classNames={{
               label: "text-small",
@@ -161,7 +161,7 @@ export default function LoginForm({}: LoginFormProps) {
           >
             Remember me
           </Checkbox> */}
-          <Link color="primary" href="/recovery/request-new-password" size="sm" >
+          <Link color="primary" href="/recovery/request-new-password" size="sm">
             Esqueci a senha
           </Link>
           <div className="flex gap-2">

@@ -38,6 +38,9 @@ export async function POST(req: Request) {
       where: { email: user.email },
       data: { recoveryAttempts: 0, password: hashedPassword },
     });
+    await prisma.recoveryRequest.deleteMany({
+      where: { email: user.email },
+    });
     return NextResponse.json(
       { message: "Token is valid. Password updated !" },
       { status: 200 }

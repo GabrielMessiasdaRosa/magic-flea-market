@@ -22,8 +22,8 @@ export default async function PasswordRecoveryPage({
   const email = searchParams.email as string;
   const token = searchParams.token as string;
   return (
-    <main className="text-black flex w-screen items-center relative xl:flex justify-center h-screen  overflow-hidden">
-      <div className=" flex flex-col lg:px-16 w-full xl:w-2/5  h-screen justify-center bg-black/90 xl:bg-white items-center debug">
+    <main className="text-white flex flex-1  items-center relative xl:flex justify-center h-screen  overflow-hidden">
+      <div className=" flex flex-col lg:px-16 w-full xl:w-2/5  h-screen justify-center bg-black/90 xl:bg-white items-center ">
         <Suspense fallback={<div>Carregando credenciais ...</div>}>
           <SetNewPasswordRecoveryForm email={email} token={token} />
         </Suspense>

@@ -15,7 +15,7 @@ export default async function LoginPage({}: LoginPageProps) {
     take: 25,
   });
   return (
-    <main className="text-white flex w-screen items-center relative xl:flex justify-center h-screen  overflow-hidden">
+    <main className="text-white flex flex-1 items-center relative xl:flex justify-center h-screen  overflow-hidden">
       <div className=" flex flex-col lg:px-16 w-full xl:w-2/5  h-screen justify-center bg-black/90 xl:bg-white items-center">
         <LoginForm />
       </div>
