@@ -2,9 +2,16 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import AuthCardsShowoff from "@/components/auth-cards-showoff";
 import LoginForm from "@/components/login-form";
 import prisma from "@/lib/prisma";
+import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 export interface LoginPageProps {}
+
+export const metadata: Metadata = {
+  title: "mfm | login",
+  description:
+    "Magic flea market - O lugar ideal para comprar e vender cartas de Magic: The Gathering",
+};
 
 export default async function LoginPage({}: LoginPageProps) {
   const session = await getServerSession(authOptions);

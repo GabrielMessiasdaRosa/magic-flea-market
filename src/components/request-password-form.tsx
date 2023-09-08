@@ -181,7 +181,7 @@ export default function RequestPasswordForm({}: RequestPasswordFormProps) {
               label="Email"
               type="email"
               color="primary"
-              placeholder="magic-flea-market@email?.com"
+              placeholder="magic-flea-market@email.com"
               variant="bordered"
             />
             <div className="flex-1">
