@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import LoadingIcon from "./loading-icon";
+import MfmBrandLogo from "./mfm-brand-logo";
 import { Button, Input, Link } from "./next-ui-exports";
 
 export interface LoginFormProps {}
@@ -49,7 +50,9 @@ export default function LoginForm({}: LoginFormProps) {
   return (
     <form className="xl:text-gray-800 flex flex-col gap-4 space-y-10 items-center justify-center  w-3/4 h-full">
       <div className="flex flex-col text-center items-center justify-center ">
-        <h1 className="text-2xl md:text-4xl font-bold">Magic flea market</h1>
+        <h1 className="text-2xl  md:text-4xl font-light">
+          <MfmBrandLogo fontDefinition="text-white xl:text-primary-950" />
+        </h1>
         <p className="mt-2 text-sm md:text-lg">
           O lugar ideal para vender, comprar ou trocar cartas de Magic: The
           Gathering

@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Toaster, toast } from "react-hot-toast";
 import LoadingIcon from "./loading-icon";
+import MfmBrandLogo from "./mfm-brand-logo";
 import { Button, Input, Link } from "./next-ui-exports";
 import PasswordChecker from "./password-checker";
 
@@ -147,6 +148,10 @@ export default function RegisterForm({}: RegisterFormProps) {
   return (
     <form className="xl:text-gray-800 flex flex-col gap-4 space-y-10 items-center justify-center  w-3/4 h-full">
       <div className="flex flex-col text-center items-center justify-center ">
+        {" "}
+        <span className="text-2xl md:text-4xl font-light pb-6">
+          <MfmBrandLogo fontDefinition="text-white xl:text-primary-950" />
+        </span>
         <h1 className="text-2xl md:text-4xl font-bold">Crie sua conta</h1>
         <p className="mt-2 text-sm md:text-lg">
           É de graça e você tem acesso a uma lista de ofertas exclusívas!

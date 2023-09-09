@@ -25,7 +25,6 @@ export default function AuthCardsShowoff({ cards }: LoginCardsShowoffProps) {
     setNewCards(newCardsarr);
   }, []);
 
-  console.log(newCards);
   // split the cards array into 3 arrays
   const cards1 = newCards.slice(0, 8);
   const cards2 = newCards.slice(8, 16);

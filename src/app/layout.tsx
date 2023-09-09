@@ -1,4 +1,3 @@
-import NewsAlert from "@/components/news-alert";
 import type { Metadata } from "next";
 import { Ubuntu } from "next/font/google";
 import AuthProvider from "./auth-provider";
@@ -7,6 +6,7 @@ const ubuntu = Ubuntu({
   weight: ["300", "400", "500", "700"],
   subsets: ["latin"],
 });
+
 export const metadata: Metadata = {
   title: "mfm | Magic flea market",
   description:
@@ -20,8 +20,9 @@ export default async function RootLayout({
   return (
     <AuthProvider>
       <html lang="en">
-        <body className={ubuntu.className}>
-          <NewsAlert />
+        <body className={` ${ubuntu}`}>
+          {/* 
+          <NewsAlert /> */}
           {children}
         </body>
       </html>

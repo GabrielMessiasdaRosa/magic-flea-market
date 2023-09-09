@@ -1,6 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@font-face {
+  font-family: FancyFont;
+  src: url("/fonts/square-caps/fc.TTF") format("woff"),
+    url("/fonts/square-caps/fc.TTF") format("woff2"),
+    url("/fonts/square-caps/fc.TTF") format("truetype"),
+    url("/fonts/square-caps/fc.TTF") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Barbarian;
+  src: url("/fonts/barbarian/Barbarian.ttf") format("woff"),
+    url("/fonts/barbarian/Barbarian.ttf") format("woff2"),
+    url("/fonts/barbarian/Barbarian.ttf") format("truetype"),
+    url("/fonts/barbarian/Barbarian.ttf") format("opentype");
+}
+
+/* font variabble */
+:root {
+  --font-fancy: "FancyFont", sans-serif;
+  --font-barbarian: "Barbarian", sans-serif;
+}
 
 .debug {
   @apply border-2 border-red-500;

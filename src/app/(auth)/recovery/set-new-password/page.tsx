@@ -24,7 +24,6 @@ export default async function PasswordRecoveryPage({
   const cards = await prisma.card.findMany({
     take: 25,
   });
-  console.log(searchParams);
   const email = searchParams.email as string;
   const token = searchParams.token as string;
   return (

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import LoadingIcon from "./loading-icon";
+import MfmBrandLogo from "./mfm-brand-logo";
 import { Button, Input, Link } from "./next-ui-exports";
 
 export interface RequestPasswordFormProps {}
@@ -49,7 +50,6 @@ export default function RequestNewPasswordForm({}: RequestPasswordFormProps) {
           "Voce excedeu o limite de requisições, tente novamente mais tarde",
         [500]: "Erro interno",
       }[res.status] || "Erro desconhecido";
-    console.log(res.status);
     if (!res.ok) {
       setLoading(false);
       setError("email", {
@@ -154,6 +154,9 @@ export default function RequestNewPasswordForm({}: RequestPasswordFormProps) {
       ) : (
         <form className="xl:text-gray-800 flex flex-col gap-4 space-y-10 items-center justify-center  w-3/4 h-full">
           <div className="flex flex-col text-center items-center justify-center ">
+            <span className="text-2xl md:text-4xl font-light">
+              <MfmBrandLogo fontDefinition="text-white xl:text-primary-950" />
+            </span>
             <h1 className="text-2xl md:text-4xl font-bold">Recuperar conta</h1>
             <p className="mt-2 text-sm md:text-lg">
               Digite o email da sua conta para redefinir a senha

@@ -75,7 +75,10 @@ export async function sendMail(
     </head>
     <body>
         <div class="container">
-            <h1>Recuperação de Senha - Magic Flea Market</h1>
+            <div>
+            <a href="https://ibb.co/0M9TQRP"><img src="https://i.ibb.co/WyzZs4S/Screenshot-from-2023-09-08-22-07-58-removebg-preview.png" alt="Screenshot-from-2023-09-08-22-07-58-removebg-preview" border="0"></a>
+            </div>
+            <h1>Recuperação de Senha</h1>
             <p>Olá,</p>
             <p>Recebemos uma solicitação de recuperação de senha para a sua conta no Magic Flea Market. Clique no botão abaixo para redefinir a sua senha:</p>
             <a href="${resetPasswordLink}" class="button">Redefinir Senha</a>
@@ -98,7 +101,6 @@ export async function sendMail(
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log("Email Sent");
     return true;
   } catch (error: any) {
     throw new Error(error);

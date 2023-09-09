@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+const { fontFamily } = require("tailwindcss/defaultTheme");
 const { nextui } = require("@nextui-org/react");
 
 const config: Config = {
@@ -15,11 +16,16 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      fontFamily: {
+        fancy: ["var(--font-fancy)"],
+        barbarian: ["var(--font-barbarian)"],
+      },
     },
   },
   darkMode: "class",
 
   plugins: [
+    require("@tailwindcss/typography"),
     nextui({
       themes: {
         light: {
