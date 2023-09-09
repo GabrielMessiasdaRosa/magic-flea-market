@@ -27,13 +27,13 @@ export default async function PasswordRecoveryPage({
   const email = searchParams.email as string;
   const token = searchParams.token as string;
   return (
-    <main className="text-white flex flex-1 items-center relative xl:flex justify-start min-h-screen  overflow-hidden">
-      <div className="flex flex-col lg:px-16 w-full xl:w-2/5  min-h-screen justify-center bg-black/90 xl:bg-white items-center py-8">
+    <main className="relative flex min-h-screen flex-1 items-center justify-start overflow-hidden text-white  xl:flex">
+      <div className="flex min-h-screen w-full flex-col items-center  justify-center bg-black/90 py-8 lg:px-16 xl:w-2/5 xl:bg-white">
         <Suspense fallback={<div>Carregando credenciais ...</div>}>
           <RequestNewRecoveryTokenForm email={email} token={token} />
         </Suspense>
       </div>
-      <div className="flex flex-col absolute right-0 items-center overflow-hidden justify-center w-screen xl:w-3/5 shadow-xl bg-black h-[400dvh] -z-10">
+      <div className="absolute right-0 -z-10 flex h-[400dvh] w-screen flex-col items-center justify-center overflow-hidden bg-black shadow-xl xl:w-3/5">
         <Suspense fallback={<></>}>
           <AuthCardsShowoff cards={cards} />
         </Suspense>

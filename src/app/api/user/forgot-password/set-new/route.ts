@@ -29,7 +29,7 @@ export async function POST(req: Request) {
     // Trate o erro adequadamente
     return NextResponse.json(
       { error: "Invalid or expired token" },
-      { status: 400 }
+      { status: 400 },
     );
   } else {
     // Token válido; permita ao usuário redefinir a senha
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     });
     return NextResponse.json(
       { message: "Token is valid. Password updated !" },
-      { status: 200 }
+      { status: 200 },
     );
   }
 }

@@ -146,18 +146,18 @@ export default function RegisterForm({}: RegisterFormProps) {
   }, [watch("passwordConfirmation")]);
 
   return (
-    <form className="xl:text-gray-800 flex flex-col gap-4 space-y-10 items-center justify-center  w-3/4 h-full">
-      <div className="flex flex-col text-center items-center justify-center ">
+    <form className="flex h-full w-3/4 flex-col items-center justify-center gap-4  space-y-10 xl:text-gray-800">
+      <div className="flex flex-col items-center justify-center text-center ">
         {" "}
-        <span className="text-2xl md:text-4xl font-light pb-6">
+        <span className="pb-6 text-2xl font-light md:text-4xl">
           <MfmBrandLogo fontDefinition="text-white xl:text-primary-950" />
         </span>
-        <h1 className="text-2xl md:text-4xl font-bold">Crie sua conta</h1>
+        <h1 className="text-2xl font-bold md:text-4xl">Crie sua conta</h1>
         <p className="mt-2 text-sm md:text-lg">
           É de graça e você tem acesso a uma lista de ofertas exclusívas!
         </p>
       </div>
-      <div className="flex flex-col w-full gap-3">
+      <div className="flex w-full flex-col gap-3">
         <Input
           disabled={loading}
           autoFocus
@@ -166,7 +166,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           errorMessage={(errors.username?.message as string) || undefined}
           endContent={
             <svg
-              className={`w-6 h-6 ${
+              className={`h-6 w-6 ${
                 errors.username ? "text-rose-500" : "text-gray-500"
               }`}
               xmlns="http://www.w3.org/2000/svg"
@@ -203,7 +203,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           autoFocus
           endContent={
             <svg
-              className={`w-6 h-6 ${
+              className={`h-6 w-6 ${
                 errors.email || errors.invalidEmailFormat
                   ? "text-rose-500"
                   : "text-gray-500"
@@ -236,7 +236,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           errorMessage={(errors.password?.message as string) || undefined}
           endContent={
             <svg
-              className={`w-6 h-6 ${
+              className={`h-6 w-6 ${
                 errors.password || errors.passwordConfirmation
                   ? "text-rose-500"
                   : "text-gray-500"
@@ -271,7 +271,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           }
           endContent={
             <svg
-              className={`w-6 h-6 ${
+              className={`h-6 w-6 ${
                 Boolean(errors.passwordConfirmation)
                   ? "text-rose-500"
                   : "text-gray-500"
@@ -296,7 +296,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           variant="flat"
         />
         <PasswordChecker key={password} password={password} />
-        <div className="flex-1 mt-4">
+        <div className="mt-4 flex-1">
           <Button
             color="primary"
             disabled={loading}
@@ -357,7 +357,7 @@ export default function RegisterForm({}: RegisterFormProps) {
             {loading ? <LoadingIcon /> : "Criar conta"}
           </Button>
         </div>
-        <div className="flex py-2 px-1 justify-end gap-2 font-medium">
+        <div className="flex justify-end gap-2 px-1 py-2 font-medium">
           <span className="text-sm">Já tem uma conta?</span>
           <Link color="primary" href="/login" size="sm">
             Faça o login aqui

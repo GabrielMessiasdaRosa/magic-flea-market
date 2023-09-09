@@ -96,8 +96,8 @@ export default function RequestNewPasswordForm({}: RequestPasswordFormProps) {
     <>
       {isEmailSent ? (
         <div className="xl:text-gray-800 ">
-          <div className="flex flex-col text-center items-center justify-center ">
-            <h1 className="text-2xl md:text-4xl font-bold">
+          <div className="flex flex-col items-center justify-center text-center ">
+            <h1 className="text-2xl font-bold md:text-4xl">
               Email de recuperação{" "}
               <span className="text-green-500">enviado</span>!
             </h1>
@@ -106,7 +106,7 @@ export default function RequestNewPasswordForm({}: RequestPasswordFormProps) {
               sua senha
             </p>
             <div
-              className={`text-green-500 transition-transform duration-1000 flex  `}
+              className={`flex text-green-500 transition-transform duration-1000  `}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -114,7 +114,7 @@ export default function RequestNewPasswordForm({}: RequestPasswordFormProps) {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className={`w-48 h-48  flex items-center justify-center`}
+                className={`flex h-48  w-48 items-center justify-center`}
               >
                 <path
                   strokeLinecap="round"
@@ -137,7 +137,7 @@ export default function RequestNewPasswordForm({}: RequestPasswordFormProps) {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-6 h-6"
+                  className="h-6 w-6"
                 >
                   <path
                     strokeLinecap="round"
@@ -152,17 +152,17 @@ export default function RequestNewPasswordForm({}: RequestPasswordFormProps) {
           </div>
         </div>
       ) : (
-        <form className="xl:text-gray-800 flex flex-col gap-4 space-y-10 items-center justify-center  w-3/4 h-full">
-          <div className="flex flex-col text-center items-center justify-center ">
-            <span className="text-2xl md:text-4xl font-light">
+        <form className="flex h-full w-3/4 flex-col items-center justify-center gap-4  space-y-10 xl:text-gray-800">
+          <div className="flex flex-col items-center justify-center text-center ">
+            <span className="text-2xl font-light md:text-4xl">
               <MfmBrandLogo fontDefinition="text-white xl:text-primary-950" />
             </span>
-            <h1 className="text-2xl md:text-4xl font-bold">Recuperar conta</h1>
+            <h1 className="text-2xl font-bold md:text-4xl">Recuperar conta</h1>
             <p className="mt-2 text-sm md:text-lg">
               Digite o email da sua conta para redefinir a senha
             </p>
           </div>
-          <div className="flex flex-col w-full gap-3">
+          <div className="flex w-full flex-col gap-3">
             <Input
               disabled={loading}
               {...register("email", { required: true })}
@@ -183,7 +183,7 @@ export default function RequestNewPasswordForm({}: RequestPasswordFormProps) {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className={`w-6 h-6 ${
+                  className={`h-6 w-6 ${
                     errors.email || errors.invalidEmailFormat
                       ? "text-rose-500"
                       : "text-gray-500"
@@ -217,7 +217,7 @@ export default function RequestNewPasswordForm({}: RequestPasswordFormProps) {
                 {loading ? <LoadingIcon /> : "Enviar email de recuperação"}
               </Button>
             </div>
-            <div className="flex py-2 px-1 justify-end gap-2 font-medium">
+            <div className="flex justify-end gap-2 px-1 py-2 font-medium">
               <Link color="primary" href="/login" size="sm">
                 Voltar para o login
               </Link>

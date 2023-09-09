@@ -13,7 +13,7 @@ export async function POST(req: Request) {
   if (user && user.recoveryAttempts > 10) {
     return NextResponse.json(
       { error: "Too many recovery attempts" },
-      { status: 429 }
+      { status: 429 },
     );
   } else {
     await prisma.user.update({

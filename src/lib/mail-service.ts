@@ -2,7 +2,7 @@ import nodemailer from "nodemailer";
 
 export async function sendMail(
   destination: string,
-  token: string
+  token: string,
 ): Promise<boolean> {
   const transporter = nodemailer.createTransport({
     service: "gmail",

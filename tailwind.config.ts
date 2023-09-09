@@ -19,12 +19,14 @@ const config: Config = {
       fontFamily: {
         fancy: ["var(--font-fancy)"],
         barbarian: ["var(--font-barbarian)"],
+        fantasy: ["var(--font-fantasy)"],
       },
     },
   },
   darkMode: "class",
 
   plugins: [
+    require("tailwind-scrollbar-hide"),
     require("@tailwindcss/typography"),
     nextui({
       themes: {

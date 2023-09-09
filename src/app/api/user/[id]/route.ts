@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     const { id } = params;
@@ -23,7 +23,7 @@ export async function GET(
           error: "User not found",
           errorDetails: { details: `User with ID:${id} not found` },
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
     const { password, ...userDto } = user;
@@ -32,7 +32,7 @@ export async function GET(
   } catch (error: any) {
     return NextResponse.json(
       { error: error.message, errorDetails: { ...error } },
-      { status: error.status || 500 }
+      { status: error.status || 500 },
     );
   }
 }

@@ -48,9 +48,9 @@ export default function LoginForm({}: LoginFormProps) {
     }
   };
   return (
-    <form className="xl:text-gray-800 flex flex-col gap-4 space-y-10 items-center justify-center  w-3/4 h-full">
-      <div className="flex flex-col text-center items-center justify-center ">
-        <h1 className="text-2xl  md:text-4xl font-light">
+    <form className="flex h-full w-3/4 flex-col items-center justify-center gap-4  space-y-10 xl:text-gray-800">
+      <div className="flex flex-col items-center justify-center text-center ">
+        <h1 className="text-2xl  font-light md:text-4xl">
           <MfmBrandLogo fontDefinition="text-white xl:text-primary-950" />
         </h1>
         <p className="mt-2 text-sm md:text-lg">
@@ -58,7 +58,7 @@ export default function LoginForm({}: LoginFormProps) {
           Gathering
         </p>
       </div>
-      <div className="flex flex-col w-full gap-3">
+      <div className="flex w-full flex-col gap-3">
         <Input
           disabled={loading}
           {...register("email", { required: true })}
@@ -85,7 +85,7 @@ export default function LoginForm({}: LoginFormProps) {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className={`w-6 h-6 ${
+              className={`h-6 w-6 ${
                 errors.email || errors.invalidEmailFormat
                   ? "text-rose-500"
                   : "text-gray-500"
@@ -117,7 +117,7 @@ export default function LoginForm({}: LoginFormProps) {
           }
           endContent={
             <svg
-              className={`w-6 h-6 ${
+              className={`h-6 w-6 ${
                 errors.password || errors.invalidCredentials
                   ? "text-rose-500"
                   : "text-gray-500"
@@ -156,7 +156,7 @@ export default function LoginForm({}: LoginFormProps) {
             {loading ? <LoadingIcon /> : "Entrar"}
           </Button>
         </div>
-        <div className="flex py-2 px-1 flex-col 2xl:flex-row justify-between font-medium">
+        <div className="flex flex-col justify-between px-1 py-2 font-medium 2xl:flex-row">
           {/* <Checkbox
             classNames={{
               label: "text-small",

@@ -46,13 +46,13 @@ function ValidationListItem({
   label: string;
 }) {
   return (
-    <div className="flex text-sm md:text-base items-center ">
+    <div className="flex items-center text-sm md:text-base ">
       {variant === "success" ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="w-4 h-4 md:w-6 md:h-6 text-green-500"
+          className="h-4 w-4 text-green-500 md:h-6 md:w-6"
         >
           <path
             fillRule="evenodd"
@@ -65,7 +65,7 @@ function ValidationListItem({
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="w-4 h-4 md:w-6 md:h-6 text-rose-600"
+          className="h-4 w-4 text-rose-600 md:h-6 md:w-6"
         >
           <path
             fillRule="evenodd"

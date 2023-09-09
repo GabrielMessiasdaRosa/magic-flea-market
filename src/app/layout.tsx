@@ -9,8 +9,12 @@ const ubuntu = Ubuntu({
 
 export const metadata: Metadata = {
   title: "mfm | Magic flea market",
+  themeColor: "#4338ca",
   description:
     "O lugar ideal para negociar suas cartas de Magic: The Gathering",
+  icons: {
+    icon: "./favicon.ico",
+  },
 };
 export default async function RootLayout({
   children,
@@ -20,7 +24,7 @@ export default async function RootLayout({
   return (
     <AuthProvider>
       <html lang="en">
-        <body className={` ${ubuntu}`}>
+        <body className={`${ubuntu.className}`}>
           {/* 
           <NewsAlert /> */}
           {children}

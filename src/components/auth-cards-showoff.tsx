@@ -17,7 +17,7 @@ export default function AuthCardsShowoff({ cards }: LoginCardsShowoffProps) {
           normal: new URL(
             `${window.location.origin}/images/login-cards-images/${
               index + 1
-            }-showoff.jpg`
+            }-showoff.jpg`,
           ).href satisfies string,
         },
       };
@@ -30,8 +30,8 @@ export default function AuthCardsShowoff({ cards }: LoginCardsShowoffProps) {
   const cards2 = newCards.slice(8, 16);
   const cards3 = newCards.slice(16, 24);
   return (
-    <div key={newCards.length} className="rotate-12 absolute ">
-      <div className="grid grid-cols-8 w-[2250px] grid-rows-3 gap-2">
+    <div key={newCards.length} className="absolute rotate-12 ">
+      <div className="grid w-[2250px] grid-cols-8 grid-rows-3 gap-2">
         {cards1.map((card: any, index) => (
           <motion.div
             key={card.id}
@@ -54,7 +54,7 @@ export default function AuthCardsShowoff({ cards }: LoginCardsShowoffProps) {
             >
               <img
                 src={card?.image_uris?.normal}
-                className="rounded-3xl object-cover h-[380px] rotate-12 w-[270px]"
+                className="h-[380px] w-[270px] rotate-12 rounded-3xl object-cover"
                 alt={card.name}
                 key={index + card.name}
               />
@@ -83,7 +83,7 @@ export default function AuthCardsShowoff({ cards }: LoginCardsShowoffProps) {
             >
               <img
                 src={card?.image_uris?.normal}
-                className="rounded-3xl object-cover h-[380px] rotate-12 w-[270px]"
+                className="h-[380px] w-[270px] rotate-12 rounded-3xl object-cover"
                 alt={card.name}
                 key={index + card.name}
               />
@@ -112,7 +112,7 @@ export default function AuthCardsShowoff({ cards }: LoginCardsShowoffProps) {
             >
               <img
                 src={card?.image_uris?.normal}
-                className="rounded-3xl object-cover h-[380px] rotate-12 w-[270px]"
+                className="h-[380px] w-[270px] rotate-12 rounded-3xl object-cover"
                 alt={card.name}
                 key={index + card.name}
               />

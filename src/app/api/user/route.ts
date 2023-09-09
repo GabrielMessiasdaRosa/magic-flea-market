@@ -12,7 +12,7 @@ function formatUsernameWithIdentifier(
   username: string,
   userNumber: number,
   totalDigits: number,
-  paddingCharacter?: string
+  paddingCharacter?: string,
 ) {
   const userNumberString = String(userNumber);
   const paddingChar = paddingCharacter || "0";
@@ -40,14 +40,14 @@ export async function POST(req: Request, res: Response) {
         {
           error: "Email already in use",
         },
-        { status: 409 }
+        { status: 409 },
       );
     } else {
       const usersQuantity = await prisma.user.count();
       const usernameWithIdentifier = formatUsernameWithIdentifier(
         username,
         usersQuantity + 1,
-        4
+        4,
       );
       const hashedPassword = await hash(password, 10);
       const newUser = await prisma.user.create({
@@ -80,7 +80,7 @@ export async function POST(req: Request, res: Response) {
             email: newUser.email,
           },
         },
-        { status: 201 }
+        { status: 201 },
       );
     }
   } catch (error: any) {
@@ -89,7 +89,7 @@ export async function POST(req: Request, res: Response) {
         error: error.message,
         errorDetails: { ...error },
       },
-      { status: error.status || 500 }
+      { status: error.status || 500 },
     );
   }
 }
@@ -118,7 +118,7 @@ export async function GET(req: Request) {
         error: error.message,
         errorDetails: { ...error },
       },
-      { status: error.status || 500 }
+      { status: error.status || 500 },
     );
   }
 }
