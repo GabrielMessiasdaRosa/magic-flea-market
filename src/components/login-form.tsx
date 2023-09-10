@@ -1,9 +1,13 @@
 "use client";
-import { validateEmail } from "@/lib/validate-email";
+import { loginRequestStatus } from "@/store/handle-async-login-error";
+import LoginSchemaZod from "@/zod/login-schema-zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
+import toast, { Toaster } from "react-hot-toast";
+import { z } from "zod";
 import LoadingIcon from "./loading-icon";
 import MfmBrandLogo from "./mfm-brand-logo";
 import { Button, Input, Link } from "./next-ui-exports";
@@ -11,44 +15,52 @@ import { Button, Input, Link } from "./next-ui-exports";
 export interface LoginFormProps {}
 
 export default function LoginForm({}: LoginFormProps) {
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-    setError,
-    clearErrors,
-  } = useForm();
-  const onSubmit = async (data: any) => {
-    const isEmailValid = validateEmail(data.email);
-    if (!isEmailValid) {
-      setError("invalidEmailFormat", {
-        type: "manual",
-        message: "O email inserido não está em um formato válido",
-      });
-      return;
-    }
-    setLoading(true);
+  } = useForm<z.infer<typeof LoginSchemaZod>>({
+    resolver: zodResolver(LoginSchemaZod),
+  });
+  const email = watch("email");
+  const password = watch("password");
+  const { asyncErrors, status, updateStatus, setAsyncErrors } =
+    loginRequestStatus();
+
+  const onSubmit = async (values: z.infer<typeof LoginSchemaZod>) => {
+    updateStatus("pending");
     const loginResponse = await signIn("credentials", {
       redirect: false,
-      email: data.email,
-      password: data.password,
+      email: values.email,
+      password: values.password,
     });
-    setLoading(false);
 
     if (loginResponse?.error === "CredentialsSignin") {
-      setError("invalidCredentials", {
-        type: "manual",
+      updateStatus("error");
+      toast.error("Verifique seu email e senha");
+      return setAsyncErrors({
+        email: "Email ou senha incorretos",
+        password: "Email ou senha incorretos",
       });
     }
+
     if (loginResponse?.error === null) {
-      router.push("/");
+      updateStatus("success");
+      toast.success("Login realizado com sucesso");
+      setAsyncErrors({});
+      return router.push("/");
     }
   };
+  React.useEffect(() => {
+    setAsyncErrors({});
+  }, [email, password]);
   return (
-    <form className="flex h-full w-3/4 flex-col items-center justify-center gap-4  space-y-10 xl:text-gray-800">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex h-full w-3/4 flex-col items-center justify-center gap-4  space-y-10 xl:text-gray-800"
+    >
       <div className="flex flex-col items-center justify-center text-center ">
         <h1 className="text-2xl  font-light md:text-4xl">
           <MfmBrandLogo fontDefinition="text-white xl:text-primary-950" />
@@ -60,23 +72,11 @@ export default function LoginForm({}: LoginFormProps) {
       </div>
       <div className="flex w-full flex-col gap-3">
         <Input
-          disabled={loading}
           {...register("email", { required: true })}
           validationState={
-            errors.email ||
-            errors.invalidCredentials ||
-            errors.invalidEmailFormat
-              ? "invalid"
-              : "valid"
+            errors.email || asyncErrors.email ? "invalid" : "valid"
           }
-          errorMessage={
-            errors.email
-              ? "Insira um email válido"
-              : errors.invalidCredentials
-              ? "Email ou senha incorretos"
-              : errors.invalidEmailFormat &&
-                "O email inserido não está em um formato válido"
-          }
+          errorMessage={(errors.email?.message as string) || asyncErrors.email}
           autoFocus
           endContent={
             <svg
@@ -86,9 +86,7 @@ export default function LoginForm({}: LoginFormProps) {
               strokeWidth={1.5}
               stroke="currentColor"
               className={`h-6 w-6 ${
-                errors.email || errors.invalidEmailFormat
-                  ? "text-rose-500"
-                  : "text-gray-500"
+                errors.email ? "text-rose-500" : "text-gray-500"
               }`}
             >
               <path
@@ -105,22 +103,17 @@ export default function LoginForm({}: LoginFormProps) {
           variant="flat"
         />
         <Input
-          disabled={loading}
           {...register("password", { required: true })}
           validationState={
-            errors.password || errors.invalidCredentials ? "invalid" : "valid"
+            errors.password || asyncErrors.email ? "invalid" : "valid"
           }
           errorMessage={
-            errors.password
-              ? "Senha é obrigatória"
-              : errors.invalidCredentials && "Email ou senha incorretos"
+            (errors.password?.message as string) || asyncErrors.email
           }
           endContent={
             <svg
               className={`h-6 w-6 ${
-                errors.password || errors.invalidCredentials
-                  ? "text-rose-500"
-                  : "text-gray-500"
+                errors.password ? "text-rose-500" : "text-gray-500"
               }`}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -144,16 +137,11 @@ export default function LoginForm({}: LoginFormProps) {
         <div className="flex-1">
           <Button
             color="primary"
-            disabled={loading}
+            disabled={status === "pending"}
             type="submit"
-            onClick={(e) => {
-              e.preventDefault();
-              clearErrors();
-              handleSubmit(onSubmit)();
-            }}
             className="w-full"
           >
-            {loading ? <LoadingIcon /> : "Entrar"}
+            {status === "pending" ? <LoadingIcon /> : "Entrar"}
           </Button>
         </div>
         <div className="flex flex-col justify-between px-1 py-2 font-medium 2xl:flex-row">
@@ -175,6 +163,7 @@ export default function LoginForm({}: LoginFormProps) {
           </div>
         </div>
       </div>
+      <Toaster />
     </form>
   );
 }
