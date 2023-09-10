@@ -2,7 +2,6 @@ import { signOut, useSession } from "next-auth/react";
 import React from "react";
 import toast, { Toaster } from "react-hot-toast";
 import MfmBrandLogo from "./mfm-brand-logo";
-import NavbarSearch from "./navbar-search";
 import {
   Avatar,
   Button,
@@ -113,7 +112,6 @@ export default function Navbar({}: NavbarProps) {
               )}
             </NavbarMenu>
 
-            <NavbarSearch />
             {/* <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
           <Link color="foreground" href="#">
