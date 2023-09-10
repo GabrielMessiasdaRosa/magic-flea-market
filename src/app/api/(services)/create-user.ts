@@ -24,7 +24,7 @@ async function createUser(payload: any): Promise<typeof newUserDto> {
       image: "https://i.imgur.com/6VBx3io.png",
       email,
       password: hashedPassword,
-      username: usernameWithIdentifier,
+      username,
       plan: {
         connect: {
           id: FREE_PLAN_CODE,

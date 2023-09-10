@@ -4,7 +4,7 @@ import UserType from "@/types/user-type";
 async function getUsersQueryFn(): Promise<UserType[]> {
   try {
     const res = await clientApi.get("/users");
-    return res?.data.data || ([] as UserType[]);
+    return (res?.data.data || []) as UserType[];
   } catch (error) {
     throw error;
   }
