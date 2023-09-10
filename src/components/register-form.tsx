@@ -1,10 +1,10 @@
 "use client";
-import { validPassword } from "@/lib/validate-password";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useCreateUser } from "@/api-handlers/api-hooks/users/use-create-new-user";
+import CreateUserSchemaZod from "@/zod/create-user-schema-zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Toaster, toast } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
+import * as z from "zod";
 import LoadingIcon from "./loading-icon";
 import MfmBrandLogo from "./mfm-brand-logo";
 import { Button, Input, Link } from "./next-ui-exports";
@@ -13,140 +13,25 @@ import PasswordChecker from "./password-checker";
 export interface RegisterFormProps {}
 
 export default function RegisterForm({}: RegisterFormProps) {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-    setError,
-    clearErrors,
-  } = useForm();
+  } = useForm<z.infer<typeof CreateUserSchemaZod>>({
+    resolver: zodResolver(CreateUserSchemaZod),
+  });
   const password = watch("password");
-
-  const onSubmit = async (data: any) => {
-    setLoading(true);
-    const res = await fetch("/api/user", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const errorMessage =
-      {
-        [201]: "Usuário criado! Redirecionando para a home page",
-        [409]: "Email já cadastrado",
-        [500]: "Erro interno",
-      }[res.status] || "Erro desconhecido";
-    if (!res.ok) {
-      setLoading(false);
-      switch (res.status) {
-        case 409: {
-          toast.error(errorMessage);
-          setError("email", {
-            message: errorMessage,
-          });
-          break;
-        }
-        case 500: {
-          toast.error(errorMessage);
-          break;
-        }
-        default: {
-          toast.error(errorMessage);
-          break;
-        }
-      }
-      return;
-    }
-    const loginResponse = await signIn("credentials", {
-      redirect: false,
-      email: data.email,
-      password: data.password,
-    });
-    setLoading(false);
-    if (loginResponse?.error === null) {
-      return router.push("/");
-    }
+  const { fetch, pending } = useCreateUser();
+  const onSubmit = async (values: z.infer<typeof CreateUserSchemaZod>) => {
+    fetch(values);
   };
 
-  React.useEffect(() => {
-    clearErrors("username");
-    const usernameBannedCharacters = /[^a-zA-Z0-9_-]/g;
-    const username = watch("username");
-    // username validation
-
-    if (username.length > 0 && username.length < 3) {
-      setError("username", {
-        type: "minLength",
-        message: "Nome de usuário deve ter no mínimo 3 caracteres",
-      });
-      return;
-    }
-    if (username.length > 20) {
-      setError("username", {
-        type: "maxLength",
-        message: "Nome de usuário deve ter no máximo 20 caracteres",
-      });
-      return;
-    }
-    if (username.match(usernameBannedCharacters)) {
-      setError("username", {
-        type: "pattern",
-        message:
-          "Nome de usuário deve conter apenas letras, números, hífens e underscores",
-      });
-      return;
-    }
-  }, [watch("username")]);
-
-  React.useEffect(() => {
-    clearErrors("email");
-  }, [watch("email")]);
-
-  React.useEffect(() => {
-    clearErrors("password");
-    clearErrors("invalidEmailFormat");
-    const password = watch("password");
-    const passwordConfirmation = watch("passwordConfirmation");
-
-    if (passwordConfirmation.length > 0 && password.length > 0) {
-      if (passwordConfirmation !== password) {
-        setError("passwordConfirmation", {
-          type: "manual",
-          message: "As senhas não coincidem",
-        });
-      }
-      if (!validPassword(password)) {
-        setError("password", {
-          type: "pattern",
-        });
-        setError("invalidEmailFormat", {
-          type: "pattern",
-        });
-      }
-    }
-  }, [watch("password")]);
-
-  React.useEffect(() => {
-    clearErrors("passwordConfirmation");
-    const password = watch("password");
-    const passwordConfirmation = watch("passwordConfirmation");
-
-    if (passwordConfirmation.length > 0 && password.length > 0) {
-      if (passwordConfirmation !== password) {
-        setError("passwordConfirmation", {
-          type: "manual",
-          message: "As senhas não coincidem",
-        });
-      }
-    }
-  }, [watch("passwordConfirmation")]);
-
   return (
-    <form className="flex h-full w-3/4 flex-col items-center justify-center gap-4  space-y-10 xl:text-gray-800">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex h-full w-3/4 flex-col items-center justify-center gap-4  space-y-10 xl:text-gray-800"
+    >
       <div className="flex flex-col items-center justify-center text-center ">
         {" "}
         <span className="pb-6 text-2xl font-light md:text-4xl">
@@ -159,7 +44,7 @@ export default function RegisterForm({}: RegisterFormProps) {
       </div>
       <div className="flex w-full flex-col gap-3">
         <Input
-          disabled={loading}
+          disabled={pending}
           autoFocus
           {...register("username", { required: true })}
           validationState={errors.username ? "invalid" : "valid"}
@@ -189,24 +74,15 @@ export default function RegisterForm({}: RegisterFormProps) {
           variant="flat"
         />
         <Input
-          disabled={loading}
+          disabled={pending}
           {...register("email", { required: true })}
-          validationState={
-            errors.email || errors.invalidEmailFormat ? "invalid" : "valid"
-          }
-          errorMessage={
-            errors.email
-              ? (errors.email.message as string)
-              : errors.invalidEmailFormat &&
-                (errors.invalidEmailFormat.message as string)
-          }
           autoFocus
+          validationState={errors.email ? "invalid" : "valid"}
+          errorMessage={(errors.email?.message as string) || undefined}
           endContent={
             <svg
               className={`h-6 w-6 ${
-                errors.email || errors.invalidEmailFormat
-                  ? "text-rose-500"
-                  : "text-gray-500"
+                errors.email ? "text-rose-500" : "text-gray-500"
               }`}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -228,18 +104,14 @@ export default function RegisterForm({}: RegisterFormProps) {
           variant="flat"
         />
         <Input
-          disabled={loading}
+          disabled={pending}
           {...register("password", { required: true })}
-          validationState={
-            errors.password || errors.passwordConfirmation ? "invalid" : "valid"
-          }
+          validationState={errors.password ? "invalid" : "valid"}
           errorMessage={(errors.password?.message as string) || undefined}
           endContent={
             <svg
               className={`h-6 w-6 ${
-                errors.password || errors.passwordConfirmation
-                  ? "text-rose-500"
-                  : "text-gray-500"
+                errors.password ? "text-rose-500" : "text-gray-500"
               }`}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -261,18 +133,16 @@ export default function RegisterForm({}: RegisterFormProps) {
           variant="flat"
         />{" "}
         <Input
-          disabled={loading}
-          {...register("passwordConfirmation", { required: true })}
-          validationState={
-            Boolean(errors.passwordConfirmation) ? "invalid" : "valid"
-          }
+          disabled={pending}
+          {...register("confirmPassword", { required: true })}
+          validationState={errors.confirmPassword ? "invalid" : "valid"}
           errorMessage={
-            (errors.passwordConfirmation?.message as string) || undefined
+            (errors.confirmPassword?.message as string) || undefined
           }
           endContent={
             <svg
               className={`h-6 w-6 ${
-                Boolean(errors.passwordConfirmation)
+                Boolean(errors.confirmPassword)
                   ? "text-rose-500"
                   : "text-gray-500"
               }`}
@@ -298,63 +168,12 @@ export default function RegisterForm({}: RegisterFormProps) {
         <PasswordChecker key={password} password={password} />
         <div className="mt-4 flex-1">
           <Button
+            type="submit"
             color="primary"
-            disabled={loading}
-            onClick={(e) => {
-              e.preventDefault();
-              let username = e.currentTarget.form?.username.value;
-              let email = e.currentTarget.form?.email.value;
-              let password = e.currentTarget.form?.password.value;
-              let passwordConfirmation =
-                e.currentTarget.form?.passwordConfirmation.value;
-
-              // username validation
-              if (username.length === 0) {
-                setError("username", {
-                  type: "required",
-                  message: "Nome de usuário é obrigatório",
-                });
-              }
-              // email validation
-              if (email.length === 0) {
-                setError("email", {
-                  type: "required",
-                  message: "Email é obrigatório",
-                });
-              }
-              // password validation
-              if (password.length === 0) {
-                setError("password", {
-                  type: "required",
-                  message: "Senha é obrigatória",
-                });
-              }
-              // password confirmation validation
-              if (passwordConfirmation.length === 0) {
-                setError("passwordConfirmation", {
-                  type: "required",
-                  message: "Confirmação de senha é obrigatória",
-                });
-              } else if (passwordConfirmation !== password) {
-                setError("passwordConfirmation", {
-                  type: "manual",
-                  message: "As senhas não coincidem",
-                });
-              }
-
-              if (
-                !Boolean(errors.username) &&
-                !Boolean(errors.email) &&
-                !Boolean(errors.password) &&
-                !Boolean(errors.passwordConfirmation)
-              ) {
-                clearErrors();
-                handleSubmit(onSubmit)();
-              }
-            }}
+            disabled={pending}
             className="w-full"
           >
-            {loading ? <LoadingIcon /> : "Criar conta"}
+            {pending ? <LoadingIcon /> : "Criar conta"}
           </Button>
         </div>
         <div className="flex justify-end gap-2 px-1 py-2 font-medium">
