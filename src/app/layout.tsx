@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Ubuntu } from "next/font/google";
-import AuthProvider from "./auth-provider";
 import "./globals.css";
+import Providers from "./providers";
 const ubuntu = Ubuntu({
   weight: ["300", "400", "500", "700"],
   subsets: ["latin"],
@@ -22,14 +22,14 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AuthProvider>
-      <html lang="en">
-        <body className={`${ubuntu.className}`}>
+    <html lang="en">
+      <body className={`${ubuntu.className}`}>
+        <Providers>
           {/* 
           <NewsAlert /> */}
           {children}
-        </body>
-      </html>
-    </AuthProvider>
+        </Providers>
+      </body>
+    </html>
   );
 }

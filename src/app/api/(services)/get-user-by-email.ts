@@ -4,7 +4,6 @@ import prisma from "@/lib/prisma";
 import createDto from "../(lib)/create-dto";
 
 async function getUserByEmail(email: string): Promise<typeof userDto | any> {
-  console.log(email);
   const user = await prisma.user.findUnique({
     where: {
       email: email,

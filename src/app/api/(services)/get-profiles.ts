@@ -59,7 +59,6 @@ async function getProfiles({
     },
   }); */
   const profilesDto = createDto(profiles, ["user.password"]);
-  console.log(profilesDto);
   return profilesDto as typeof profilesDto;
 }
 

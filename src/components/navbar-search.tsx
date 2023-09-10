@@ -1,5 +1,4 @@
 import useDebounce from "@/hooks/use-debounce";
-import { getUsers } from "@/services/user/get-users";
 import { ChatBubbleOvalLeftEllipsisIcon } from "@heroicons/react/24/solid";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
@@ -30,22 +29,19 @@ export default function NavbarSearch({}: NavbarSearchProps) {
     const value = e.target.value;
     setFilterValue(value);
   };
-  console.log("Is open", isOpen);
   useDebounce({
     value: filterValue,
     delay: 1000,
     onDebounce: async (value) => {
       if (value.length > 0) {
         setFetchingUsers(true);
-
-        const users: any = await getUsers({
-          page: 1,
-          limit: 10,
-          async onSuccess(data) {
-            console.log("Data", data);
-          },
-        });
-        console.log(users);
+        const queryObject = {
+          criteria: value,
+          take: 10,
+          skip: 0,
+        }; /* 
+        const { users } = getUsersByCriteria(queryObject);
+        console.log(users); */
         setFetchingUsers(false);
         toast.success("Usuários carregados com sucesso");
         /* setFilteredUsers(users); */
@@ -54,7 +50,6 @@ export default function NavbarSearch({}: NavbarSearchProps) {
     },
   });
   React.useEffect(() => {}, [filterValue]);
-  console.log(isOpen);
   return (
     <div className="relative w-full px-0 lg:mx-20">
       <div className="relative flex">
