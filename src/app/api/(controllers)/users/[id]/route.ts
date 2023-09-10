@@ -1,4 +1,4 @@
-import prisma from "@/lib/prisma";
+import getUserByIdService from "@/app/api/(services)/get-user-by-id";
 import { NextResponse } from "next/server";
 
 export async function GET(
@@ -7,16 +7,7 @@ export async function GET(
 ) {
   try {
     const { id } = params;
-    const user = await prisma.user.findUnique({
-      where: {
-        id,
-      },
-      include: {
-        profile: true,
-        plan: true,
-        announcements: true,
-      },
-    });
+    const user = await getUserByIdService(id);
     if (!user) {
       throw NextResponse.json(
         {
@@ -26,9 +17,7 @@ export async function GET(
         { status: 404 },
       );
     }
-    const { password, ...userDto } = user;
-
-    return NextResponse.json({ data: userDto }, { status: 200 });
+    return NextResponse.json({ data: user }, { status: 200 });
   } catch (error: any) {
     return NextResponse.json(
       { error: error.message, errorDetails: { ...error } },

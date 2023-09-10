@@ -1,24 +1,9 @@
+import clearRecoveryAttempts from "@/app/api/(services)/clear-recovery-attempts";
 import prisma from "@/lib/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { compare } from "bcrypt";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-const clearRecoveryAttempts = async (user: any) => {
-  await prisma.recoveryRequest.deleteMany({
-    where: {
-      email: user.email,
-    },
-  });
-  await prisma.user.update({
-    where: {
-      id: user.id,
-    },
-    data: {
-      recoveryAttempts: 0,
-    },
-  });
-};
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -84,7 +69,6 @@ export const authOptions: NextAuthOptions = {
         }
 
         if (isPasswordMatch) {
-          // Any object returned will be saved in `user` property of the JWT
           const user = {
             id: existingUser.id,
             email: existingUser.email,
@@ -102,7 +86,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async session({ session, token }) {
       const { sub: id } = token;
-      const user = await prisma.user.findUnique({
+      const user = await prisma.user.findFirst({
         where: {
           id,
         },

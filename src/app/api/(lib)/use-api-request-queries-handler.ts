@@ -1,5 +1,5 @@
 "use server";
-export async function apiRequestQueryMounter(req: Request) {
+async function apiRequestQueryMounter(req: Request) {
   const url = new URL(req.url as any);
   const queryObject: any = {};
   url.searchParams.forEach((value, key) => {
@@ -7,3 +7,4 @@ export async function apiRequestQueryMounter(req: Request) {
   });
   return { ...queryObject };
 }
+export default apiRequestQueryMounter;

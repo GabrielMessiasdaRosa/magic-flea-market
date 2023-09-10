@@ -1,4 +1,4 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/(controllers)/auth/[...nextauth]/route";
 import AuthCardsShowoff from "@/components/auth-cards-showoff";
 import LoginForm from "@/components/login-form";
 import prisma from "@/lib/prisma";

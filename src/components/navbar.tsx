@@ -2,6 +2,7 @@ import { signOut, useSession } from "next-auth/react";
 import React from "react";
 import toast, { Toaster } from "react-hot-toast";
 import MfmBrandLogo from "./mfm-brand-logo";
+import NavbarSearch from "./navbar-search";
 import {
   Avatar,
   Button,
@@ -9,7 +10,6 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Input,
   Link,
   Navbar as NUINavbar,
   NavbarContent,
@@ -42,15 +42,16 @@ export default function Navbar({}: NavbarProps) {
     navigator.clipboard.writeText(user?.profile.nickname!);
     toast.success("Nome de usuário copiado para a área de transferência");
   };
+
   return (
     <NUINavbar
       isBlurred
       height={"100px"}
       shouldHideOnScroll
       maxWidth="full"
-      className="h-36 lg:h-24 shadow-sm"
+      className="h-36 shadow-sm lg:h-24"
     >
-      <div className="flex items-center  flex-col lg:flex-row h-fit justify-between w-full">
+      <div className="flex h-fit  w-full flex-col items-center justify-between lg:flex-row">
         <div className="scale-90 lg:scale-100 ">
           <MfmBrandLogo />
         </div>
@@ -82,7 +83,7 @@ export default function Navbar({}: NavbarProps) {
                   </NavbarMenuItem>
                 ))
               ) : (
-                <div className="mt-10 gap-4 flex flex-col">
+                <div className="mt-10 flex flex-col gap-4">
                   <NavbarMenuItem>
                     <Button
                       as={Link}
@@ -112,34 +113,7 @@ export default function Navbar({}: NavbarProps) {
               )}
             </NavbarMenu>
 
-            <NavbarContent justify="center" className="w-full lg:px-32">
-              <Input
-                color="primary"
-                className=""
-                radius="full"
-                variant="faded"
-                classNames={{
-                  base: "flex-1 h-10",
-                  mainWrapper: "h-full",
-                  input: "text-small",
-                  inputWrapper: "h-full font-normal text-default-500  w-full",
-                }}
-                placeholder="Pesquise por uma carta ou usuário"
-                size="sm"
-                type="search"
-                endContent={
-                  <Button
-                    color="primary"
-                    variant="solid"
-                    size="sm"
-                    radius="full"
-                    className="h-full"
-                  >
-                    Pesquisar
-                  </Button>
-                }
-              />
-            </NavbarContent>
+            <NavbarSearch />
             {/* <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
           <Link color="foreground" href="#">
@@ -179,7 +153,7 @@ export default function Navbar({}: NavbarProps) {
                     >
                       <DropdownItem
                         as={"button"}
-                        className={`transition-all h-14 gap-2 text-start`}
+                        className={`h-14 gap-2 text-start transition-all`}
                         onClick={handleCopyNicknameToClipboard}
                       >
                         <p className="font-semibold">{user?.name}</p>
