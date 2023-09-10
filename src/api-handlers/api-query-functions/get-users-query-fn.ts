@@ -1,5 +1,5 @@
-import clientApi from "@/api-hooks/client-api";
 import UserType from "@/types/user-type";
+import clientApi from "../api-hooks/client-api";
 
 async function getUsersQueryFn(): Promise<UserType[]> {
   try {

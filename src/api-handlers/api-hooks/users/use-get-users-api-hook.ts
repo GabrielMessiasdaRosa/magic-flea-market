@@ -1,6 +1,5 @@
 "use client";
-
-import getUsersQueryFn from "@/api-query-functions/get-users-query-fn";
+import getUsersQueryFn from "@/api-handlers/api-query-functions/get-users-query-fn";
 import UserType from "@/types/user-type";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
