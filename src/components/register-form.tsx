@@ -2,6 +2,7 @@
 import { useCreateUser } from "@/api-handlers/api-hooks/users/use-create-new-user";
 import CreateUserSchemaZod from "@/zod/create-user-schema-zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Toaster } from "react-hot-toast";
 import * as z from "zod";
@@ -13,6 +14,7 @@ import PasswordChecker from "./password-checker";
 export interface RegisterFormProps {}
 
 export default function RegisterForm({}: RegisterFormProps) {
+  const route = useRouter();
   const {
     register,
     handleSubmit,
@@ -24,7 +26,10 @@ export default function RegisterForm({}: RegisterFormProps) {
   const password = watch("password");
   const { fetch, pending } = useCreateUser();
   const onSubmit = async (values: z.infer<typeof CreateUserSchemaZod>) => {
+    route.prefetch("/login");
+
     fetch(values);
+    route.push("/login");
   };
 
   return (

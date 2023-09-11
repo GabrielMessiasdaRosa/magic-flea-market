@@ -1,4 +1,7 @@
+import getUserByEmail from "@/app/api/(services)/get-user-by-email";
 import * as z from "zod";
+import debounce from "./debounce";
+
 const CreateUserSchemaZod = z
   .object({
     username: z
@@ -24,21 +27,20 @@ const CreateUserSchemaZod = z
 
     confirmPassword: z.string().nonempty("Confirmação de senha é obrigatório"),
   })
-  .refine((data) => data.password === data.confirmPassword, {
-    path: ["confirmPassword"],
-    message: "Senhas não conferem",
-  })
-  .refine((data) => data.email !== data.password, {
-    path: ["password"],
-    message: "Senha não pode ser igual ao email",
-  })
-  .refine((data) => data.username !== data.password, {
-    path: ["password"],
-    message: "Senha não pode ser igual ao username",
-  })
-  .refine((data) => data.username !== data.email, {
-    path: ["email"],
-    message: "Email não pode ser igual ao username",
-  });
-
+  .refine(
+    debounce(
+      async ({ email }) => {
+        const user = await getUserByEmail(email);
+        if (!user) {
+          return true;
+        }
+        return false;
+      },
+      1000, // 1000 milissegundos (1 segundo) de debounce
+    ),
+    {
+      path: ["email"],
+      message: "Já existe um usuário com este email",
+    },
+  );
 export default CreateUserSchemaZod;

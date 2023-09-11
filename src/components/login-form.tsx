@@ -48,7 +48,6 @@ export default function LoginForm({}: LoginFormProps) {
 
     if (loginResponse?.error === null) {
       updateStatus("success");
-      toast.success("Login realizado com sucesso");
       setAsyncErrors({});
       return router.push("/");
     }
