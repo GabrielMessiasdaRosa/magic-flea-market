@@ -10,9 +10,9 @@ import LoadingIcon from "./loading-icon";
 import MfmBrandLogo from "./mfm-brand-logo";
 import { Button, Input, Link } from "./next-ui-exports";
 
-export interface RequestPasswordFormProps {}
+export interface RecoveryAccFormProps {}
 
-export default function RequestNewPasswordForm({}: RequestPasswordFormProps) {
+export default function RecoveryAccForm({}: RecoveryAccFormProps) {
   const { status, updateStatus, finished } = handleRequestNewPasswordStore();
   const {
     register,
@@ -26,7 +26,6 @@ export default function RequestNewPasswordForm({}: RequestPasswordFormProps) {
   ) => {
     updateStatus("pending");
     const res = await postNewPasswordRequestService(data.email);
-    console.log(res);
 
     if (res.status === 200) {
       updateStatus("success");

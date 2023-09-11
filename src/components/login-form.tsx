@@ -55,6 +55,9 @@ export default function LoginForm({}: LoginFormProps) {
   React.useEffect(() => {
     setAsyncErrors({});
   }, [email, password]);
+  React.useEffect(() => {
+    toast.dismiss();
+  }, []);
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

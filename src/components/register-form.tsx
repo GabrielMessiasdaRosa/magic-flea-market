@@ -27,9 +27,7 @@ export default function RegisterForm({}: RegisterFormProps) {
   const { fetch, pending } = useCreateUser();
   const onSubmit = async (values: z.infer<typeof CreateUserSchemaZod>) => {
     route.prefetch("/login");
-
     fetch(values);
-    route.push("/login");
   };
 
   return (

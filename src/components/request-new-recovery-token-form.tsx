@@ -1,8 +1,13 @@
 "use client";
-import { validPassword } from "@/lib/validate-password";
-import React, { useState } from "react";
+
+import { postNewPasswordByToken } from "@/api-handlers/api-hooks/users/use-create-new-password-by-token";
+import SetNewPasswordSchemaZod from "@/zod/set-new-password-schema-zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Toaster, toast } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
+import { z } from "zod";
 import LoadingIcon from "./loading-icon";
 import MfmBrandLogo from "./mfm-brand-logo";
 import { Button, Input } from "./next-ui-exports";
@@ -17,98 +22,31 @@ export default function RequestNewRecoveryTokenForm({
   token,
   email,
 }: SetNewPasswordRecoveryFormProps) {
-  const [loading, setLoading] = useState(false);
-
   const [isPasswordSent, setIsPasswordSent] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const route = useRouter();
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-    setError,
-    clearErrors,
-  } = useForm();
+  } = useForm<z.infer<typeof SetNewPasswordSchemaZod>>({
+    resolver: zodResolver(SetNewPasswordSchemaZod),
+  });
   const password = watch("password");
-
-  const onSubmit = async (data: any) => {
+  const { fetch, pending } = postNewPasswordByToken();
+  const onSubmit = async (data: z.infer<typeof SetNewPasswordSchemaZod>) => {
     const dataWithToken = {
       newPassword: data.password,
       token,
       email,
     };
-    setLoading(true);
-    const res = await fetch("/api/user/forgot-password/set-new", {
-      method: "POST",
-      body: JSON.stringify(dataWithToken),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const responseMessage =
-      {
-        [200]: "Senha atualizada!",
-        [400]: "Link de recuperação de senha expirado ou inválido.",
-        [500]: "Erro interno",
-      }[res.status] || "Erro desconhecido";
-    if (!res.ok) {
-      setLoading(false);
-      switch (res.status) {
-        case 500: {
-          toast.error(responseMessage);
-          break;
-        }
-        case 400: {
-          toast.error(responseMessage);
-          break;
-        }
-        default: {
-          toast.error(responseMessage);
-          break;
-        }
-      }
-      return;
-    }
+    setIsLoading(true);
+
+    route.prefetch("/login");
+    fetch(dataWithToken);
     setIsPasswordSent(true);
   };
-
-  React.useEffect(() => {
-    clearErrors("password");
-    clearErrors("invalidEmailFormat");
-    const password = watch("password");
-    const passwordConfirmation = watch("passwordConfirmation");
-
-    if (passwordConfirmation?.length > 0 && password.length > 0) {
-      if (passwordConfirmation !== password) {
-        setError("passwordConfirmation", {
-          type: "manual",
-          message: "As senhas não coincidem",
-        });
-      }
-      if (!validPassword(password)) {
-        setError("password", {
-          type: "pattern",
-        });
-        setError("invalidEmailFormat", {
-          type: "pattern",
-        });
-      }
-    }
-  }, [watch("password")]);
-
-  React.useEffect(() => {
-    clearErrors("passwordConfirmation");
-    const password = watch("password");
-    const passwordConfirmation = watch("passwordConfirmation");
-
-    if (passwordConfirmation?.length > 0 && password.length > 0) {
-      if (passwordConfirmation !== password) {
-        setError("passwordConfirmation", {
-          type: "manual",
-          message: "As senhas não coincidem",
-        });
-      }
-    }
-  }, [watch("passwordConfirmation")]);
 
   return (
     <>
@@ -155,10 +93,13 @@ export default function RequestNewRecoveryTokenForm({
           </div>
         </div>
       ) : (
-        <form className="flex h-full w-3/4 flex-col items-center justify-center gap-4  space-y-10 xl:text-gray-800">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex h-full w-3/4 flex-col items-center justify-center gap-4  space-y-10 xl:text-gray-800"
+        >
           <div className="flex flex-col items-center justify-center text-center ">
             <span className="text-2xl font-light md:text-4xl">
-              <MfmBrandLogo fontDefinition="text-white lg:text-primary-950" />
+              <MfmBrandLogo fontDefinition="text-white xl:text-primary-950" />
             </span>
             <h1 className="text-2xl font-bold md:text-4xl">Recuperar conta</h1>
             <p className="mt-2 text-sm md:text-lg">
@@ -167,20 +108,14 @@ export default function RequestNewRecoveryTokenForm({
           </div>
           <div className="flex w-full flex-col gap-3">
             <Input
-              disabled={loading}
+              disabled={isLoading}
               {...register("password", { required: true })}
-              validationState={
-                errors?.password || errors?.passwordConfirmation
-                  ? "invalid"
-                  : "valid"
-              }
+              validationState={errors?.password ? "invalid" : "valid"}
               errorMessage={(errors?.password?.message as string) || undefined}
               endContent={
                 <svg
                   className={`h-6 w-6 ${
-                    errors?.password || errors?.passwordConfirmation
-                      ? "text-rose-500"
-                      : "text-gray-500"
+                    errors?.password ? "text-rose-500" : "text-gray-500"
                   }`}
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -202,18 +137,18 @@ export default function RequestNewRecoveryTokenForm({
               variant="flat"
             />{" "}
             <Input
-              disabled={loading}
-              {...register("passwordConfirmation", { required: true })}
+              disabled={isLoading}
+              {...register("confirmPassword", { required: true })}
               validationState={
-                Boolean(errors?.passwordConfirmation) ? "invalid" : "valid"
+                Boolean(errors?.confirmPassword) ? "invalid" : "valid"
               }
               errorMessage={
-                (errors?.passwordConfirmation?.message as string) || undefined
+                (errors?.confirmPassword?.message as string) || undefined
               }
               endContent={
                 <svg
                   className={`h-6 w-6 ${
-                    Boolean(errors?.passwordConfirmation)
+                    Boolean(errors?.confirmPassword)
                       ? "text-rose-500"
                       : "text-gray-500"
                   }`}
@@ -239,53 +174,13 @@ export default function RequestNewRecoveryTokenForm({
             <PasswordChecker key={password} password={password} />
             <div className="mt-4 flex flex-1 flex-col gap-4">
               <Button
+                type="submit"
                 color="primary"
-                disabled={loading}
-                onClick={(e) => {
-                  e.preventDefault();
-                  let password = e.currentTarget.form?.password.value;
-                  let passwordConfirmation =
-                    e.currentTarget.form?.passwordConfirmation?.value;
-
-                  // password validation
-                  if (password.length === 0) {
-                    setError("password", {
-                      type: "required",
-                      message: "Senha é obrigatória",
-                    });
-                  }
-                  // password confirmation validation
-                  if (passwordConfirmation?.length === 0) {
-                    setError("passwordConfirmation", {
-                      type: "required",
-                      message: "Confirmação de senha é obrigatória",
-                    });
-                  } else if (passwordConfirmation !== password) {
-                    setError("passwordConfirmation", {
-                      type: "manual",
-                      message: "As senhas não coincidem",
-                    });
-                  }
-
-                  if (
-                    !Boolean(errors?.username) &&
-                    !Boolean(errors?.email) &&
-                    !Boolean(errors?.password) &&
-                    !Boolean(errors?.passwordConfirmation)
-                  ) {
-                    clearErrors();
-                    handleSubmit(onSubmit)();
-                  }
-                }}
+                disabled={isLoading}
                 className="w-full"
               >
-                {loading ? <LoadingIcon /> : "Atualizar senha"}
+                {isLoading ? <LoadingIcon /> : "Atualizar senha"}
               </Button>
-              <Button
-                as="a"
-                href="/"
-                className="w-full"
-              >{`Ir para a Home`}</Button>
             </div>
           </div>
           <Toaster />
