@@ -1,6 +1,6 @@
 "use client";
 
-import { postNewPasswordByToken } from "@/api-handlers/api-hooks/users/use-create-new-password-by-token";
+import { usePostNewPasswordByToken } from "@/api-handlers/api-hooks/users/use-create-new-password-by-token";
 import SetNewPasswordSchemaZod from "@/zod/set-new-password-schema-zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -34,7 +34,7 @@ export default function RequestNewRecoveryTokenForm({
     resolver: zodResolver(SetNewPasswordSchemaZod),
   });
   const password = watch("password");
-  const { fetch, pending } = postNewPasswordByToken();
+  const { fetch, pending } = usePostNewPasswordByToken();
   const onSubmit = async (data: z.infer<typeof SetNewPasswordSchemaZod>) => {
     const dataWithToken = {
       newPassword: data.password,
