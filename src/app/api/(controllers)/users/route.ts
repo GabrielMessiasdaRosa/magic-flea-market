@@ -1,9 +1,9 @@
 import { User } from "@prisma/client";
 import { NextResponse } from "next/server";
 import apiRequestQueryMounter from "../../(lib)/use-api-request-queries-handler";
-import createUser from "../../(services)/create-user";
-import getUserByEmail from "../../(services)/get-user-by-email";
-import getUsersService from "../../(services)/get-users";
+import createUser from "../../(server-actions)/create-user";
+import getUserByEmail from "../../(server-actions)/get-user-by-email";
+import getUsersService from "../../(server-actions)/get-users";
 
 export async function POST(req: Request, res: Response) {
   try {

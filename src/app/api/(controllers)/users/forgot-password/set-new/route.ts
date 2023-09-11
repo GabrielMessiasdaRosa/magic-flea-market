@@ -1,6 +1,6 @@
-import getRecoveryRequest from "@/app/api/(services)/get-recovery-request";
-import getUserByEmail from "@/app/api/(services)/get-user-by-email";
-import resetPassword from "@/app/api/(services)/reset-password";
+import getRecoveryRequest from "@/app/api/(server-actions)/get-recovery-request";
+import getUserByEmail from "@/app/api/(server-actions)/get-user-by-email";
+import resetPassword from "@/app/api/(server-actions)/reset-password";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {

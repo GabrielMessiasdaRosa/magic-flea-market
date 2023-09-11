@@ -1,4 +1,4 @@
-import getUserByEmail from "@/app/api/(services)/get-user-by-email";
+import getUserByEmail from "@/app/api/(server-actions)/get-user-by-email";
 import { z } from "zod";
 
 const PostNewPasswordRequestSchema = z.object({

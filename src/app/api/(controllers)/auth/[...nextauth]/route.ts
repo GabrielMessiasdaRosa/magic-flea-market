@@ -1,4 +1,4 @@
-import clearRecoveryAttempts from "@/app/api/(services)/clear-recovery-attempts";
+import clearRecoveryAttempts from "@/app/api/(server-actions)/clear-recovery-attempts";
 import prisma from "@/lib/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { compare } from "bcrypt";

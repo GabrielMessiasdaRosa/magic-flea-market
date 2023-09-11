@@ -1,4 +1,5 @@
-import getUserByEmail from "@/app/api/(services)/get-user-by-email";
+import getUserByEmail from "@/app/api/(server-actions)/get-user-by-email";
+import { ValidEmailProviders } from "@/constants/valid-email-providers";
 import * as z from "zod";
 import debounce from "./debounce";
 
@@ -27,6 +28,19 @@ const CreateUserSchemaZod = z
 
     confirmPassword: z.string().nonempty("Confirmação de senha é obrigatório"),
   })
+  .refine(
+    ({ email }) => {
+      const emailProvider = email.split("@")[1].split(".")[0];
+      if (ValidEmailProviders.includes(emailProvider)) {
+        return true;
+      }
+      return false;
+    },
+    {
+      path: ["email"],
+      message: "Provedor de email não é válido",
+    },
+  )
   .refine(
     debounce(
       async ({ email }) => {

@@ -1,4 +1,4 @@
-import getUserByIdService from "@/app/api/(services)/get-user-by-id";
+import getUserByIdService from "@/app/api/(server-actions)/get-user-by-id";
 import { NextResponse } from "next/server";
 
 export async function GET(

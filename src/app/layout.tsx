@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description:
     "O lugar ideal para negociar suas cartas de Magic: The Gathering",
   icons: {
-    icon: "./favicon.ico",
+    icon: "/images/favicon.ico",
   },
 };
 export default async function RootLayout({

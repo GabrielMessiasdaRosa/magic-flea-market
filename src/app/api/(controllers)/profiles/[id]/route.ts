@@ -1,4 +1,4 @@
-import getProfileByIdService from "@/app/api/(services)/get-profile-by-id";
+import getProfileByIdService from "@/app/api/(server-actions)/get-profile-by-id";
 import { NextResponse } from "next/server";
 
 export async function GET(

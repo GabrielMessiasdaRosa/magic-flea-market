@@ -47,7 +47,7 @@ export default function RegisterForm({}: RegisterFormProps) {
       </div>
       <div className="flex w-full flex-col gap-3">
         <Input
-          disabled={pending}
+          disabled={pending === "loading"}
           autoFocus
           {...register("username", { required: true })}
           validationState={errors.username ? "invalid" : "valid"}
@@ -77,7 +77,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           variant="flat"
         />
         <Input
-          disabled={pending}
+          disabled={pending === "loading"}
           {...register("email", { required: true })}
           autoFocus
           validationState={errors.email ? "invalid" : "valid"}
@@ -107,7 +107,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           variant="flat"
         />
         <Input
-          disabled={pending}
+          disabled={pending === "loading"}
           {...register("password", { required: true })}
           validationState={errors.password ? "invalid" : "valid"}
           errorMessage={(errors.password?.message as string) || undefined}
@@ -136,7 +136,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           variant="flat"
         />{" "}
         <Input
-          disabled={pending}
+          disabled={pending === "loading"}
           {...register("confirmPassword", { required: true })}
           validationState={errors.confirmPassword ? "invalid" : "valid"}
           errorMessage={
@@ -173,10 +173,10 @@ export default function RegisterForm({}: RegisterFormProps) {
           <Button
             type="submit"
             color="primary"
-            disabled={pending}
+            disabled={pending === "loading"}
             className="w-full"
           >
-            {pending ? <LoadingIcon /> : "Criar conta"}
+            {pending === "loading" ? <LoadingIcon /> : "Criar conta"}
           </Button>
         </div>
         <div className="flex justify-end gap-2 px-1 py-2 font-medium">

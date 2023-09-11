@@ -1,3 +1,5 @@
+"use server";
+
 import prisma from "@/lib/prisma";
 
 async function getRecoveryRequest(email: string, token: string) {

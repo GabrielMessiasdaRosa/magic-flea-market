@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import apiRequestQueryMounter from "../../(lib)/use-api-request-queries-handler";
-import getProfiles from "../../(services)/get-profiles";
+import getProfiles from "../../(server-actions)/get-profiles";
 
 export async function GET(req: Request) {
   try {
