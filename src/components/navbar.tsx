@@ -50,9 +50,7 @@ export default function Navbar({}: NavbarProps) {
               <NavbarContent
                 justify="center"
                 className="flex lg:hidden"
-              >
-
-              </NavbarContent>
+              ></NavbarContent>
             </div>
           </NavbarContent>
         </div>
