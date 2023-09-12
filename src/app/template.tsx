@@ -16,12 +16,10 @@ export default function Template({
   if (isLoginContext) {
     return <div>{children}</div>;
   }
-  if (pathname === "/") {
-    return (
-      <div>
-        <Navbar />
-        {children}
-      </div>
-    );
-  }
+  return (
+    <div>
+      <Navbar />
+      {children}
+    </div>
+  );
 }

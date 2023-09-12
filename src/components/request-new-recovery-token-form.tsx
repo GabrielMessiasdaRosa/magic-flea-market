@@ -108,6 +108,7 @@ export default function RequestNewRecoveryTokenForm({
           </div>
           <div className="flex w-full flex-col gap-3">
             <Input
+              radius="lg"
               disabled={isLoading}
               {...register("password", { required: true })}
               validationState={errors?.password ? "invalid" : "valid"}
@@ -137,6 +138,7 @@ export default function RequestNewRecoveryTokenForm({
               variant="flat"
             />{" "}
             <Input
+              radius="lg"
               disabled={isLoading}
               {...register("confirmPassword", { required: true })}
               validationState={

@@ -74,6 +74,7 @@ export default function LoginForm({}: LoginFormProps) {
       </div>
       <div className="flex w-full flex-col gap-3">
         <Input
+          radius="lg"
           {...register("email", { required: true })}
           validationState={
             errors.email || asyncErrors.email ? "invalid" : "valid"
@@ -105,6 +106,7 @@ export default function LoginForm({}: LoginFormProps) {
           variant="flat"
         />
         <Input
+          radius="lg"
           {...register("password", { required: true })}
           validationState={
             errors.password || asyncErrors.email ? "invalid" : "valid"
@@ -138,6 +140,7 @@ export default function LoginForm({}: LoginFormProps) {
         />{" "}
         <div className="flex-1">
           <Button
+            radius="lg"
             color="primary"
             disabled={status === "pending"}
             type="submit"

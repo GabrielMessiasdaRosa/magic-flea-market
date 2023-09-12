@@ -66,6 +66,7 @@ export default function RecoveryAccForm({}: RecoveryAccFormProps) {
             </div>
             <div>
               <Button
+                radius="lg"
                 size="lg"
                 as={"a"}
                 href="/login"
@@ -108,6 +109,7 @@ export default function RecoveryAccForm({}: RecoveryAccFormProps) {
           </div>
           <div className="flex w-full flex-col gap-3">
             <Input
+              radius="lg"
               disabled={status === "pending"}
               {...register("email", { required: true })}
               validationState={errors.email ? "invalid" : "valid"}
@@ -139,6 +141,7 @@ export default function RecoveryAccForm({}: RecoveryAccFormProps) {
             />
             <div className="flex-1">
               <Button
+                radius="lg"
                 color="primary"
                 disabled={status === "pending"}
                 type="submit"

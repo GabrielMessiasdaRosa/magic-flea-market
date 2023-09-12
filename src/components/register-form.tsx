@@ -47,6 +47,7 @@ export default function RegisterForm({}: RegisterFormProps) {
       </div>
       <div className="flex w-full flex-col gap-3">
         <Input
+          radius="lg"
           disabled={pending === "loading"}
           autoFocus
           {...register("username", { required: true })}
@@ -77,6 +78,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           variant="flat"
         />
         <Input
+          radius="lg"
           disabled={pending === "loading"}
           {...register("email", { required: true })}
           autoFocus
@@ -107,6 +109,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           variant="flat"
         />
         <Input
+          radius="lg"
           disabled={pending === "loading"}
           {...register("password", { required: true })}
           validationState={errors.password ? "invalid" : "valid"}
@@ -136,6 +139,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           variant="flat"
         />{" "}
         <Input
+          radius="lg"
           disabled={pending === "loading"}
           {...register("confirmPassword", { required: true })}
           validationState={errors.confirmPassword ? "invalid" : "valid"}
@@ -171,6 +175,7 @@ export default function RegisterForm({}: RegisterFormProps) {
         <PasswordChecker key={password} password={password} />
         <div className="mt-4 flex-1">
           <Button
+            radius="lg"
             type="submit"
             color="primary"
             disabled={pending === "loading"}
