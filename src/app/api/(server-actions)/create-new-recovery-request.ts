@@ -1,3 +1,5 @@
+"use server";
+
 import { generateUniqueToken } from "@/lib/generate-unique-token";
 import prisma from "@/lib/prisma";
 import addRecoveryAttempt from "./add-recovery-attempt";

@@ -1,5 +1,5 @@
-import createNewRecoveryRequest from "@/app/api/(services)/create-new-recovery-request";
-import getUserByEmail from "@/app/api/(services)/get-user-by-email";
+import createNewRecoveryRequest from "@/app/api/(server-actions)/create-new-recovery-request";
+import getUserByEmail from "@/app/api/(server-actions)/get-user-by-email";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -13,6 +13,9 @@ export async function POST(req: Request) {
       );
     } else {
       await createNewRecoveryRequest(email);
+      console.log(
+        await NextResponse.json({ message: "Success" }, { status: 200 }),
+      );
       return NextResponse.json({ message: "Success" }, { status: 200 });
     }
   } catch (error: any) {

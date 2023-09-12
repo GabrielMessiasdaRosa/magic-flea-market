@@ -1,15 +1,14 @@
 "use client";
 
-import getUsersQueryFn from "@/api-query-functions/get-users-query-fn";
+import getUsersService from "@/api-handlers/api-services/get-users-service";
 import UserType from "@/types/user-type";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 
 export const useGetUsers = () => {
   const queryClient = useQueryClient();
   const { data, error, status } = useQuery<UserType[]>({
     queryKey: ["users"],
-    queryFn: getUsersQueryFn,
+    queryFn: getUsersService,
     initialDataUpdatedAt: () =>
       queryClient.getQueryState(["users"])?.dataUpdatedAt,
     initialData: () => {
@@ -22,11 +21,9 @@ export const useGetUsers = () => {
     },
     onSuccess: (data) => {
       queryClient.setQueryData(["users"], data);
-      toast.success("Users fetched successfully");
     },
     onError: (error) => {
-      console.log(error);
-      toast.error("Error fetching users");
+      console.log("Something went wrong: ", { message: error });
     },
   });
   return {

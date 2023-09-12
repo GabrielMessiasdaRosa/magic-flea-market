@@ -1,4 +1,3 @@
-"use server";
 import nodemailer from "nodemailer";
 
 export async function sendMail(
@@ -75,10 +74,10 @@ export async function sendMail(
         </style>
     </head>
     <body>
+    <span style="opacity: 0">${new Date()}</span>
         <div class="container">
-            <div>
-            <a href="https://ibb.co/0M9TQRP"><img src="https://i.ibb.co/WyzZs4S/Screenshot-from-2023-09-08-22-07-58-removebg-preview.png" alt="Screenshot-from-2023-09-08-22-07-58-removebg-preview" border="0"></a>
-            </div>
+            <a href="https://ibb.co/0M9TQRP"><img src="https://i.ibb.co/WyzZs4S/Screenshot-from-2023-09-08-22-07-58-removebg-preview.png" border="0"></a>
+            
             <h1>Recuperação de Senha</h1>
             <p>Olá,</p>
             <p>Recebemos uma solicitação de recuperação de senha para a sua conta no Magic Flea Market. Clique no botão abaixo para redefinir a sua senha:</p>
@@ -89,6 +88,7 @@ export async function sendMail(
                 <p>Magic Flea Market &copy; 2023</p>
             </footer>
         </div>
+        <span style="opacity: 0">${new Date()}</span>
     </body>
     </html>
   `;

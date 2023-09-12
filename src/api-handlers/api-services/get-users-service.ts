@@ -1,7 +1,7 @@
-import clientApi from "@/api-hooks/client-api";
 import UserType from "@/types/user-type";
+import clientApi from "../api-hooks/client-api";
 
-async function getUsersQueryFn(): Promise<UserType[]> {
+async function getUsersService(): Promise<UserType[]> {
   try {
     const res = await clientApi.get("/users");
     return (res?.data.data || []) as UserType[];
@@ -9,4 +9,4 @@ async function getUsersQueryFn(): Promise<UserType[]> {
     throw error;
   }
 }
-export default getUsersQueryFn;
+export default getUsersService;

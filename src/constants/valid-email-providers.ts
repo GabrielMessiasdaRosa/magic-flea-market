@@ -1,0 +1,17 @@
+export const ValidEmailProviders = [
+  "gmail",
+  "hotmail",
+  "outlook",
+  "yahoo",
+  "bol",
+  "uol",
+  "icloud",
+  "protonmail",
+  "aol",
+  "gmx",
+  "yandex",
+  "zoho",
+  "tutanota",
+  "mail",
+  "testqa",
+];

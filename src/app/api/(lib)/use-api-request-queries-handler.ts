@@ -1,4 +1,3 @@
-"use server";
 async function apiRequestQueryMounter(req: Request) {
   const url = new URL(req.url as any);
   const queryObject: any = {};
