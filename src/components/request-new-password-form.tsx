@@ -8,7 +8,7 @@ import { Toaster } from "react-hot-toast";
 import { z } from "zod";
 
 import MfmBrandLogo from "./mfm-brand-logo";
-import { Button, Input, Link } from "./next-ui-exports";
+import { Button, Input, Link, Spinner } from "./next-ui-exports";
 
 export interface RecoveryAccFormProps {}
 
@@ -148,7 +148,7 @@ export default function RecoveryAccForm({}: RecoveryAccFormProps) {
                 className="w-full"
               >
                 {status === "pending" ? (
-                  <Spinner />
+                  <Spinner color="white" />
                 ) : (
                   "Enviar email de recuperação"
                 )}

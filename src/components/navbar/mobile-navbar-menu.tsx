@@ -52,14 +52,12 @@ export default function MobileNavbarMenu({}: MobileNavbarMenuProps) {
     setIsOpen(false);
   }, [pathname]);
   return (
-    <>
-      <NavbarContent className="lg:hidden" justify="start">
-        <NavbarMenuToggle
-          className="h-10 w-10"
-          aria-label={isOpen ? "Close menu" : "Open menu"}
-        />
-      </NavbarContent>
-      <NavbarMenu className="mt-12 max-h-[80dvh] justify-between bg-white scrollbar-hide">
+    <NavbarContent className="lg:hidden" justify="end">
+      <NavbarMenuToggle
+        className="h-10 w-10 text-primary-50"
+        aria-label={isOpen ? "Close menu" : "Open menu"}
+      />
+      <NavbarMenu className="justify-between bg-white scrollbar-hide">
         <NavbarMenuItem className="flex flex-col gap-2">
           <NavbarMenuItem className="w-full pb-4 pt-3">
             <Link
@@ -76,28 +74,55 @@ export default function MobileNavbarMenu({}: MobileNavbarMenuProps) {
           </NavbarMenuItem>
           {NavbarMenuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
-              <Link
-                className={` ${
-                  pathname.endsWith(item.path)
-                    ? "bg-primary-50  text-primary-500"
-                    : "text-primary-950"
-                } flex items-center gap-2 rounded-xl  p-2 active:bg-primary-50`}
-                href={item.path}
-              >
-                {
+              {item.private ? (
+                <Private key={index} withLoading>
+                  <Link
+                    className={` ${
+                      pathname.endsWith(item.path)
+                        ? "bg-primary-50  text-primary-500"
+                        : "text-primary-950"
+                    } flex items-center gap-2 rounded-xl  p-2 active:bg-primary-50`}
+                    href={item.path}
+                  >
+                    {
+                      {
+                        0: <HomeIcon className="h-4 w-4 text-primary-900/80" />,
+                        1: <CardIcon className="h-4 w-4 text-primary-900/80" />,
+                        2: (
+                          <ChatBubbleOvalLeftIcon className="h-4 w-4 text-primary-900/80" />
+                        ),
+                        3: (
+                          <QueueListIcon className="h-4 w-4 text-primary-900/80" />
+                        ),
+                      }[index]
+                    }
+                    <span className="text-sm">{item.name}</span>
+                  </Link>
+                </Private>
+              ) : (
+                <Link
+                  className={` ${
+                    pathname.endsWith(item.path)
+                      ? "bg-primary-50  text-primary-500"
+                      : "text-primary-950"
+                  } flex items-center gap-2 rounded-xl  p-2 active:bg-primary-50`}
+                  href={item.path}
+                >
                   {
-                    0: <HomeIcon className="h-4 w-4 text-primary-900/80" />,
-                    1: <CardIcon className="h-4 w-4 text-primary-900/80" />,
-                    2: (
-                      <ChatBubbleOvalLeftIcon className="h-4 w-4 text-primary-900/80" />
-                    ),
-                    3: (
-                      <QueueListIcon className="h-4 w-4 text-primary-900/80" />
-                    ),
-                  }[index]
-                }
-                <span className="text-sm">{item.name}</span>
-              </Link>
+                    {
+                      0: <HomeIcon className="h-4 w-4 text-primary-900/80" />,
+                      1: <CardIcon className="h-4 w-4 text-primary-900/80" />,
+                      2: (
+                        <ChatBubbleOvalLeftIcon className="h-4 w-4 text-primary-900/80" />
+                      ),
+                      3: (
+                        <QueueListIcon className="h-4 w-4 text-primary-900/80" />
+                      ),
+                    }[index]
+                  }
+                  <span className="text-sm">{item.name}</span>
+                </Link>
+              )}
             </NavbarMenuItem>
           ))}
           <Divider />
@@ -186,6 +211,6 @@ export default function MobileNavbarMenu({}: MobileNavbarMenuProps) {
       </NavbarMenu>
       <LogoutConfirmationModal />
       <Toaster />
-    </>
+    </NavbarContent>
   );
 }

@@ -1,11 +1,7 @@
 import { mobileNavbarMenuStore } from "@/store/mobile-navbar-menu-store";
 import { Toaster } from "react-hot-toast";
-import MfmBrandLogo from "../mfm-brand-logo";
 import { Navbar as NUINavbar, NavbarContent } from "../next-ui-exports";
 import MobileNavbarMenu from "./mobile-navbar-menu";
-import NavbarDropdownMenu from "./navbar-dropdown-menu";
-import SearchCollapsableInput from "./search-collapsable-input";
-import UserDropdownMenu from "./user-dropdown-menu";
 export interface NavbarProps {}
 
 export default function Navbar({}: NavbarProps) {
@@ -16,41 +12,21 @@ export default function Navbar({}: NavbarProps) {
       isMenuOpen={isOpen}
       onMenuOpenChange={setIsOpen}
       isBlurred
-      height={"100px"}
+      height={"80px"}
       shouldHideOnScroll
       maxWidth="full"
-      className="h-36 shadow-sm lg:h-24"
+      className="h-20 shadow-sm lg:h-16 bg-primary-950"
     >
-      <div className="flex h-fit  w-full flex-col items-center justify-between lg:flex-row">
-        <div className="flex w-full items-center">
-          <NavbarContent
-            justify="start"
-            className="flex flex-col items-center md:flex-row"
-          >
-            <NavbarContent justify="center" className="flex">
-              <div className="scale-90 lg:scale-100 ">
-                <MfmBrandLogo />
-              </div>
-            </NavbarContent>
-            <div className="flex w-full items-center justify-evenly gap-2">
-              <NavbarContent justify="start" className="xl:w-1/2">
-                <div className="w-1/2">
-                  <SearchCollapsableInput />
-                </div>
-              </NavbarContent>
-              <NavbarContent justify="center" className="hidden lg:flex">
-                <NavbarDropdownMenu />
-              </NavbarContent>{" "}
-              <NavbarContent justify="center" className="hidden lg:flex">
-                <UserDropdownMenu />
-              </NavbarContent>
-              <NavbarContent justify="center" className="">
-                <MobileNavbarMenu />
-              </NavbarContent>
-            </div>
-          </NavbarContent>
+      <NavbarContent justify="start" className="flex">
+        <div className="scale-90 lg:scale-100 ">
+          <div className={`flex font-fancy text-5xl text-primary-50 `}>
+            <span className="-ml-2">M</span>
+            <span className="-ml-2">F</span>
+            <span className="-ml-2">M</span>
+          </div>
         </div>
-      </div>
+      </NavbarContent>
+      <MobileNavbarMenu />
 
       <Toaster />
     </NUINavbar>

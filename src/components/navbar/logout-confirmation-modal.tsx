@@ -22,6 +22,7 @@ export default function LogoutConfirmationModal({}: LogouConfirmationModal) {
       isOpen={isConfirmationModalOpen}
       placement={"auto"}
       className="w-full"
+      closeButton={<></>}
     >
       <ModalContent>
         {(onClose) => (

@@ -181,7 +181,7 @@ export default function RegisterForm({}: RegisterFormProps) {
             disabled={pending === "loading"}
             className="w-full"
           >
-            {pending === "loading" ? <Spinner /> : "Criar conta"}
+            {pending === "loading" ? <Spinner color="white" /> : "Criar conta"}
           </Button>
         </div>
         <div className="flex justify-end gap-2 px-1 py-2 font-medium">

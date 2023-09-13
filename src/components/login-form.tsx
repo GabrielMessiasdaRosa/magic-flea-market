@@ -10,7 +10,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { z } from "zod";
 
 import MfmBrandLogo from "./mfm-brand-logo";
-import { Button, Input, Link } from "./next-ui-exports";
+import { Button, Input, Link, Spinner } from "./next-ui-exports";
 
 export interface LoginFormProps {}
 
@@ -146,7 +146,7 @@ export default function LoginForm({}: LoginFormProps) {
             type="submit"
             className="w-full"
           >
-            {status === "pending" ? <Spinner /> : "Entrar"}
+            {status === "pending" ? <Spinner color="white"/> : "Entrar"}
           </Button>
         </div>
         <div className="flex flex-col justify-between px-1 py-2 font-medium 2xl:flex-row">
