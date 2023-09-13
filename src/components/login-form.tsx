@@ -8,9 +8,9 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { z } from "zod";
-import LoadingIcon from "./loading-icon";
+
 import MfmBrandLogo from "./mfm-brand-logo";
-import { Button, Input, Link } from "./next-ui-exports";
+import { Button, Input, Link, Spinner } from "./next-ui-exports";
 
 export interface LoginFormProps {}
 
@@ -74,6 +74,7 @@ export default function LoginForm({}: LoginFormProps) {
       </div>
       <div className="flex w-full flex-col gap-3">
         <Input
+          radius="lg"
           {...register("email", { required: true })}
           validationState={
             errors.email || asyncErrors.email ? "invalid" : "valid"
@@ -105,6 +106,7 @@ export default function LoginForm({}: LoginFormProps) {
           variant="flat"
         />
         <Input
+          radius="lg"
           {...register("password", { required: true })}
           validationState={
             errors.password || asyncErrors.email ? "invalid" : "valid"
@@ -138,12 +140,13 @@ export default function LoginForm({}: LoginFormProps) {
         />{" "}
         <div className="flex-1">
           <Button
+            radius="lg"
             color="primary"
             disabled={status === "pending"}
             type="submit"
             className="w-full"
           >
-            {status === "pending" ? <LoadingIcon /> : "Entrar"}
+            {status === "pending" ? <Spinner color="white"/> : "Entrar"}
           </Button>
         </div>
         <div className="flex flex-col justify-between px-1 py-2 font-medium 2xl:flex-row">

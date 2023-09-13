@@ -6,9 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Toaster } from "react-hot-toast";
 import { z } from "zod";
-import LoadingIcon from "./loading-icon";
+
 import MfmBrandLogo from "./mfm-brand-logo";
-import { Button, Input, Link } from "./next-ui-exports";
+import { Button, Input, Link, Spinner } from "./next-ui-exports";
 
 export interface RecoveryAccFormProps {}
 
@@ -66,6 +66,7 @@ export default function RecoveryAccForm({}: RecoveryAccFormProps) {
             </div>
             <div>
               <Button
+                radius="lg"
                 size="lg"
                 as={"a"}
                 href="/login"
@@ -108,6 +109,7 @@ export default function RecoveryAccForm({}: RecoveryAccFormProps) {
           </div>
           <div className="flex w-full flex-col gap-3">
             <Input
+              radius="lg"
               disabled={status === "pending"}
               {...register("email", { required: true })}
               validationState={errors.email ? "invalid" : "valid"}
@@ -139,13 +141,14 @@ export default function RecoveryAccForm({}: RecoveryAccFormProps) {
             />
             <div className="flex-1">
               <Button
+                radius="lg"
                 color="primary"
                 disabled={status === "pending"}
                 type="submit"
                 className="w-full"
               >
                 {status === "pending" ? (
-                  <LoadingIcon />
+                  <Spinner color="white" />
                 ) : (
                   "Enviar email de recuperação"
                 )}

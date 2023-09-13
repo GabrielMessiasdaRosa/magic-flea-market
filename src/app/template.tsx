@@ -1,6 +1,6 @@
 "use client";
 
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/navbar/navbar";
 import { usePathname } from "next/navigation";
 export default function Template({
   children,
@@ -16,12 +16,10 @@ export default function Template({
   if (isLoginContext) {
     return <div>{children}</div>;
   }
-  if (pathname === "/") {
-    return (
-      <div>
-        <Navbar />
-        {children}
-      </div>
-    );
-  }
+  return (
+    <div>
+      <Navbar />
+      {children}
+    </div>
+  );
 }

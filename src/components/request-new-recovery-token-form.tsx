@@ -8,9 +8,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Toaster } from "react-hot-toast";
 import { z } from "zod";
-import LoadingIcon from "./loading-icon";
+
 import MfmBrandLogo from "./mfm-brand-logo";
-import { Button, Input } from "./next-ui-exports";
+import { Button, Input, Spinner } from "./next-ui-exports";
 import PasswordChecker from "./password-checker";
 
 export interface SetNewPasswordRecoveryFormProps {
@@ -108,6 +108,7 @@ export default function RequestNewRecoveryTokenForm({
           </div>
           <div className="flex w-full flex-col gap-3">
             <Input
+              radius="lg"
               disabled={isLoading}
               {...register("password", { required: true })}
               validationState={errors?.password ? "invalid" : "valid"}
@@ -137,6 +138,7 @@ export default function RequestNewRecoveryTokenForm({
               variant="flat"
             />{" "}
             <Input
+              radius="lg"
               disabled={isLoading}
               {...register("confirmPassword", { required: true })}
               validationState={
@@ -179,7 +181,7 @@ export default function RequestNewRecoveryTokenForm({
                 disabled={isLoading}
                 className="w-full"
               >
-                {isLoading ? <LoadingIcon /> : "Atualizar senha"}
+                {isLoading ? <Spinner color="white" /> : "Atualizar senha"}
               </Button>
             </div>
           </div>

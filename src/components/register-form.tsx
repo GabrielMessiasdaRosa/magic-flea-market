@@ -6,9 +6,9 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Toaster } from "react-hot-toast";
 import * as z from "zod";
-import LoadingIcon from "./loading-icon";
+
 import MfmBrandLogo from "./mfm-brand-logo";
-import { Button, Input, Link } from "./next-ui-exports";
+import { Button, Input, Link, Spinner } from "./next-ui-exports";
 import PasswordChecker from "./password-checker";
 
 export interface RegisterFormProps {}
@@ -47,6 +47,7 @@ export default function RegisterForm({}: RegisterFormProps) {
       </div>
       <div className="flex w-full flex-col gap-3">
         <Input
+          radius="lg"
           disabled={pending === "loading"}
           autoFocus
           {...register("username", { required: true })}
@@ -77,6 +78,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           variant="flat"
         />
         <Input
+          radius="lg"
           disabled={pending === "loading"}
           {...register("email", { required: true })}
           autoFocus
@@ -107,6 +109,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           variant="flat"
         />
         <Input
+          radius="lg"
           disabled={pending === "loading"}
           {...register("password", { required: true })}
           validationState={errors.password ? "invalid" : "valid"}
@@ -136,6 +139,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           variant="flat"
         />{" "}
         <Input
+          radius="lg"
           disabled={pending === "loading"}
           {...register("confirmPassword", { required: true })}
           validationState={errors.confirmPassword ? "invalid" : "valid"}
@@ -171,12 +175,13 @@ export default function RegisterForm({}: RegisterFormProps) {
         <PasswordChecker key={password} password={password} />
         <div className="mt-4 flex-1">
           <Button
+            radius="lg"
             type="submit"
             color="primary"
             disabled={pending === "loading"}
             className="w-full"
           >
-            {pending === "loading" ? <LoadingIcon /> : "Criar conta"}
+            {pending === "loading" ? <Spinner color="white" /> : "Criar conta"}
           </Button>
         </div>
         <div className="flex justify-end gap-2 px-1 py-2 font-medium">
