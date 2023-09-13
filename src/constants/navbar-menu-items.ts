@@ -14,7 +14,7 @@ export const NavbarMenuItems = [
     private: false,
   },
   {
-    name: "Cartas",
+    name: "Todas as cartas",
     path: "/cards",
     icon: "cards",
     private: false,

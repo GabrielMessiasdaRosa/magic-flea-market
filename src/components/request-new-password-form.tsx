@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Toaster } from "react-hot-toast";
 import { z } from "zod";
-import LoadingIcon from "./loading-icon";
+
 import MfmBrandLogo from "./mfm-brand-logo";
 import { Button, Input, Link } from "./next-ui-exports";
 
@@ -148,7 +148,7 @@ export default function RecoveryAccForm({}: RecoveryAccFormProps) {
                 className="w-full"
               >
                 {status === "pending" ? (
-                  <LoadingIcon />
+                  <Spinner />
                 ) : (
                   "Enviar email de recuperação"
                 )}

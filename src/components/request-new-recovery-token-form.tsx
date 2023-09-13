@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Toaster } from "react-hot-toast";
 import { z } from "zod";
-import LoadingIcon from "./loading-icon";
+
 import MfmBrandLogo from "./mfm-brand-logo";
 import { Button, Input } from "./next-ui-exports";
 import PasswordChecker from "./password-checker";
@@ -181,7 +181,7 @@ export default function RequestNewRecoveryTokenForm({
                 disabled={isLoading}
                 className="w-full"
               >
-                {isLoading ? <LoadingIcon /> : "Atualizar senha"}
+                {isLoading ? <Spinner /> : "Atualizar senha"}
               </Button>
             </div>
           </div>

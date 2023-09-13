@@ -1,7 +1,7 @@
 "use client";
 
 import { searchCollapsableInputStore } from "@/store/search-collapsable-input-store";
-import { Input } from "./next-ui-exports";
+import { Input } from "../next-ui-exports";
 
 export interface SearchCollapsableInputProps {}
 

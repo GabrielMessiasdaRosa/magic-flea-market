@@ -3,8 +3,8 @@
 import { NavbarMenuItems } from "@/constants/navbar-menu-items";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NavbarItem } from "./next-ui-exports";
-import Private from "./private";
+import { NavbarItem } from "../next-ui-exports";
+import Private from "../private";
 
 export interface NavbatItemsListProps {}
 

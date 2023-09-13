@@ -1,9 +1,9 @@
 import { mobileNavbarMenuStore } from "@/store/mobile-navbar-menu-store";
 import { Toaster } from "react-hot-toast";
-import MfmBrandLogo from "./mfm-brand-logo";
+import MfmBrandLogo from "../mfm-brand-logo";
+import { Navbar as NUINavbar, NavbarContent } from "../next-ui-exports";
 import MobileNavbarMenu from "./mobile-navbar-menu";
-import NavbarItemsList from "./navbar-items";
-import { Button, Navbar as NUINavbar, NavbarContent } from "./next-ui-exports";
+import NavbarDropdownMenu from "./navbar-dropdown-menu";
 import SearchCollapsableInput from "./search-collapsable-input";
 import UserDropdownMenu from "./user-dropdown-menu";
 export interface NavbarProps {}
@@ -33,28 +33,18 @@ export default function Navbar({}: NavbarProps) {
               </div>
             </NavbarContent>
             <div className="flex w-full items-center justify-evenly gap-2">
-              <NavbarContent justify="start" className="lg:w-1/2">
-                <SearchCollapsableInput />
+              <NavbarContent justify="start" className="xl:w-1/2">
+                <div className="w-1/2">
+                  <SearchCollapsableInput />
+                </div>
               </NavbarContent>
-
-              <NavbarContent
-                justify="start"
-                className="hidden gap-4 px-8 lg:flex"
-              >
-                <NavbarItemsList />
-              </NavbarContent>
-
               <NavbarContent justify="center" className="hidden lg:flex">
-                <Button radius="lg" color="primary" variant="solid">
-                  Anunciar cartas
-                </Button>
-              </NavbarContent>
-
+                <NavbarDropdownMenu />
+              </NavbarContent>{" "}
               <NavbarContent justify="center" className="hidden lg:flex">
                 <UserDropdownMenu />
               </NavbarContent>
-
-              <NavbarContent justify="center" className="flex lg:hidden">
+              <NavbarContent justify="center" className="">
                 <MobileNavbarMenu />
               </NavbarContent>
             </div>

@@ -61,3 +61,7 @@
   background-color: #6366f1;
   border-radius: 0px;
 }
+
+input {
+  @apply !placeholder-gray-700/30;
+}

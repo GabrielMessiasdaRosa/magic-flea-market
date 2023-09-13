@@ -6,9 +6,9 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Toaster } from "react-hot-toast";
 import * as z from "zod";
-import LoadingIcon from "./loading-icon";
+
 import MfmBrandLogo from "./mfm-brand-logo";
-import { Button, Input, Link } from "./next-ui-exports";
+import { Button, Input, Link, Spinner } from "./next-ui-exports";
 import PasswordChecker from "./password-checker";
 
 export interface RegisterFormProps {}
@@ -181,7 +181,7 @@ export default function RegisterForm({}: RegisterFormProps) {
             disabled={pending === "loading"}
             className="w-full"
           >
-            {pending === "loading" ? <LoadingIcon /> : "Criar conta"}
+            {pending === "loading" ? <Spinner /> : "Criar conta"}
           </Button>
         </div>
         <div className="flex justify-end gap-2 px-1 py-2 font-medium">

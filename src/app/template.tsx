@@ -1,6 +1,6 @@
 "use client";
 
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/navbar/navbar";
 import { usePathname } from "next/navigation";
 export default function Template({
   children,
