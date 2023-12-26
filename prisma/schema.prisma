@@ -16,6 +16,35 @@ generator client {
 //   output   = "../ERD.png"
 // }
 
+// contexto de usuario 
+model User {
+  id               String    @id @unique @default(cuid())
+  name             String?
+  emailVerified    DateTime?
+  image            String?
+  email            String    @unique
+  username         String
+  password         String
+  recoveryAttempts Int       @default(0)
+
+  // Relacionamentos
+  planId        String?
+  plan          Plan?          @relation(fields: [planId], references: [id])
+  accounts      Account[]
+  sessions      Session[]
+  profile       Profile?
+  announcements Announcement[]
+
+  // Campos de controle
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  chat      Chat?     @relation(fields: [chatId], references: [id])
+  chatId    String?
+  messages  Message[]
+
+  @@map("users")
+}
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -45,33 +74,21 @@ model Session {
   @@map("sessions")
 }
 
-model User {
-  id            String    @id @unique @default(cuid())
-  name          String?
-  emailVerified DateTime?
-  image         String?
-  email         String    @unique
-  username      String    @unique
+model VerificationToken {
+  identifier String   @unique
+  token      String   @unique
+  expires    DateTime
 
-  // Relacionamentos
-  planId        String?
-  plan          Plan?          @relation(fields: [planId], references: [id])
-  accounts      Account[]
-  sessions      Session[]
-  profile       Profile?
-  announcements Announcement[]
-
-  // Campos de controle
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  chat      Chat?     @relation(fields: [chatId], references: [id])
-  chatId    String?
-  messages  Message[]
-
-  @@map("users")
+  @@map("verificationTokens")
 }
 
-// Modelo para perfil de usuário
+model RecoveryRequest {
+  id             String   @id @default(cuid())
+  email          String
+  token          String
+  expirationDate DateTime
+}
+
 model Profile {
   id               String  @id @unique @default(cuid())
   profileImage     String?
@@ -89,14 +106,18 @@ model Profile {
   @@map("profiles")
 }
 
-model VerificationToken {
-  identifier String   @unique
-  token      String   @unique
-  expires    DateTime
+model WantList {
+  id String @id @unique @default(cuid())
 
-  @@map("verificationTokens")
+  // Relacionamentos
+  profileId String  @unique
+  profile   Profile @relation(fields: [profileId], references: [id])
+  cards     Card[]
+
+  @@map("wantLists")
 }
 
+// Contexto de anúncios
 // Modelo para anúncios (Announcements)
 model Announcement {
   id               String           @id @unique @default(cuid())
@@ -119,34 +140,87 @@ model Announcement {
   @@map("announcements")
 }
 
-// Modelo para cartas mágicas
+// Contexto de cartas
 model Card {
-  id    String @id @unique @default(cuid())
-  name  String
-  color String
+  id String @id @unique @default(cuid())
 
-  // Campos de controle
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relacionamentos
-  wantLists     WantList[]
-  announcements Announcement[]
+  arena_id          Int?
+  name              String?
+  lang              String?
+  released_at       String?
+  layout            String?
+  highres_image     Boolean?
+  image_status      String?
+  image_uris        Json?
+  mana_cost         String?
+  cmc               Float?
+  type_line         String?
+  oracle_text       String?
+  power             String?
+  toughness         String?
+  colors            String[]       @default([])
+  color_identity    String[]       @default([])
+  keywords          String[]       @default([])
+  legalities        Json?
+  games             String[]       @default([])
+  reserved          Boolean?
+  foil              Boolean?
+  nonfoil           Boolean?
+  finishes          String[]       @default([])
+  oversized         Boolean?
+  promo             Boolean?
+  reprint           Boolean?
+  variation         Boolean?
+  set_id            String?
+  set               String?
+  set_name          String?
+  set_type          String?
+  set_uri           String?
+  card_faces        Json?
+  all_parts         Json?
+  search_uri        String?
+  produced_mana     String[]       @default([])
+  scryfall_set_uri  String?
+  rulings_uri       String?
+  prints_search_uri String?
+  collector_number  String?
+  digital           Boolean?
+  rarity            String?
+  flavor_text       String?
+  card_back_id      String?
+  artist            String?
+  artist_ids        String[]       @default([])
+  illustration_id   String?
+  border_color      String?
+  frame             String?
+  full_art          Boolean?
+  textless          Boolean?
+  booster           Boolean?
+  story_spotlight   Boolean?
+  edhrec_rank       Int?
+  penny_rank        Int?
+  prices            Json?
+  watermark         String?
+  frame_effects     String[]       @default([])
+  loyalty           String?
+  printed_name      String?
+  printed_text      String?
+  attraction_lights Int[]
+  color_indicator   String[]       @default([])
+  life_modifier     String?
+  content_warning   Boolean?
+  hand_modifier     String?
+  variation_of      String?
+  printed_type_line String?
+  wantLists         WantList[]
+  announcements     Announcement[]
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
 
   @@map("cards")
 }
 
 // Modelo para a lista de desejos do usuário
-model WantList {
-  id String @id @unique @default(cuid())
-
-  // Relacionamentos
-  profileId String  @unique
-  profile   Profile @relation(fields: [profileId], references: [id])
-  cards     Card[]
-
-  @@map("wantLists")
-}
 
 model Plan {
   id                 String   @id @unique @default(cuid())

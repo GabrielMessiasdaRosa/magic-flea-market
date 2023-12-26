@@ -1,3 +1,67 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@font-face {
+  font-family: FancyFont;
+  src:
+    url("/fonts/square-caps/fc.TTF") format("woff"),
+    url("/fonts/square-caps/fc.TTF") format("woff2"),
+    url("/fonts/square-caps/fc.TTF") format("truetype"),
+    url("/fonts/square-caps/fc.TTF") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Barbarian;
+  src:
+    url("/fonts/barbarian/Barbarian.ttf") format("woff"),
+    url("/fonts/barbarian/Barbarian.ttf") format("woff2"),
+    url("/fonts/barbarian/Barbarian.ttf") format("truetype"),
+    url("/fonts/barbarian/Barbarian.ttf") format("opentype");
+}
+
+@font-face {
+  font-family: Fantclip;
+  src:
+    url("/fonts/fantasy_clipart/Fantclip.ttf") format("woff"),
+    url("/fonts/fantasy_clipart/Fantclip.ttf") format("woff2"),
+    url("/fonts/fantasy_clipart/Fantclip.ttf") format("truetype"),
+    url("/fonts/fantasy_clipart/Fantclip.ttf") format("opentype");
+}
+/* font variabble */
+:root {
+  --font-fancy: "FancyFont", sans-serif;
+  --font-barbarian: "Barbarian", sans-serif;
+  --font-fantasy: "Fantclip", sans-serif;
+}
+
+.debug {
+  @apply border-2 border-red-500;
+}
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #ffffff rgb(243 244 246);
+  scroll-behavior: smooth;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgb(243 244 246);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #6366f1;
+  border-radius: 0px;
+}
+
+input {
+  @apply !placeholder-gray-700/30;
+}

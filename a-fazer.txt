@@ -1,0 +1,4 @@
+1. Excluir a lib axios
+2. Excluir a lib react query
+3. Refatorar o código para usar o fetch nativo do next 
+4. Refatorar o código para usar o server side cache do next
