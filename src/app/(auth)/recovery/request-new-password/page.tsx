@@ -2,7 +2,7 @@ import AuthCardsShowoff from "@/components/auth-cards-showoff";
 import RecoveryAccForm from "@/components/request-new-password-form";
 import prisma from "@/lib/prisma";
 import { Metadata } from "next";
-import { useSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 export const metadata: Metadata = {
@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 };
 
 export default async function PasswordRecoveryPage({}: {}) {
-  const session = await useSession();
-  if (session?.data?.user) {
+  const session = await getServerSession();
+  if (session?.user) {
     redirect("/");
   }
   const cards = await prisma.card.findMany({
