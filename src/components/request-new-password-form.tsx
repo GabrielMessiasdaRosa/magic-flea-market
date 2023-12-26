@@ -7,8 +7,8 @@ import { useForm } from "react-hook-form";
 import { Toaster } from "react-hot-toast";
 import { z } from "zod";
 
+import { Button, Input, Link, Spinner } from "@nextui-org/react";
 import MfmBrandLogo from "./mfm-brand-logo";
-import { Button, Input, Link, Spinner } from "./next-ui-exports";
 
 export interface RecoveryAccFormProps {}
 

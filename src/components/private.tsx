@@ -1,7 +1,7 @@
 "use client";
 
+import { Skeleton } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
-import { Skeleton } from "./next-ui-exports";
 
 export interface PrivateProps {
   children: React.ReactNode | React.ReactNode[];

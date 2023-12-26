@@ -9,8 +9,8 @@ import { useForm } from "react-hook-form";
 import { Toaster } from "react-hot-toast";
 import { z } from "zod";
 
+import { Button, Input, Spinner } from "@nextui-org/react";
 import MfmBrandLogo from "./mfm-brand-logo";
-import { Button, Input, Spinner } from "./next-ui-exports";
 import PasswordChecker from "./password-checker";
 
 export interface SetNewPasswordRecoveryFormProps {

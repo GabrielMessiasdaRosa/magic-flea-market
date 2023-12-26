@@ -1,9 +1,7 @@
-import UsersList from "@/components/users-list";
-
-export default function Home() {
+export default function CardsPage() {
   return (
     <main className="flex  flex-1 items-center justify-center ">
-      <UsersList />
+      <h1 className="text-6xl font-bold">Cards page</h1>
     </main>
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import { logoutConfirmationModalStore } from "@/store/confirmation-modal-store";
-import { signOut } from "next-auth/react";
 import {
   Button,
   Modal,
@@ -9,7 +8,8 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from "../next-ui-exports";
+} from "@nextui-org/react";
+import { signOut } from "next-auth/react";
 
 export interface LogouConfirmationModal {}
 

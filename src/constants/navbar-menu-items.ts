@@ -8,7 +8,7 @@
 
 export const NavbarMenuItems = [
   {
-    name: "Home",
+    name: "Mercado",
     path: "/",
     icon: "home",
     private: false,

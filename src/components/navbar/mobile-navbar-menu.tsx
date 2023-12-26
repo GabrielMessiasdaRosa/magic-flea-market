@@ -13,12 +13,6 @@ import {
   QueueListIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/solid";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React from "react";
-import toast, { Toaster } from "react-hot-toast";
-import CardIcon from "../card-icon";
 import {
   Button,
   Divider,
@@ -27,7 +21,13 @@ import {
   NavbarMenuItem,
   NavbarMenuToggle,
   User,
-} from "../next-ui-exports";
+} from "@nextui-org/react";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React from "react";
+import toast, { Toaster } from "react-hot-toast";
+import CardIcon from "../card-icon";
 import Private from "../private";
 import LogoutConfirmationModal from "./logout-confirmation-modal";
 
@@ -59,7 +59,7 @@ export default function MobileNavbarMenu({}: MobileNavbarMenuProps) {
       />
       <NavbarMenu className="justify-between bg-white scrollbar-hide">
         <NavbarMenuItem className="flex flex-col gap-2">
-          <NavbarMenuItem className="w-full pb-4 pt-3">
+          <div className="w-full pb-4 pt-3">
             <Link
               href={
                 status === "authenticated" && user
@@ -71,9 +71,9 @@ export default function MobileNavbarMenu({}: MobileNavbarMenuProps) {
                 Anunciar cartas
               </Button>{" "}
             </Link>
-          </NavbarMenuItem>
+          </div>
           {NavbarMenuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
+            <div key={`${item}-${index}`}>
               {item.private ? (
                 <Private key={index} withLoading>
                   <Link
@@ -123,7 +123,7 @@ export default function MobileNavbarMenu({}: MobileNavbarMenuProps) {
                   <span className="text-sm">{item.name}</span>
                 </Link>
               )}
-            </NavbarMenuItem>
+            </div>
           ))}
           <Divider />
         </NavbarMenuItem>
@@ -173,9 +173,9 @@ export default function MobileNavbarMenu({}: MobileNavbarMenuProps) {
                   )}
                 </Button>
               </div>
-              <ul className="flex w-full flex-col gap-2 py-2">
+              <div className="flex w-full flex-col gap-2 py-2">
                 {NavbarUserItem.map((item, index) => (
-                  <NavbarMenuItem key={`${item}-${index}`}>
+                  <div key={`${item}-${index}`}>
                     <Link
                       onClick={() => {
                         item.path === "/logout" &&
@@ -202,9 +202,9 @@ export default function MobileNavbarMenu({}: MobileNavbarMenuProps) {
                       }
                       <span className="text-sm">{item.title}</span>
                     </Link>
-                  </NavbarMenuItem>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           </Private>
         </NavbarMenuItem>

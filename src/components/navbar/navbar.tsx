@@ -1,6 +1,6 @@
 import { mobileNavbarMenuStore } from "@/store/mobile-navbar-menu-store";
+import { Navbar as NUINavbar, NavbarContent } from "@nextui-org/react";
 import { Toaster } from "react-hot-toast";
-import { Navbar as NUINavbar, NavbarContent } from "../next-ui-exports";
 import MobileNavbarMenu from "./mobile-navbar-menu";
 export interface NavbarProps {}
 
@@ -15,7 +15,7 @@ export default function Navbar({}: NavbarProps) {
       height={"80px"}
       shouldHideOnScroll
       maxWidth="full"
-      className="h-20 shadow-sm lg:h-16 bg-primary-950"
+      className="h-20 bg-primary-950 shadow-sm lg:h-16"
     >
       <NavbarContent justify="start" className="flex">
         <div className="scale-90 lg:scale-100 ">
