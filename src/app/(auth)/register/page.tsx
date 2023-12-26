@@ -1,3 +1,4 @@
+import { authOptions } from "@/app/api/(lib)/auth-option";
 import AuthCardsShowoff from "@/components/auth-cards-showoff";
 import RegisterForm from "@/components/register-form";
 import prisma from "@/lib/prisma";
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     "Magic flea market - Cadastre-se e comece a negociar suas cartas de Magic: The Gatherin aqui!",
 };
 export default async function RegisterPage({}: RegisterPageProps) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   if (session?.user) {
     redirect("/");
   }

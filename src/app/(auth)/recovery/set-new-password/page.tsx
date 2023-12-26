@@ -1,3 +1,4 @@
+import { authOptions } from "@/app/api/(lib)/auth-option";
 import AuthCardsShowoff from "@/components/auth-cards-showoff";
 import RequestNewRecoveryTokenForm from "@/components/request-new-recovery-token-form";
 import prisma from "@/lib/prisma";
@@ -16,7 +17,7 @@ export default async function PasswordRecoveryPage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   if (session?.user) {
     redirect("/");
   }
