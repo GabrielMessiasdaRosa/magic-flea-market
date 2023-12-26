@@ -1,11 +1,26 @@
 -- CreateEnum
-DO $$ BEGIN
-  CREATE TYPE "PlanType" AS ENUM ('FREE', 'BASIC', 'PRO');
-EXCEPTION
-  WHEN duplicate_object THEN null;
-END $$;
+CREATE TYPE "PlanType" AS ENUM ('FREE', 'BASIC', 'PRO');
+
 -- CreateEnum
 CREATE TYPE "AnnouncementType" AS ENUM ('SELL', 'BUY', 'TRADE');
+
+-- CreateTable
+CREATE TABLE "users" (
+    "id" TEXT NOT NULL,
+    "name" TEXT,
+    "emailVerified" TIMESTAMP(3),
+    "image" TEXT,
+    "email" TEXT NOT NULL,
+    "username" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "recoveryAttempts" INTEGER NOT NULL DEFAULT 0,
+    "planId" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "chatId" TEXT,
+
+    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "accounts" (
@@ -36,20 +51,20 @@ CREATE TABLE "sessions" (
 );
 
 -- CreateTable
-CREATE TABLE "users" (
-    "id" TEXT NOT NULL,
-    "name" TEXT,
-    "emailVerified" TIMESTAMP(3),
-    "image" TEXT,
-    "email" TEXT NOT NULL,
-    "username" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
-    "planId" TEXT,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-    "chatId" TEXT,
+CREATE TABLE "verificationTokens" (
+    "identifier" TEXT NOT NULL,
+    "token" TEXT NOT NULL,
+    "expires" TIMESTAMP(3) NOT NULL
+);
 
-    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+-- CreateTable
+CREATE TABLE "RecoveryRequest" (
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "token" TEXT NOT NULL,
+    "expirationDate" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "RecoveryRequest_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -66,10 +81,11 @@ CREATE TABLE "profiles" (
 );
 
 -- CreateTable
-CREATE TABLE "verificationTokens" (
-    "identifier" TEXT NOT NULL,
-    "token" TEXT NOT NULL,
-    "expires" TIMESTAMP(3) NOT NULL
+CREATE TABLE "wantLists" (
+    "id" TEXT NOT NULL,
+    "profileId" TEXT NOT NULL,
+
+    CONSTRAINT "wantLists_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -165,14 +181,6 @@ CREATE TABLE "cards" (
 );
 
 -- CreateTable
-CREATE TABLE "wantLists" (
-    "id" TEXT NOT NULL,
-    "profileId" TEXT NOT NULL,
-
-    CONSTRAINT "wantLists_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "plans" (
     "id" TEXT NOT NULL,
     "type" "PlanType" NOT NULL,
@@ -213,6 +221,12 @@ CREATE TABLE "_CardToWantList" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "users_id_key" ON "users"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "accounts_provider_key" ON "accounts"("provider");
 
 -- CreateIndex
@@ -222,13 +236,10 @@ CREATE UNIQUE INDEX "accounts_providerAccountId_key" ON "accounts"("providerAcco
 CREATE UNIQUE INDEX "sessions_sessionToken_key" ON "sessions"("sessionToken");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "users_id_key" ON "users"("id");
+CREATE UNIQUE INDEX "verificationTokens_identifier_key" ON "verificationTokens"("identifier");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "users_username_key" ON "users"("username");
+CREATE UNIQUE INDEX "verificationTokens_token_key" ON "verificationTokens"("token");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "profiles_id_key" ON "profiles"("id");
@@ -240,22 +251,16 @@ CREATE UNIQUE INDEX "profiles_nickname_key" ON "profiles"("nickname");
 CREATE UNIQUE INDEX "profiles_userId_key" ON "profiles"("userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "verificationTokens_identifier_key" ON "verificationTokens"("identifier");
+CREATE UNIQUE INDEX "wantLists_id_key" ON "wantLists"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "verificationTokens_token_key" ON "verificationTokens"("token");
+CREATE UNIQUE INDEX "wantLists_profileId_key" ON "wantLists"("profileId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "announcements_id_key" ON "announcements"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "cards_id_key" ON "cards"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "wantLists_id_key" ON "wantLists"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "wantLists_profileId_key" ON "wantLists"("profileId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "plans_id_key" ON "plans"("id");
@@ -276,28 +281,28 @@ CREATE UNIQUE INDEX "_CardToWantList_AB_unique" ON "_CardToWantList"("A", "B");
 CREATE INDEX "_CardToWantList_B_index" ON "_CardToWantList"("B");
 
 -- AddForeignKey
-ALTER TABLE "accounts" ADD CONSTRAINT "accounts_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "sessions" ADD CONSTRAINT "sessions_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "users" ADD CONSTRAINT "users_planId_fkey" FOREIGN KEY ("planId") REFERENCES "plans"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "users" ADD CONSTRAINT "users_chatId_fkey" FOREIGN KEY ("chatId") REFERENCES "chats"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "accounts" ADD CONSTRAINT "accounts_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "sessions" ADD CONSTRAINT "sessions_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "profiles" ADD CONSTRAINT "profiles_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "wantLists" ADD CONSTRAINT "wantLists_profileId_fkey" FOREIGN KEY ("profileId") REFERENCES "profiles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "announcements" ADD CONSTRAINT "announcements_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "announcements" ADD CONSTRAINT "announcements_cardId_fkey" FOREIGN KEY ("cardId") REFERENCES "cards"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "wantLists" ADD CONSTRAINT "wantLists_profileId_fkey" FOREIGN KEY ("profileId") REFERENCES "profiles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "chats" ADD CONSTRAINT "chats_announcementId_fkey" FOREIGN KEY ("announcementId") REFERENCES "announcements"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
