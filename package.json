@@ -6,7 +6,6 @@
     "dev": "npx prettier --write ./ && next dev",
     "build": "next build",
     "start": "next start",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build",
     "prisma:generate": "prisma generate",
     "lint": "next lint",
     "prisma:gen": "prisma generate"
