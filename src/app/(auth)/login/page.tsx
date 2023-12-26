@@ -1,9 +1,8 @@
-import { authOptions } from "@/app/api/(controllers)/auth/[...nextauth]/route";
 import AuthCardsShowoff from "@/components/auth-cards-showoff";
 import LoginForm from "@/components/login-form";
 import prisma from "@/lib/prisma";
 import { Metadata } from "next";
-import { getServerSession } from "next-auth";
+import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 export interface LoginPageProps {}
@@ -15,8 +14,8 @@ export const metadata: Metadata = {
 };
 
 export default async function LoginPage({}: LoginPageProps) {
-  const session = await getServerSession(authOptions);
-  if (session?.user) {
+  const session = await useSession();
+  if (session?.data?.user) {
     redirect("/");
   }
   const cards = await prisma.card.findMany({
