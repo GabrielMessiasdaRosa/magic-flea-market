@@ -1,3 +1,4 @@
+import { authOptions } from "@/app/api/(lib)/auth-option";
 import AuthCardsShowoff from "@/components/auth-cards-showoff";
 import LoginForm from "@/components/login-form";
 import prisma from "@/lib/prisma";
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 export default async function LoginPage({}: LoginPageProps) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   if (session?.user) {
     redirect("/");
   }
