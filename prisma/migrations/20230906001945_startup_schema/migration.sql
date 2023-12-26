@@ -1,6 +1,9 @@
 -- CreateEnum
-CREATE TYPE "PlanType" AS ENUM ('FREE', 'BASIC', 'PRO');
-
+DO $$ BEGIN
+  CREATE TYPE "PlanType" AS ENUM ('FREE', 'BASIC', 'PRO');
+EXCEPTION
+  WHEN duplicate_object THEN null;
+END $$;
 -- CreateEnum
 CREATE TYPE "AnnouncementType" AS ENUM ('SELL', 'BUY', 'TRADE');
 
