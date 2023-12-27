@@ -1,0 +1,36 @@
+version: "3.7"
+
+services:
+  pgsql:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ../db/data:/var/lib/postgresql/data
+  pgsql-shaddow:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres-shaddow
+    ports:
+      - 5433:5432
+    volumes:
+      - ../db/data-shaddow:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "gabrielmessiasdarosa@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "postgres"
+    ports:
+      - 15432:80
+    depends_on:
+      - pgsql
+      - pgsql-shaddow

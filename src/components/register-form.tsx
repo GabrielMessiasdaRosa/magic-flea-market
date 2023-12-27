@@ -51,7 +51,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           disabled={pending === "loading"}
           autoFocus
           {...register("username", { required: true })}
-          validationState={errors.username ? "invalid" : "valid"}
+          isInvalid={errors.username ? true : false}
           errorMessage={(errors.username?.message as string) || undefined}
           endContent={
             <svg
@@ -82,7 +82,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           disabled={pending === "loading"}
           {...register("email", { required: true })}
           autoFocus
-          validationState={errors.email ? "invalid" : "valid"}
+          isInvalid={errors.email ? true : false}
           errorMessage={(errors.email?.message as string) || undefined}
           endContent={
             <svg
@@ -112,7 +112,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           radius="lg"
           disabled={pending === "loading"}
           {...register("password", { required: true })}
-          validationState={errors.password ? "invalid" : "valid"}
+          isInvalid={errors.password ? true : false}
           errorMessage={(errors.password?.message as string) || undefined}
           endContent={
             <svg
@@ -142,7 +142,7 @@ export default function RegisterForm({}: RegisterFormProps) {
           radius="lg"
           disabled={pending === "loading"}
           {...register("confirmPassword", { required: true })}
-          validationState={errors.confirmPassword ? "invalid" : "valid"}
+          isInvalid={errors.confirmPassword ? true : false}
           errorMessage={
             (errors.confirmPassword?.message as string) || undefined
           }

@@ -111,7 +111,7 @@ export default function RequestNewRecoveryTokenForm({
               radius="lg"
               disabled={isLoading}
               {...register("password", { required: true })}
-              validationState={errors?.password ? "invalid" : "valid"}
+              isInvalid={errors?.password ? true : false}
               errorMessage={(errors?.password?.message as string) || undefined}
               endContent={
                 <svg
