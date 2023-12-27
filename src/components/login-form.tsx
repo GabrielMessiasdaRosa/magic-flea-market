@@ -76,9 +76,7 @@ export default function LoginForm({}: LoginFormProps) {
         <Input
           radius="lg"
           {...register("email", { required: true })}
-          validationState={
-            errors.email || asyncErrors.email ? "invalid" : "valid"
-          }
+          isInvalid={errors.email || asyncErrors.email ? true : false}
           errorMessage={(errors.email?.message as string) || asyncErrors.email}
           autoFocus
           endContent={
@@ -108,9 +106,7 @@ export default function LoginForm({}: LoginFormProps) {
         <Input
           radius="lg"
           {...register("password", { required: true })}
-          validationState={
-            errors.password || asyncErrors.email ? "invalid" : "valid"
-          }
+          isInvalid={errors.password || asyncErrors.email ? true : false}
           errorMessage={
             (errors.password?.message as string) || asyncErrors.email
           }
