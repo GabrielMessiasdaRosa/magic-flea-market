@@ -30,11 +30,15 @@ const CreateUserSchemaZod = z
   })
   .refine(
     ({ email }) => {
-      const emailProvider = email.split("@")[1].split(".")[0];
-      if (ValidEmailProviders.includes(emailProvider)) {
-        return true;
+      if (!email) {
+        return false;
+      } else {
+        const emailProvider = email.split("@")[1].split(".")[0];
+        if (ValidEmailProviders.includes(emailProvider)) {
+          return true;
+        }
+        return false;
       }
-      return false;
     },
     {
       path: ["email"],

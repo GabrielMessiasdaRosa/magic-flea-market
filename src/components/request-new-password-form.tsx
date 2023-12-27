@@ -112,7 +112,7 @@ export default function RecoveryAccForm({}: RecoveryAccFormProps) {
               radius="lg"
               disabled={status === "pending"}
               {...register("email", { required: true })}
-              validationState={errors.email ? "invalid" : "valid"}
+              isInvalid={errors.email ? true : false}
               errorMessage={errors.email?.message as string}
               autoFocus
               endContent={
