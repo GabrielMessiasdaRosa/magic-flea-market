@@ -23,7 +23,7 @@ export const useGetUsers = () => {
       queryClient.setQueryData(["users"], data);
     },
     onError: (error) => {
-      console.log("Something went wrong: ", { message: error });
+      console.error("Something went wrong: ", { message: error });
     },
   });
   return {

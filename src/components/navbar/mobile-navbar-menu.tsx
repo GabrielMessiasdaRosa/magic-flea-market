@@ -57,13 +57,13 @@ export default function MobileNavbarMenu({}: MobileNavbarMenuProps) {
         className="h-10 w-10 text-primary-50"
         aria-label={isOpen ? "Close menu" : "Open menu"}
       />
-      <NavbarMenu className="justify-between bg-white scrollbar-hide">
+      <NavbarMenu className=" bg-white scrollbar-hide ">
         <NavbarMenuItem className="flex flex-col gap-2">
           <div className="w-full pb-4 pt-3">
             <Link
               href={
                 status === "authenticated" && user
-                  ? "/announcements/create"
+                  ? "/market/new-announcement"
                   : "/login"
               }
             >
@@ -132,12 +132,12 @@ export default function MobileNavbarMenu({}: MobileNavbarMenuProps) {
             callBackComponent={
               <div className="mb-10 flex w-full items-center justify-center gap-6">
                 <Link href={"/login"}>
-                  <Button size="lg" variant="flat" color="primary">
+                  <Button size="lg" variant="flat" color="secondary">
                     Login
                   </Button>
                 </Link>{" "}
                 <Link href={"/register"}>
-                  <Button size="lg" variant="flat" color="secondary">
+                  <Button size="lg" variant="flat" color="primary">
                     Cadastre-se
                   </Button>
                 </Link>
@@ -145,14 +145,16 @@ export default function MobileNavbarMenu({}: MobileNavbarMenuProps) {
             }
           >
             <div className="flex h-auto w-full flex-col">
-              <div className="flex w-full items-center  justify-between">
-                <User
-                  name={user?.name!}
-                  description={`#${user?.profile.nickname!.split("#")[1]}`}
-                  avatarProps={{
-                    src: user?.image!,
-                  }}
-                />
+              <div className="flex w-full flex-wrap  items-center justify-between gap-4">
+                <div>
+                  <User
+                    name={user?.name!}
+                    description={`#${user?.profile.nickname!.split("#")[1]}`}
+                    avatarProps={{
+                      src: user?.image!,
+                    }}
+                  />
+                </div>
                 <Button
                   variant="flat"
                   size="sm"

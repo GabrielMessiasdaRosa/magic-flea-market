@@ -61,7 +61,7 @@ const config: Config = {
               900: "#164e63",
               950: "#083344",
               DEFAULT: "#06b6d4",
-              foreground: "#06b6d4",
+              foreground: "#FFF",
               focus: "#06b6d4",
             },
           },

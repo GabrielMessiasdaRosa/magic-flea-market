@@ -28,7 +28,7 @@ export const useGetProfiles = (query: {
       queryClient.setQueryData(["profiles"], data);
     },
     onError: (error) => {
-      console.log("Something went wrong: ", { message: error });
+      console.error("Something went wrong: ", { message: error });
     },
   });
   return { refetch, data, error, pending: status };

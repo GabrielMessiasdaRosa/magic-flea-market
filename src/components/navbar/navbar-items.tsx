@@ -13,7 +13,7 @@ export default function NavbarItemsList({}: NavbatItemsListProps) {
 
   return NavbarMenuItems.map((navItem, index) => {
     return navItem.private ? (
-      <Private key={index} withLoading>
+      <Private key={`${navItem}-${index}`} withLoading>
         <NavbarItem
           className={`${pathname.endsWith(navItem.path) && "text-primary-600"}`}
         >

@@ -1,3 +1,4 @@
+import NewsAlert from "@/components/news-alert";
 import type { Metadata } from "next";
 import { Ubuntu } from "next/font/google";
 import "./globals.css";
@@ -24,8 +25,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${ubuntu.className}`}>
         <Providers>
-          {/* 
-          <NewsAlert /> */}
+          <NewsAlert />
           {children}
         </Providers>
       </body>
