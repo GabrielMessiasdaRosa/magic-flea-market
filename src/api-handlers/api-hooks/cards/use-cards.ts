@@ -19,16 +19,15 @@ export const useGetCards = (query: {
     initialData: () => {
       const state: any = queryClient.getQueryState(["cards"]);
 
-      if (state && Date.now() - state.dataUpdatedAt <= 10 * 1000) {
-        return state.data.data;
-      }
-      return undefined;
+      return state;
     },
     onSuccess: (data) => {
       queryClient.setQueryData(["cards"], data);
     },
+    retryDelay: 5000,
+    enabled: true,
     onError: (error) => {
-      console.log("Something went wrong: ", { message: error });
+      console.error("Something went wrong: ", { message: error });
     },
   });
   return { refetch, data, error, pending: status };

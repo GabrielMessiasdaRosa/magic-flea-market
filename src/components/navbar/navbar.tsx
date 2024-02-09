@@ -47,8 +47,8 @@ export default function Navbar({}: NavbarProps) {
           </NavbarItem>
         </NavbarContent>
 
-        <NavbarContent justify="center" className="flex">
-          <NavbarItem className="invisible md:visible">
+        <NavbarContent justify="center" className="flex w-full">
+          <NavbarItem className="invisible w-full md:visible">
             <div className="scale-90 lg:scale-100 ">
               <SearchInput />
             </div>
@@ -58,17 +58,33 @@ export default function Navbar({}: NavbarProps) {
         <NavbarContent justify="end" className="hidden lg:flex">
           <NavbarItem>
             <div className="scale-90 lg:scale-100">
-              <div className="flex items-center gap-4">
-                <Button className="text-white" color="primary">
-                  Anunciar carta
-                </Button>
-                <Link className="cursor-pointer text-white" href="/market">
+              <div className="flex items-center gap-4 ">
+                <Link
+                  href={
+                    status === "authenticated" && data.user
+                      ? "/market/new-announcement"
+                      : "/login"
+                  }
+                  className="text-sm text-white"
+                >
+                  <Button color="primary">Anunciar carta</Button>
+                </Link>
+                <Link
+                  className="cursor-pointer text-sm text-white"
+                  href="/market"
+                >
                   Mercado
                 </Link>
-                <Link className="cursor-pointer text-white" href="/cards">
+                <Link
+                  className="cursor-pointer text-sm text-white"
+                  href="/cards"
+                >
                   Todas as cartas
                 </Link>
-                <Link className="cursor-pointer text-white" href="/chat">
+                <Link
+                  className="cursor-pointer text-sm text-white"
+                  href="/chat"
+                >
                   Chat
                 </Link>
               </div>
@@ -90,9 +106,20 @@ export default function Navbar({}: NavbarProps) {
                         />
                       </DropdownTrigger>
                       <DropdownMenu aria-label="Static Actions">
-                        <DropdownItem key="edit">Minha Want list</DropdownItem>
-                        <DropdownItem key="new" href="/settings">
-                          Configuraçoes
+                        <DropdownItem
+                          key="mywantlist"
+                          href="/profiles/me/my-wantlist"
+                        >
+                          Minha Want list
+                        </DropdownItem>
+                        <DropdownItem
+                          key="settings"
+                          href="/profiles/me/acc-settings"
+                        >
+                          Configuraçoes da conta
+                        </DropdownItem>
+                        <DropdownItem key="myprofile" href="/profiles/me">
+                          Meu perfil
                         </DropdownItem>
                         <DropdownItem
                           key="delete"
@@ -107,13 +134,26 @@ export default function Navbar({}: NavbarProps) {
                   </div>
                 </NavbarItem>
               ) : (
-                <Button
-                  onClick={() => {
-                    window.location.href = "/api/auth/signin";
-                  }}
-                >
-                  Login
-                </Button>
+                <>
+                  <Button
+                    variant="shadow"
+                    color="secondary"
+                    onClick={() => {
+                      window.location.href = "/login";
+                    }}
+                  >
+                    Login
+                  </Button>
+                  <Button
+                    variant="bordered"
+                    color="primary"
+                    onClick={() => {
+                      window.location.href = "/register";
+                    }}
+                  >
+                    Cadastre-se
+                  </Button>
+                </>
               )}
             </>
           )}
@@ -124,8 +164,8 @@ export default function Navbar({}: NavbarProps) {
         <LogoutConfirmationModal />
         <Toaster />
       </NUINavbar>
-      <div className="bg-primary-950 pb-2 md:hidden">
-        <div className="scale-90 lg:scale-100">
+      <div className="w-full bg-primary-950 pb-2 md:hidden">
+        <div className="w-full scale-90 lg:scale-100">
           <SearchInput />
         </div>
       </div>

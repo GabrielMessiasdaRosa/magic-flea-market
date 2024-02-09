@@ -9,7 +9,7 @@
 export const NavbarMenuItems = [
   {
     name: "Mercado",
-    path: "/",
+    path: "/market",
     icon: "home",
     private: false,
   },
@@ -26,8 +26,8 @@ export const NavbarMenuItems = [
     private: true,
   },
   {
-    name: "Want List",
-    path: "/wantlist",
+    name: "Minha Want list",
+    path: "/profiles/me/my-wantlist",
     icon: "wantlist",
     private: true,
   },
