@@ -4,6 +4,6 @@ async function apiRequestQueryMounter(req: Request) {
   url.searchParams.forEach((value, key) => {
     queryObject[key] = value;
   });
-  return { ...queryObject };
+  return queryObject;
 }
 export default apiRequestQueryMounter;

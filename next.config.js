@@ -15,6 +15,7 @@ const nextConfig = {
       "res.cloudinary.com",
       "cards.scryfall.io",
       "**magic-flea-market**",
+      "i.imgur.com",
     ],
   },
 };

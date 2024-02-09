@@ -1,4 +1,4 @@
-import postNewUserService from "@/api-handlers/api-services/post-new-user-service";
+import postNewUserService from "@/api-handlers/api-services/users/post-new-user-service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";

@@ -9,7 +9,6 @@ export async function POST(req: Request, res: Response) {
   try {
     const body = await req.json();
     const { email, password, username } = body;
-    const payload = { email, password, username };
     const userByEmail = await getUserByEmail(email);
     if (userByEmail) {
       return NextResponse.json(
@@ -17,7 +16,7 @@ export async function POST(req: Request, res: Response) {
         { status: 409 },
       );
     } else {
-      const newUser = (await createUser(payload)) as User;
+      const newUser = (await createUser(body)) as User;
       return NextResponse.json(
         {
           message: "User created",

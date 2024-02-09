@@ -125,17 +125,18 @@ model Announcement {
   title            String
   description      String
   price            Float
-
+  quantity         Int
   // Campos de controle
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
 
   // Relacionamentos
-  userId String // Referência ao usuário que criou o anúncio
-  user   User   @relation(fields: [userId], references: [id])
-  cardId String // Referência à carta associada ao anúncio (opcional)
-  card   Card   @relation(fields: [cardId], references: [id])
-  chat   Chat[]
+  userId   String // Referência ao usuário que criou o anúncio
+  user     User     @relation(fields: [userId], references: [id])
+  cardId   String // Referência à carta associada ao anúncio (opcional)
+  card     Card     @relation(fields: [cardId], references: [id])
+  chat     Chat[]
+  tradefor String[] @default([])
 
   @@map("announcements")
 }
