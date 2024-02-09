@@ -1,6 +1,6 @@
 "use client";
 
-import getUsersService from "@/api-handlers/api-services/get-users-service";
+import getUsersService from "@/api-handlers/api-services/users/get-users-service";
 import UserType from "@/types/user-type";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 

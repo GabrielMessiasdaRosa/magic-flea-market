@@ -1,5 +1,5 @@
 "use client";
-import postNewPasswordRequestService from "@/api-handlers/api-services/post-new-password-request";
+
 import { handleRequestNewPasswordStore } from "@/store/handle-request-new-password-store";
 import PostNewPasswordRequestSchema from "@/zod/post-new-password-request-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { Toaster } from "react-hot-toast";
 import { z } from "zod";
 
+import postNewPasswordRequestService from "@/api-handlers/api-services/users/post-new-password-request";
 import { Button, Input, Link, Spinner } from "@nextui-org/react";
 import MfmBrandLogo from "./mfm-brand-logo";
 

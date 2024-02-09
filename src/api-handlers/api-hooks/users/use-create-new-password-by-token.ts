@@ -1,4 +1,4 @@
-import { postNewPasswordRecovery } from "@/api-handlers/api-services/put-new-password";
+import { postNewPasswordRecovery } from "@/api-handlers/api-services/users/put-new-password";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
