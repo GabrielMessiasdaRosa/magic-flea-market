@@ -33,7 +33,7 @@ export default async function PasswordRecoveryPage({
           <RequestNewRecoveryTokenForm email={email} token={token} />
         </Suspense>
       </div>
-      <div className="absolute right-0 -z-10 flex h-[400dvh] w-screen flex-col items-center justify-center overflow-hidden bg-black shadow-xl xl:w-3/5">
+      <div className="absolute right-0 -z-10 hidden h-[400dvh] w-screen flex-col items-center justify-center overflow-hidden bg-black shadow-xl lg:flex xl:w-3/5">
         <Suspense fallback={<></>}>
           <AuthCardsShowoff cards={cards} />
         </Suspense>
