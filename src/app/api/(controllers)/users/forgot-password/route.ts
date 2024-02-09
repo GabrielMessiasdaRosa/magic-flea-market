@@ -13,9 +13,6 @@ export async function POST(req: Request) {
       );
     } else {
       await createNewRecoveryRequest(email);
-      console.log(
-        await NextResponse.json({ message: "Success" }, { status: 200 }),
-      );
       return NextResponse.json({ message: "Success" }, { status: 200 });
     }
   } catch (error: any) {
