@@ -47,6 +47,8 @@ export const authOptions: NextAuthOptions = {
             email: true,
             profile: {
               select: {
+                id: true,
+                reputationPoints: true,
                 nickname: true,
               },
             },
@@ -99,6 +101,8 @@ export const authOptions: NextAuthOptions = {
           profile: {
             select: {
               nickname: true,
+              id: true,
+              reputationPoints: true,
             },
           },
           plan: true,

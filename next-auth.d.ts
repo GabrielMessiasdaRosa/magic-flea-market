@@ -15,6 +15,8 @@ declare module "next-auth" {
       username: string;
       profile: {
         nickname: string;
+        id: string;
+        reputationPoints: number;
       };
       plan: any | null;
     };

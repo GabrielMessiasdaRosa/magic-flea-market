@@ -13,7 +13,6 @@ async function getUserByIdService(id: string): Promise<typeof userDto | any> {
       announcements: true,
     },
   });
-
   if (!user) {
     return null;
   }

@@ -6,7 +6,7 @@ import createDto from "../(lib)/create-dto";
 async function getProfileByIdService(
   id: string,
 ): Promise<typeof profileDto | any> {
-  const profile = await prisma.profile.findUnique({
+  const profile = await prisma.profile.findUniqueOrThrow({
     where: {
       id,
     },
@@ -14,10 +14,6 @@ async function getProfileByIdService(
       user: true,
     },
   });
-
-  if (!profile) {
-    return null;
-  }
 
   const profileDto = createDto(profile, ["user.password"]);
   return profileDto as typeof profileDto;

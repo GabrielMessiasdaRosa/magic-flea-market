@@ -3,7 +3,7 @@ import { loginRequestStatus } from "@/store/handle-async-login-error";
 import LoginSchemaZod from "@/zod/login-schema-zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
@@ -15,6 +15,9 @@ import MfmBrandLogo from "./mfm-brand-logo";
 export interface LoginFormProps {}
 
 export default function LoginForm({}: LoginFormProps) {
+  const searchParams = useSearchParams();
+  const callbackUrl =
+    process.env.NEXT_PUBLIC_BASE_URL! + searchParams.get("callbackUrl");
   const router = useRouter();
   const {
     register,
@@ -28,13 +31,13 @@ export default function LoginForm({}: LoginFormProps) {
   const password = watch("password");
   const { asyncErrors, status, updateStatus, setAsyncErrors } =
     loginRequestStatus();
-
   const onSubmit = async (values: z.infer<typeof LoginSchemaZod>) => {
     updateStatus("pending");
     const loginResponse = await signIn("credentials", {
-      redirect: false,
+      redirect: true,
       email: values.email,
       password: values.password,
+      callbackUrl: callbackUrl,
     });
 
     if (loginResponse?.error === "CredentialsSignin") {
